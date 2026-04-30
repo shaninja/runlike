@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--gpus",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.DeviceRequests"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.DeviceRequests"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "gpus",
+  "inspect_fields": [
+    "HostConfig.DeviceRequests"
+  ],
+  "manifest_flags": [
+    "--gpus"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--gpus",
+    "profile": "canonical-docker-flag",
+    "value_type": "gpu-request"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_gpu_runner"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

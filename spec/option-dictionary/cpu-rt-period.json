@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpu-rt-period",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpuRealtimePeriod"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpuRealtimePeriod"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpu-rt-period",
+  "inspect_fields": [
+    "HostConfig.CpuRealtimePeriod"
+  ],
+  "manifest_flags": [
+    "--cpu-rt-period"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpu-rt-period",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_rt_runtime_runner"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

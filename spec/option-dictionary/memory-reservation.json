@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--memory-reservation",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.MemoryReservation"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.MemoryReservation"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "memory-reservation",
+  "inspect_fields": [
+    "HostConfig.MemoryReservation"
+  ],
+  "manifest_flags": [
+    "--memory-reservation"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--memory-reservation",
+    "profile": "canonical-docker-flag",
+    "value_type": "bytes"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

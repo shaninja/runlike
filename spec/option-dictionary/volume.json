@@ -1,0 +1,50 @@
+{
+  "aliases": [
+    "-v"
+  ],
+  "canonical_output_form": "--volume",
+  "compare_profile": {
+    "fields": [
+      "Mounts",
+      "HostConfig.Binds",
+      "Config.Volumes"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Mounts",
+      "HostConfig.Binds",
+      "Config.Volumes"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "volume",
+  "inspect_fields": [
+    "Mounts",
+    "HostConfig.Binds",
+    "Config.Volumes"
+  ],
+  "manifest_flags": [
+    "--volume"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--volume",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

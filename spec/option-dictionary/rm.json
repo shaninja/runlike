@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--rm",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.AutoRemove"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.AutoRemove"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "rm",
+  "inspect_fields": [
+    "HostConfig.AutoRemove"
+  ],
+  "manifest_flags": [
+    "--rm"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--rm",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

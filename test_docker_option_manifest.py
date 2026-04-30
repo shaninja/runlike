@@ -132,6 +132,114 @@ def test_build_manifest_deduplicates_flags_and_records_command_family():
     ]
 
 
+def test_build_manifest_source_ledger_accounts_for_each_help_option():
+    module = load_manifest_module()
+    manifest = {
+        "options": [
+            {
+                "canonical_flag": "--add-host",
+                "command_family": "both",
+            },
+            {
+                "canonical_flag": "--attach",
+                "command_family": "run",
+            },
+            {
+                "canonical_flag": "--cidfile",
+                "command_family": "create",
+            },
+            {
+                "canonical_flag": "--cidfile",
+                "command_family": "create",
+            },
+            {
+                "canonical_flag": "--extra",
+                "command_family": "both",
+            },
+        ],
+    }
+
+    ledger = module.build_manifest_source_ledger(
+        manifest, RUN_HELP, CREATE_HELP)
+
+    assert ledger == [
+        {
+            "actual_command_families": ["both"],
+            "expected_command_family": "both",
+            "manifest_flag": "--add-host",
+            "manifest_row_count": 1,
+            "source_commands": ["create", "run"],
+            "status": "covered",
+        },
+        {
+            "actual_command_families": ["run"],
+            "expected_command_family": "both",
+            "manifest_flag": "--attach",
+            "manifest_row_count": 1,
+            "source_commands": ["create", "run"],
+            "status": "command_family_mismatch",
+        },
+        {
+            "actual_command_families": ["create", "create"],
+            "expected_command_family": "create",
+            "manifest_flag": "--cidfile",
+            "manifest_row_count": 2,
+            "source_commands": ["create"],
+            "status": "duplicate",
+        },
+        {
+            "actual_command_families": [],
+            "expected_command_family": "run",
+            "manifest_flag": "--detach-keys",
+            "manifest_row_count": 0,
+            "source_commands": ["run"],
+            "status": "missing",
+        },
+        {
+            "actual_command_families": ["both"],
+            "expected_command_family": None,
+            "manifest_flag": "--extra",
+            "manifest_row_count": 1,
+            "source_commands": [],
+            "status": "extra",
+        },
+        {
+            "actual_command_families": [],
+            "expected_command_family": "run",
+            "manifest_flag": "--rm",
+            "manifest_row_count": 0,
+            "source_commands": ["run"],
+            "status": "missing",
+        },
+    ]
+
+
+def test_build_manifest_source_ledger_accepts_generated_manifest():
+    module = load_manifest_module()
+    target = {
+        "id": "linux-docker-25.0.5-api-1.44",
+        "platform": "linux",
+        "docker": {
+            "engine_version": "25.0.5",
+            "cli_version": "25.0.5",
+            "api_version": "1.44",
+        },
+    }
+    manifest = module.build_manifest(target, RUN_HELP, CREATE_HELP)
+
+    ledger = module.build_manifest_source_ledger(
+        manifest, RUN_HELP, CREATE_HELP)
+    summary = module.summarize_manifest_source_ledger(ledger)
+
+    assert summary == {
+        "command_family_mismatch": 0,
+        "covered": 5,
+        "duplicate": 0,
+        "extra": 0,
+        "missing": 0,
+    }
+
+
 def test_checked_in_manifest_matches_current_target_metadata():
     manifest_path = ROOT / "spec" / "docker-option-manifest.json"
     target_path = ROOT / "spec" / "current-target.json"

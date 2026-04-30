@@ -1,0 +1,34 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--network-alias",
+  "compare_profile": {
+    "profile": "not-observable"
+  },
+  "detection_profile": {
+    "profile": "not-observable"
+  },
+  "id": "network-alias",
+  "inspect_fields": [],
+  "manifest_flags": [
+    "--network-alias"
+  ],
+  "observability": "not_observable",
+  "path_coverage": {
+    "container_name": "not_observable",
+    "stdin": "not_observable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--network-alias",
+    "profile": "network-aliases",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "out_of_scope",
+    "reason": "docker_inspect_aliases_include_implicit_container_aliases"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}

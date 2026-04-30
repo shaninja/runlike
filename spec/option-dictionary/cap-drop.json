@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cap-drop",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CapDrop"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CapDrop"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cap-drop",
+  "inspect_fields": [
+    "HostConfig.CapDrop"
+  ],
+  "manifest_flags": [
+    "--cap-drop"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cap-drop",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--tmpfs",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.Tmpfs"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.Tmpfs"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "tmpfs",
+  "inspect_fields": [
+    "HostConfig.Tmpfs"
+  ],
+  "manifest_flags": [
+    "--tmpfs"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--tmpfs",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

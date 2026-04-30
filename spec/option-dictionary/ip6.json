@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--ip6",
+  "compare_profile": {
+    "fields": [
+      "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
+    ],
+    "profile": "network-ipam-address"
+  },
+  "detection_profile": {
+    "fields": [
+      "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
+    ],
+    "profile": "network-ipam-address"
+  },
+  "id": "ip6",
+  "inspect_fields": [
+    "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
+  ],
+  "manifest_flags": [
+    "--ip6"
+  ],
+  "observability": "partially_observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--ip6",
+    "profile": "network-ipam-address",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

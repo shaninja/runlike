@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--volumes-from",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.VolumesFrom"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.VolumesFrom"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "volumes-from",
+  "inspect_fields": [
+    "HostConfig.VolumesFrom"
+  ],
+  "manifest_flags": [
+    "--volumes-from"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--volumes-from",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

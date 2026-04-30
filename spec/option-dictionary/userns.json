@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--userns",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.UsernsMode"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.UsernsMode"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "userns",
+  "inspect_fields": [
+    "HostConfig.UsernsMode"
+  ],
+  "manifest_flags": [
+    "--userns"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--userns",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

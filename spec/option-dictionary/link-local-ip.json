@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--link-local-ip",
+  "compare_profile": {
+    "fields": [
+      "NetworkSettings.Networks"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "NetworkSettings.Networks"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "link-local-ip",
+  "inspect_fields": [
+    "NetworkSettings.Networks"
+  ],
+  "manifest_flags": [
+    "--link-local-ip"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--link-local-ip",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

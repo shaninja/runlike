@@ -1,0 +1,47 @@
+{
+  "aliases": [
+    "-p"
+  ],
+  "canonical_output_form": "--publish",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.PortBindings",
+      "NetworkSettings.Ports"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.PortBindings",
+      "NetworkSettings.Ports"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "publish",
+  "inspect_fields": [
+    "HostConfig.PortBindings",
+    "NetworkSettings.Ports"
+  ],
+  "manifest_flags": [
+    "--publish"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--publish",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

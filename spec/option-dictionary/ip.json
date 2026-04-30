@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--ip",
+  "compare_profile": {
+    "fields": [
+      "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
+    ],
+    "profile": "network-ipam-address"
+  },
+  "detection_profile": {
+    "fields": [
+      "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
+    ],
+    "profile": "network-ipam-address"
+  },
+  "id": "ip",
+  "inspect_fields": [
+    "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
+  ],
+  "manifest_flags": [
+    "--ip"
+  ],
+  "observability": "partially_observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--ip",
+    "profile": "network-ipam-address",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

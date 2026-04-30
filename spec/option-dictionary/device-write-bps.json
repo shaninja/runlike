@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--device-write-bps",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceWriteBps"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceWriteBps"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "device-write-bps",
+  "inspect_fields": [
+    "HostConfig.BlkioDeviceWriteBps"
+  ],
+  "manifest_flags": [
+    "--device-write-bps"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--device-write-bps",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_special_host_device"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

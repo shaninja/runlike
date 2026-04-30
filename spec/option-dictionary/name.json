@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--name",
+  "compare_profile": {
+    "fields": [
+      "Name"
+    ],
+    "profile": "normalized-container-name"
+  },
+  "detection_profile": {
+    "fields": [
+      "Name"
+    ],
+    "profile": "normalized-container-name"
+  },
+  "id": "name",
+  "inspect_fields": [
+    "Name"
+  ],
+  "manifest_flags": [
+    "--name"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--name",
+    "profile": "normalized-container-name",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}
