@@ -1,9 +1,15 @@
 language: python
+dist: jammy
 python:
   - "3.8"
 services:
   - docker
+env:
+  global:
+    - DOCKER_API_VERSION=1.44
 
+before_install:
+  - ./tools/install_pinned_docker.sh
 install:
   - pip install "poetry<2"
   - poetry install
@@ -11,6 +17,7 @@ before_script:
   - python --version
   - poetry --version
   - docker version
+  - poetry run python tools/verify_docker_target.py
 script:
   - make test
 after_failure:
