@@ -5,13 +5,13 @@
     "fields": [
       "Config.Healthcheck.Test"
     ],
-    "profile": "inspect-projection"
+    "profile": "healthcheck-none-sentinel"
   },
   "detection_profile": {
     "fields": [
       "Config.Healthcheck.Test"
     ],
-    "profile": "inspect-fields"
+    "profile": "healthcheck-none-sentinel"
   },
   "id": "no-healthcheck",
   "inspect_fields": [
@@ -29,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--no-healthcheck",
-    "profile": "canonical-docker-flag",
+    "profile": "healthcheck-none-sentinel",
     "value_type": null
   },
   "scope": {

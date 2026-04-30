@@ -3,27 +3,24 @@
   "canonical_output_form": "--expose",
   "compare_profile": {
     "fields": [
-      "Config.ExposedPorts",
-      "NetworkSettings.Ports"
+      "Config.ExposedPorts"
     ],
-    "profile": "inspect-projection"
+    "profile": "image-default-aware"
   },
   "detection_profile": {
     "fields": [
-      "Config.ExposedPorts",
-      "NetworkSettings.Ports"
+      "Config.ExposedPorts"
     ],
-    "profile": "inspect-fields"
+    "profile": "image-default-aware"
   },
   "id": "expose",
   "inspect_fields": [
-    "Config.ExposedPorts",
-    "NetworkSettings.Ports"
+    "Config.ExposedPorts"
   ],
   "manifest_flags": [
     "--expose"
   ],
-  "observability": "observable",
+  "observability": "partially_observable",
   "path_coverage": {
     "container_name": "detectable",
     "stdin": "detectable"
@@ -32,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--expose",
-    "profile": "canonical-docker-flag",
+    "profile": "image-default-aware",
     "value_type": "list"
   },
   "scope": {

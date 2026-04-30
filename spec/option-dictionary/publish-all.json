@@ -5,22 +5,19 @@
   "canonical_output_form": "--publish-all",
   "compare_profile": {
     "fields": [
-      "HostConfig.PublishAllPorts",
-      "NetworkSettings.Ports"
+      "HostConfig.PublishAllPorts"
     ],
     "profile": "inspect-projection"
   },
   "detection_profile": {
     "fields": [
-      "HostConfig.PublishAllPorts",
-      "NetworkSettings.Ports"
+      "HostConfig.PublishAllPorts"
     ],
     "profile": "inspect-fields"
   },
   "id": "publish-all",
   "inspect_fields": [
-    "HostConfig.PublishAllPorts",
-    "NetworkSettings.Ports"
+    "HostConfig.PublishAllPorts"
   ],
   "manifest_flags": [
     "--publish-all"

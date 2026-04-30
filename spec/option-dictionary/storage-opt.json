@@ -30,7 +30,7 @@
     "command_family": "both",
     "flag": "--storage-opt",
     "profile": "canonical-docker-flag",
-    "value_type": "list"
+    "value_type": "map"
   },
   "scope": {
     "classification": "blocked_by_runner",

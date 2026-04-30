@@ -76,6 +76,27 @@ def test_validate_dictionary_requires_phase_three_metadata():
     assert "Dictionary entry name is out_of_scope but has no reason." in errors
 
 
+def test_validate_dictionary_handles_malformed_manifest_flags():
+    module = load_dictionary_module()
+    manifest = {"options": [{"canonical_flag": "--name"}]}
+    entry = minimal_entry("name", ["--name"])
+    entry["manifest_flags"] = None
+
+    errors = module.validate_dictionary(manifest, [entry])
+    ledger = module.build_coverage_ledger(manifest, [entry])
+
+    assert "Dictionary entry name must list at least one manifest flag." in errors
+    assert "Manifest option --name has no dictionary entry." in errors
+    assert ledger == [
+        {
+            "manifest_flag": "--name",
+            "owners": [],
+            "owner_count": 0,
+            "status": "missing",
+        },
+    ]
+
+
 def test_build_coverage_ledger_accounts_for_each_manifest_option():
     module = load_dictionary_module()
     manifest = {
@@ -184,4 +205,52 @@ def test_checked_in_option_dictionary_records_key_classifications():
     assert gpus["path_coverage"] == {
         "container_name": "runner_blocked",
         "stdin": "runner_blocked",
+    }
+
+
+def test_checked_in_option_dictionary_records_reviewed_profiles():
+    module = load_dictionary_module()
+    entries = {
+        entry["id"]: entry
+        for entry in module.load_dictionary_entries(ROOT / "spec" / "option-dictionary")
+    }
+
+    profile_expectations = [
+        ("attach", ("render_profile", "profile"), "attach-streams"),
+        ("name", ("render_profile", "profile"), "normalized-container-name"),
+        ("restart", ("render_profile", "value_type"), "restart-policy"),
+        ("no-healthcheck", ("detection_profile", "profile"), "healthcheck-none-sentinel"),
+        ("log-opt", ("render_profile", "value_type"), "map"),
+        ("storage-opt", ("render_profile", "value_type"), "map"),
+        ("entrypoint", ("detection_profile", "profile"), "image-default-aware"),
+    ]
+    for entry_id, path, expected in profile_expectations:
+        value = entries[entry_id]
+        for key in path:
+            value = value[key]
+        assert value == expected
+
+    assert entries["publish-all"]["inspect_fields"] == [
+        "HostConfig.PublishAllPorts",
+    ]
+    assert entries["mac-address"]["inspect_fields"] == [
+        "Config.MacAddress",
+        "NetworkSettings.MacAddress",
+        "NetworkSettings.Networks.*.MacAddress",
+    ]
+
+    assert entries["entrypoint"]["observability"] == "partially_observable"
+    assert entries["expose"]["observability"] == "partially_observable"
+    assert entries["expose"]["inspect_fields"] == ["Config.ExposedPorts"]
+    assert entries["ip"]["inspect_fields"] == [
+        "NetworkSettings.Networks.*.IPAMConfig.IPv4Address",
+    ]
+    assert entries["ip6"]["inspect_fields"] == [
+        "NetworkSettings.Networks.*.IPAMConfig.IPv6Address",
+    ]
+    assert entries["network-alias"]["observability"] == "not_observable"
+    assert entries["network-alias"]["inspect_fields"] == []
+    assert entries["network-alias"]["scope"] == {
+        "classification": "out_of_scope",
+        "reason": "docker_inspect_aliases_include_implicit_container_aliases",
     }

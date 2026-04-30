@@ -68,6 +68,13 @@ def _is_non_empty_string(value):
     return isinstance(value, str) and bool(value.strip())
 
 
+def _valid_manifest_flags(entry):
+    manifest_flags = entry.get("manifest_flags")
+    if not isinstance(manifest_flags, list):
+        return []
+    return [flag for flag in manifest_flags if _is_non_empty_string(flag)]
+
+
 def _validate_entry_schema(entry):
     errors = []
     entry_id = entry.get("id", "<missing id>")
@@ -152,7 +159,7 @@ def build_coverage_ledger(manifest, entries):
     owners_by_flag = defaultdict(list)
     for entry in entries:
         entry_id = entry.get("id", "<missing id>")
-        for flag in entry.get("manifest_flags", []):
+        for flag in _valid_manifest_flags(entry):
             owners_by_flag[flag].append(entry_id)
 
     ledger = []
@@ -220,7 +227,7 @@ def validate_dictionary(manifest, entries):
 
         errors.extend(_validate_entry_schema(entry))
 
-        for flag in entry.get("manifest_flags", []):
+        for flag in _valid_manifest_flags(entry):
             if flag not in manifest_flags:
                 errors.append(
                     "Dictionary entry %s references unknown manifest option %s." % (

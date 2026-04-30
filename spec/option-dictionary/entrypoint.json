@@ -5,13 +5,13 @@
     "fields": [
       "Config.Entrypoint"
     ],
-    "profile": "inspect-projection"
+    "profile": "image-default-aware"
   },
   "detection_profile": {
     "fields": [
       "Config.Entrypoint"
     ],
-    "profile": "inspect-fields"
+    "profile": "image-default-aware"
   },
   "id": "entrypoint",
   "inspect_fields": [
@@ -20,7 +20,7 @@
   "manifest_flags": [
     "--entrypoint"
   ],
-  "observability": "observable",
+  "observability": "partially_observable",
   "path_coverage": {
     "container_name": "detectable",
     "stdin": "detectable"
@@ -29,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--entrypoint",
-    "profile": "canonical-docker-flag",
+    "profile": "image-default-aware",
     "value_type": "string"
   },
   "scope": {

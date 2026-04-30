@@ -5,7 +5,7 @@
     "fields": [
       "Config.MacAddress",
       "NetworkSettings.MacAddress",
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.MacAddress"
     ],
     "profile": "inspect-projection"
   },
@@ -13,7 +13,7 @@
     "fields": [
       "Config.MacAddress",
       "NetworkSettings.MacAddress",
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.MacAddress"
     ],
     "profile": "inspect-fields"
   },
@@ -21,7 +21,7 @@
   "inspect_fields": [
     "Config.MacAddress",
     "NetworkSettings.MacAddress",
-    "NetworkSettings.Networks"
+    "NetworkSettings.Networks.*.MacAddress"
   ],
   "manifest_flags": [
     "--mac-address"

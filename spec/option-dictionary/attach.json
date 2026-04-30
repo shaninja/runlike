@@ -9,7 +9,7 @@
       "Config.AttachStdout",
       "Config.AttachStderr"
     ],
-    "profile": "inspect-projection"
+    "profile": "attach-streams"
   },
   "detection_profile": {
     "fields": [
@@ -17,7 +17,7 @@
       "Config.AttachStdout",
       "Config.AttachStderr"
     ],
-    "profile": "inspect-fields"
+    "profile": "attach-streams"
   },
   "id": "attach",
   "inspect_fields": [
@@ -37,7 +37,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--attach",
-    "profile": "canonical-docker-flag",
+    "profile": "attach-streams",
     "value_type": "list"
   },
   "scope": {

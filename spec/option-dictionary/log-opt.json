@@ -30,7 +30,7 @@
     "command_family": "both",
     "flag": "--log-opt",
     "profile": "canonical-docker-flag",
-    "value_type": "list"
+    "value_type": "map"
   },
   "scope": {
     "classification": "in_scope",

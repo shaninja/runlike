@@ -5,13 +5,13 @@
     "fields": [
       "Name"
     ],
-    "profile": "inspect-projection"
+    "profile": "normalized-container-name"
   },
   "detection_profile": {
     "fields": [
       "Name"
     ],
-    "profile": "inspect-fields"
+    "profile": "normalized-container-name"
   },
   "id": "name",
   "inspect_fields": [
@@ -29,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--name",
-    "profile": "canonical-docker-flag",
+    "profile": "normalized-container-name",
     "value_type": "string"
   },
   "scope": {

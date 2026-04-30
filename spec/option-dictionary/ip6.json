@@ -3,24 +3,24 @@
   "canonical_output_form": "--ip6",
   "compare_profile": {
     "fields": [
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
     ],
-    "profile": "inspect-projection"
+    "profile": "network-ipam-address"
   },
   "detection_profile": {
     "fields": [
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
     ],
-    "profile": "inspect-fields"
+    "profile": "network-ipam-address"
   },
   "id": "ip6",
   "inspect_fields": [
-    "NetworkSettings.Networks"
+    "NetworkSettings.Networks.*.IPAMConfig.IPv6Address"
   ],
   "manifest_flags": [
     "--ip6"
   ],
-  "observability": "observable",
+  "observability": "partially_observable",
   "path_coverage": {
     "container_name": "detectable",
     "stdin": "detectable"
@@ -29,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--ip6",
-    "profile": "canonical-docker-flag",
+    "profile": "network-ipam-address",
     "value_type": "string"
   },
   "scope": {

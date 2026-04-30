@@ -3,24 +3,24 @@
   "canonical_output_form": "--ip",
   "compare_profile": {
     "fields": [
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
     ],
-    "profile": "inspect-projection"
+    "profile": "network-ipam-address"
   },
   "detection_profile": {
     "fields": [
-      "NetworkSettings.Networks"
+      "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
     ],
-    "profile": "inspect-fields"
+    "profile": "network-ipam-address"
   },
   "id": "ip",
   "inspect_fields": [
-    "NetworkSettings.Networks"
+    "NetworkSettings.Networks.*.IPAMConfig.IPv4Address"
   ],
   "manifest_flags": [
     "--ip"
   ],
-  "observability": "observable",
+  "observability": "partially_observable",
   "path_coverage": {
     "container_name": "detectable",
     "stdin": "detectable"
@@ -29,7 +29,7 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--ip",
-    "profile": "canonical-docker-flag",
+    "profile": "network-ipam-address",
     "value_type": "string"
   },
   "scope": {

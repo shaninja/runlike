@@ -5,13 +5,13 @@
     "fields": [
       "HostConfig.RestartPolicy"
     ],
-    "profile": "inspect-projection"
+    "profile": "restart-policy"
   },
   "detection_profile": {
     "fields": [
       "HostConfig.RestartPolicy"
     ],
-    "profile": "inspect-fields"
+    "profile": "restart-policy"
   },
   "id": "restart",
   "inspect_fields": [
@@ -29,8 +29,8 @@
   "render_profile": {
     "command_family": "both",
     "flag": "--restart",
-    "profile": "canonical-docker-flag",
-    "value_type": "string"
+    "profile": "restart-policy",
+    "value_type": "restart-policy"
   },
   "scope": {
     "classification": "in_scope",
