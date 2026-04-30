@@ -22,6 +22,7 @@ class Inspector(object):
         self.output = ""
         self.pretty = pretty
         self.facts = None
+        self.image_facts = None
         self.options = []
 
     def inspect(self):
@@ -30,23 +31,44 @@ class Inspector(object):
                 ["docker", "container", "inspect", self.container],
                 stderr=STDOUT)
             self.facts = loads(output.decode())
+            self.inspect_image()
         except CalledProcessError as e:
             if b"No such container" in e.output:
                 die("No such container %s" % self.container)
             else:
                 die(str(e))
 
+    def inspect_image(self):
+        image = self.get_fact("Config.Image")
+        if not image:
+            return
+        try:
+            output = check_output(
+                ["docker", "image", "inspect", image],
+                stderr=STDOUT)
+            self.image_facts = loads(output.decode())
+        except CalledProcessError:
+            self.image_facts = None
+
     def set_facts(self, raw_json):
         self.facts = loads(raw_json)
 
-    def get_fact(self, path):
+    def _get_fact(self, source, path):
         parts = path.split(".")
-        value = self.facts[0]
+        if not source:
+            return None
+        value = source[0]
         for p in parts:
             if p not in value:
                 return None
             value = value[p]
         return value
+
+    def get_fact(self, path):
+        return self._get_fact(self.facts, path)
+
+    def get_image_fact(self, path):
+        return self._get_fact(self.image_facts, path)
 
     def multi_option(self, path, option):
         values = self.get_fact(path)
@@ -116,7 +138,7 @@ class Inspector(object):
 
     def parse_restart(self):
         restart = self.get_fact("HostConfig.RestartPolicy.Name")
-        if not restart:
+        if not restart or restart == 'no':
             return
         elif restart == 'on-failure':
             max_retries = self.get_fact(
@@ -143,9 +165,12 @@ class Inspector(object):
 
     def parse_labels(self):
         labels = self.get_fact("Config.Labels") or {}
+        image_labels = self.get_image_fact("Config.Labels") or {}
         label_options = set()
         if labels is not None:
             for key, value in labels.items():
+                if image_labels.get(key) == value:
+                    continue
                 label_options.add("--label='%s=%s'" % (key, value))
         self.options += list(label_options)
 
@@ -174,6 +199,11 @@ class Inspector(object):
         if runtime:
             self.options.append("--runtime=%s" % runtime)
 
+    def parse_network(self):
+        network_mode = self.get_fact("HostConfig.NetworkMode")
+        if network_mode not in (None, "", "default", "bridge"):
+            self.options.append("--network=" + network_mode)
+
     def format_cli(self):
         self.output = "docker run "
 
@@ -194,9 +224,7 @@ class Inspector(object):
         self.multi_option("HostConfig.CapAdd", "cap-add")
         self.multi_option("HostConfig.CapDrop", "cap-drop")
         self.multi_option("HostConfig.Dns", "dns")
-        network_mode = self.get_fact("HostConfig.NetworkMode")
-        if network_mode != "default":
-            self.options.append("--network=" + network_mode)
+        self.parse_network()
         privileged = self.get_fact('HostConfig.Privileged')
         if privileged:
             self.options.append("--privileged")

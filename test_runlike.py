@@ -5,6 +5,100 @@ from subprocess import check_output
 from runlike.inspector import Inspector
 
 
+def minimal_inspect_facts(host_config=None, config=None):
+    base_host_config = {
+        "Binds": None,
+        "VolumesFrom": None,
+        "CapAdd": None,
+        "CapDrop": None,
+        "Dns": None,
+        "NetworkMode": "default",
+        "Privileged": False,
+        "PortBindings": {},
+        "Links": None,
+        "RestartPolicy": {
+            "Name": "",
+            "MaximumRetryCount": 0,
+        },
+        "Devices": None,
+        "LogConfig": {
+            "Type": "json-file",
+            "Config": {},
+        },
+        "ExtraHosts": None,
+        "Runtime": "",
+    }
+    base_config = {
+        "Image": "fixture_image",
+        "Hostname": "fixture",
+        "User": "",
+        "MacAddress": "",
+        "Env": [],
+        "Volumes": None,
+        "WorkingDir": "",
+        "Labels": {},
+        "AttachStdout": False,
+        "Tty": False,
+        "Cmd": None,
+    }
+    if host_config:
+        base_host_config.update(host_config)
+    if config:
+        base_config.update(config)
+
+    return [{
+        "Name": "/fixture_container",
+        "Config": base_config,
+        "HostConfig": base_host_config,
+        "NetworkSettings": {
+            "MacAddress": "",
+            "Ports": {},
+        },
+    }]
+
+
+class TestCompatibilityDefaults(unittest.TestCase):
+
+    def test_default_bridge_network_is_not_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts({
+            "NetworkMode": "bridge",
+        })
+
+        self.assertNotIn("--network", ins.format_cli())
+
+    def test_default_no_restart_policy_is_not_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts({
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0,
+            },
+        })
+
+        self.assertNotIn("--restart", ins.format_cli())
+
+    def test_image_inherited_labels_are_not_rendered_when_image_facts_exist(self):
+        ins = Inspector()
+        ins.facts = minimal_inspect_facts(config={
+            "Labels": {
+                "com.example.explicit": "1",
+                "org.opencontainers.image.version": "24.04",
+            },
+        })
+        ins.image_facts = [{
+            "Config": {
+                "Labels": {
+                    "org.opencontainers.image.version": "24.04",
+                },
+            },
+        }]
+
+        ins.parse_labels()
+
+        self.assertEqual(["--label='com.example.explicit=1'"], ins.options)
+
+
 class TestInspection(unittest.TestCase):
 
     @classmethod
