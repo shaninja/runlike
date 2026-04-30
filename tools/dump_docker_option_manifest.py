@@ -142,6 +142,38 @@ def build_manifest(target, run_help, create_help):
     }
 
 
+def read_docker_client():
+    output = subprocess.check_output(
+        ["docker", "version", "--format", "{{json .Client}}"],
+        universal_newlines=True)
+    return json.loads(output)
+
+
+def validate_docker_client(target, client):
+    docker_target = target.get("docker") if isinstance(target, dict) else None
+    if not isinstance(docker_target, dict):
+        raise ValueError(
+            "Target metadata must include Docker client version and API version.")
+
+    expected_version = docker_target.get("cli_version")
+    expected_api_version = docker_target.get("api_version")
+
+    if expected_version is None or expected_api_version is None:
+        raise ValueError(
+            "Target metadata must include Docker client version and API version.")
+
+    actual_version = client.get("Version")
+    actual_api_version = client.get("ApiVersion")
+    if actual_version != expected_version or actual_api_version != expected_api_version:
+        raise ValueError(
+            "Docker client does not match pinned target: "
+            "expected version %s/API %s, got version %s/API %s" % (
+                expected_version,
+                expected_api_version,
+                actual_version,
+                actual_api_version))
+
+
 def read_docker_help(command):
     return subprocess.check_output(
         ["docker", "container", command, "--help"],
@@ -168,6 +200,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     target = load_target(args.target)
+    validate_docker_client(target, read_docker_client())
     manifest = build_manifest(
         target,
         read_docker_help("run"),
