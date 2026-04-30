@@ -1,0 +1,45 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--annotation",
+  "compare_profile": {
+    "fields": [
+      "Config.Annotations",
+      "HostConfig.Annotations"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Annotations",
+      "HostConfig.Annotations"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "annotation",
+  "inspect_fields": [
+    "Config.Annotations",
+    "HostConfig.Annotations"
+  ],
+  "manifest_flags": [
+    "--annotation"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--annotation",
+    "profile": "canonical-docker-flag",
+    "value_type": "map"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

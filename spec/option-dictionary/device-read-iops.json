@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--device-read-iops",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceReadIOps"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceReadIOps"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "device-read-iops",
+  "inspect_fields": [
+    "HostConfig.BlkioDeviceReadIOps"
+  ],
+  "manifest_flags": [
+    "--device-read-iops"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--device-read-iops",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_special_host_device"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

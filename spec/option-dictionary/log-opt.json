@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--log-opt",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.LogConfig.Config"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.LogConfig.Config"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "log-opt",
+  "inspect_fields": [
+    "HostConfig.LogConfig.Config"
+  ],
+  "manifest_flags": [
+    "--log-opt"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--log-opt",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

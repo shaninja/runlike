@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--dns",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.Dns"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.Dns"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "dns",
+  "inspect_fields": [
+    "HostConfig.Dns"
+  ],
+  "manifest_flags": [
+    "--dns"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--dns",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

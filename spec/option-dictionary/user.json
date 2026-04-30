@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "-u"
+  ],
+  "canonical_output_form": "--user",
+  "compare_profile": {
+    "fields": [
+      "Config.User"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.User"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "user",
+  "inspect_fields": [
+    "Config.User"
+  ],
+  "manifest_flags": [
+    "--user"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--user",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

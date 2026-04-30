@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--shm-size",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.ShmSize"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.ShmSize"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "shm-size",
+  "inspect_fields": [
+    "HostConfig.ShmSize"
+  ],
+  "manifest_flags": [
+    "--shm-size"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--shm-size",
+    "profile": "canonical-docker-flag",
+    "value_type": "bytes"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

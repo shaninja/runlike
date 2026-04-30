@@ -5,6 +5,7 @@ import json
 import re
 import subprocess
 import sys
+from collections import defaultdict
 
 
 DEFAULT_TARGET_PATH = "spec/current-target.json"
@@ -142,6 +143,107 @@ def build_manifest(target, run_help, create_help):
     }
 
 
+def build_manifest_source_ledger(manifest, run_help, create_help):
+    source_commands_by_flag = defaultdict(set)
+    for command, help_text in (("run", run_help), ("create", create_help)):
+        for option in parse_docker_options(help_text):
+            source_commands_by_flag[option["canonical_flag"]].add(command)
+
+    manifest_rows_by_flag = defaultdict(list)
+    for option in manifest.get("options", []):
+        manifest_rows_by_flag[option["canonical_flag"]].append(option)
+
+    flags = sorted(set(source_commands_by_flag) | set(manifest_rows_by_flag))
+    ledger = []
+    for flag in flags:
+        source_commands = sorted(source_commands_by_flag.get(flag, set()))
+        manifest_rows = manifest_rows_by_flag.get(flag, [])
+        actual_command_families = [
+            row.get("command_family")
+            for row in manifest_rows
+        ]
+        expected_command_family = (
+            _command_family(set(source_commands))
+            if source_commands
+            else None
+        )
+
+        if not source_commands:
+            status = "extra"
+        elif not manifest_rows:
+            status = "missing"
+        elif len(manifest_rows) > 1:
+            status = "duplicate"
+        elif actual_command_families[0] != expected_command_family:
+            status = "command_family_mismatch"
+        else:
+            status = "covered"
+
+        ledger.append({
+            "actual_command_families": actual_command_families,
+            "expected_command_family": expected_command_family,
+            "manifest_flag": flag,
+            "manifest_row_count": len(manifest_rows),
+            "source_commands": source_commands,
+            "status": status,
+        })
+    return ledger
+
+
+def summarize_manifest_source_ledger(ledger):
+    summary = {
+        "command_family_mismatch": 0,
+        "covered": 0,
+        "duplicate": 0,
+        "extra": 0,
+        "missing": 0,
+    }
+    for row in ledger:
+        summary[row["status"]] += 1
+    return summary
+
+
+def write_manifest_source_ledger(path, ledger):
+    payload = {
+        "summary": summarize_manifest_source_ledger(ledger),
+        "source_option_count": sum(
+            1 for row in ledger if row["source_commands"]),
+        "manifest_option_count": sum(
+            row["manifest_row_count"] for row in ledger),
+        "ledger": ledger,
+    }
+    with open(path, "w") as ledger_file:
+        json.dump(payload, ledger_file, indent=2, sort_keys=True)
+        ledger_file.write("\n")
+
+
+def validate_manifest_source_ledger(ledger):
+    errors = []
+    for row in ledger:
+        status = row["status"]
+        if status == "covered":
+            continue
+        if status == "missing":
+            errors.append("Docker help option %s has no manifest entry." % (
+                row["manifest_flag"],))
+        elif status == "duplicate":
+            errors.append("Docker help option %s has %d manifest entries." % (
+                row["manifest_flag"], row["manifest_row_count"]))
+        elif status == "extra":
+            errors.append("Manifest option %s is not present in Docker help." % (
+                row["manifest_flag"],))
+        elif status == "command_family_mismatch":
+            errors.append(
+                "Manifest option %s command_family mismatch: expected %s, got %s." % (
+                    row["manifest_flag"],
+                    row["expected_command_family"],
+                    ", ".join(row["actual_command_families"])))
+        else:
+            errors.append("Manifest option %s has unknown ledger status %s." % (
+                row["manifest_flag"], status))
+    return errors
+
+
 def read_docker_client():
     output = subprocess.check_output(
         ["docker", "version", "--format", "{{json .Client}}"],
@@ -186,6 +288,11 @@ def write_manifest(path, manifest):
         output_file.write("\n")
 
 
+def load_manifest(path):
+    with open(path) as manifest_file:
+        return json.load(manifest_file)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Generate the Docker option manifest for the pinned runlike target.")
@@ -197,14 +304,40 @@ def main(argv=None):
         "--output",
         default=DEFAULT_OUTPUT_PATH,
         help="Path for the generated Docker option manifest.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate the existing manifest against live Docker help instead of writing it.")
+    parser.add_argument(
+        "--coverage-ledger",
+        help="Optional path to write one accounting row per Docker help option.")
     args = parser.parse_args(argv)
 
     target = load_target(args.target)
     validate_docker_client(target, read_docker_client())
+    run_help = read_docker_help("run")
+    create_help = read_docker_help("create")
+
+    if args.check:
+        manifest = load_manifest(args.output)
+        ledger = build_manifest_source_ledger(manifest, run_help, create_help)
+        if args.coverage_ledger:
+            write_manifest_source_ledger(args.coverage_ledger, ledger)
+        errors = validate_manifest_source_ledger(ledger)
+        if errors:
+            for error in errors:
+                print(error, file=sys.stderr)
+            return 1
+        print("Docker option manifest source validation passed.")
+        return 0
+
     manifest = build_manifest(
         target,
-        read_docker_help("run"),
-        read_docker_help("create"))
+        run_help,
+        create_help)
+    ledger = build_manifest_source_ledger(manifest, run_help, create_help)
+    if args.coverage_ledger:
+        write_manifest_source_ledger(args.coverage_ledger, ledger)
     write_manifest(args.output, manifest)
     print(
         "Wrote %s with %d Docker options." % (

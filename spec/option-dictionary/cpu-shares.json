@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "-c"
+  ],
+  "canonical_output_form": "--cpu-shares",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpuShares"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpuShares"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpu-shares",
+  "inspect_fields": [
+    "HostConfig.CpuShares"
+  ],
+  "manifest_flags": [
+    "--cpu-shares"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpu-shares",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

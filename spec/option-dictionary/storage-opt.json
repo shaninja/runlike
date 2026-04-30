@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--storage-opt",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.StorageOpt"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.StorageOpt"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "storage-opt",
+  "inspect_fields": [
+    "HostConfig.StorageOpt"
+  ],
+  "manifest_flags": [
+    "--storage-opt"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--storage-opt",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_storage_driver_runner"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

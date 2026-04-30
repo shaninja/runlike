@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--kernel-memory",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.KernelMemory"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.KernelMemory"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "kernel-memory",
+  "inspect_fields": [
+    "HostConfig.KernelMemory"
+  ],
+  "manifest_flags": [
+    "--kernel-memory"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--kernel-memory",
+    "profile": "canonical-docker-flag",
+    "value_type": "bytes"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

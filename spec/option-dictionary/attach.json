@@ -1,0 +1,50 @@
+{
+  "aliases": [
+    "-a"
+  ],
+  "canonical_output_form": "--attach",
+  "compare_profile": {
+    "fields": [
+      "Config.AttachStdin",
+      "Config.AttachStdout",
+      "Config.AttachStderr"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.AttachStdin",
+      "Config.AttachStdout",
+      "Config.AttachStderr"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "attach",
+  "inspect_fields": [
+    "Config.AttachStdin",
+    "Config.AttachStdout",
+    "Config.AttachStderr"
+  ],
+  "manifest_flags": [
+    "--attach"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--attach",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

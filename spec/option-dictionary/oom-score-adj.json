@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--oom-score-adj",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.OomScoreAdj"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.OomScoreAdj"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "oom-score-adj",
+  "inspect_fields": [
+    "HostConfig.OomScoreAdj"
+  ],
+  "manifest_flags": [
+    "--oom-score-adj"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--oom-score-adj",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

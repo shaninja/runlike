@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--restart",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.RestartPolicy"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.RestartPolicy"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "restart",
+  "inspect_fields": [
+    "HostConfig.RestartPolicy"
+  ],
+  "manifest_flags": [
+    "--restart"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--restart",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

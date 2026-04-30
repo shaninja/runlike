@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--stop-signal",
+  "compare_profile": {
+    "fields": [
+      "Config.StopSignal"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.StopSignal"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "stop-signal",
+  "inspect_fields": [
+    "Config.StopSignal"
+  ],
+  "manifest_flags": [
+    "--stop-signal"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--stop-signal",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

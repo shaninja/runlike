@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--link",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.Links"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.Links"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "link",
+  "inspect_fields": [
+    "HostConfig.Links"
+  ],
+  "manifest_flags": [
+    "--link"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--link",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--read-only",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.ReadonlyRootfs"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.ReadonlyRootfs"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "read-only",
+  "inspect_fields": [
+    "HostConfig.ReadonlyRootfs"
+  ],
+  "manifest_flags": [
+    "--read-only"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--read-only",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

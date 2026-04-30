@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpu-quota",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpuQuota"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpuQuota"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpu-quota",
+  "inspect_fields": [
+    "HostConfig.CpuQuota"
+  ],
+  "manifest_flags": [
+    "--cpu-quota"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpu-quota",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

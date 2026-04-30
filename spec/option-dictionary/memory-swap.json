@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--memory-swap",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.MemorySwap"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.MemorySwap"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "memory-swap",
+  "inspect_fields": [
+    "HostConfig.MemorySwap"
+  ],
+  "manifest_flags": [
+    "--memory-swap"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--memory-swap",
+    "profile": "canonical-docker-flag",
+    "value_type": "bytes"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

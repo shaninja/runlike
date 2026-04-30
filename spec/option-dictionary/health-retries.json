@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--health-retries",
+  "compare_profile": {
+    "fields": [
+      "Config.Healthcheck.Retries"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Healthcheck.Retries"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "health-retries",
+  "inspect_fields": [
+    "Config.Healthcheck.Retries"
+  ],
+  "manifest_flags": [
+    "--health-retries"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--health-retries",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

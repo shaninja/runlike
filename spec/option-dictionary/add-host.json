@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--add-host",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.ExtraHosts"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.ExtraHosts"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "add-host",
+  "inspect_fields": [
+    "HostConfig.ExtraHosts"
+  ],
+  "manifest_flags": [
+    "--add-host"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--add-host",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cgroupns",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CgroupnsMode"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CgroupnsMode"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cgroupns",
+  "inspect_fields": [
+    "HostConfig.CgroupnsMode"
+  ],
+  "manifest_flags": [
+    "--cgroupns"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cgroupns",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

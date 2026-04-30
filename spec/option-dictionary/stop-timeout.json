@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--stop-timeout",
+  "compare_profile": {
+    "fields": [
+      "Config.StopTimeout"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.StopTimeout"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "stop-timeout",
+  "inspect_fields": [
+    "Config.StopTimeout"
+  ],
+  "manifest_flags": [
+    "--stop-timeout"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--stop-timeout",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

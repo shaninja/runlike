@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "-w"
+  ],
+  "canonical_output_form": "--workdir",
+  "compare_profile": {
+    "fields": [
+      "Config.WorkingDir"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.WorkingDir"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "workdir",
+  "inspect_fields": [
+    "Config.WorkingDir"
+  ],
+  "manifest_flags": [
+    "--workdir"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--workdir",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

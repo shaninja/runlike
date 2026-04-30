@@ -1,0 +1,45 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--mount",
+  "compare_profile": {
+    "fields": [
+      "Mounts",
+      "HostConfig.Mounts"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Mounts",
+      "HostConfig.Mounts"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "mount",
+  "inspect_fields": [
+    "Mounts",
+    "HostConfig.Mounts"
+  ],
+  "manifest_flags": [
+    "--mount"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--mount",
+    "profile": "canonical-docker-flag",
+    "value_type": "mount"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}
