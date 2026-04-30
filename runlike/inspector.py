@@ -39,7 +39,8 @@ class Inspector(object):
                 die(str(e))
 
     def inspect_image(self):
-        image = self.get_fact("Config.Image")
+        self.image_facts = None
+        image = self.get_fact("Image")
         if not image:
             return
         try:
@@ -52,6 +53,7 @@ class Inspector(object):
 
     def set_facts(self, raw_json):
         self.facts = loads(raw_json)
+        self.image_facts = None
 
     def _get_fact(self, source, path):
         parts = path.split(".")

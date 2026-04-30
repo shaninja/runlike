@@ -2,6 +2,8 @@ import unittest
 import os
 import pipes
 from subprocess import check_output
+from json import dumps
+from unittest.mock import patch
 from runlike.inspector import Inspector
 
 
@@ -97,6 +99,47 @@ class TestCompatibilityDefaults(unittest.TestCase):
         ins.parse_labels()
 
         self.assertEqual(["--label='com.example.explicit=1'"], ins.options)
+
+    def test_live_inspection_loads_image_facts_by_image_id(self):
+        facts = minimal_inspect_facts(config={
+            "Image": "runlike_fixture:latest",
+        })
+        facts[0]["Image"] = "sha256:actual-image-id"
+        image_facts = [{
+            "Config": {
+                "Labels": {
+                    "org.opencontainers.image.version": "24.04",
+                },
+            },
+        }]
+
+        with patch("runlike.inspector.check_output") as patched_check_output:
+            patched_check_output.side_effect = [
+                dumps(facts).encode(),
+                dumps(image_facts).encode(),
+            ]
+
+            ins = Inspector("fixture")
+            ins.inspect()
+
+        self.assertEqual(image_facts, ins.image_facts)
+        self.assertEqual(
+            ["docker", "image", "inspect", "sha256:actual-image-id"],
+            patched_check_output.call_args_list[1][0][0])
+
+    def test_set_facts_resets_image_facts(self):
+        ins = Inspector()
+        ins.image_facts = [{
+            "Config": {
+                "Labels": {
+                    "org.opencontainers.image.version": "24.04",
+                },
+            },
+        }]
+
+        ins.set_facts(dumps(minimal_inspect_facts()))
+
+        self.assertIsNone(ins.image_facts)
 
 
 class TestInspection(unittest.TestCase):
