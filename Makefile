@@ -1,5 +1,7 @@
 CUR_VER = $(shell ./current_version.py)
 SHELL := bash
+DOCKER_API_VERSION ?= 1.44
+export DOCKER_API_VERSION
 
 .PHONY: build
 build:
@@ -19,6 +21,10 @@ push: rebuild
 .PHONY: test
 test:
 	poetry run pytest
+
+.PHONY: verify-docker-target
+verify-docker-target:
+	poetry run python tools/verify_docker_target.py
 
 .PHONY: pypi
 pypi:
