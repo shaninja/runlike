@@ -5,12 +5,19 @@ services:
   - docker
 
 install:
-  - pip install poetry
+  - pip install "poetry<2"
   - poetry install
-  - docker login -u assaflavie -p $DOCKERHUB_PASSWORD
+before_script:
+  - python --version
+  - poetry --version
+  - docker version
 script:
   - make test
 after_failure:
   - ./inspect_fixtures.sh
 after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then make pypi push; fi
+  - |
+    if [[ "$TRAVIS_REPO_SLUG" == "lavie/runlike" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+      echo "$DOCKERHUB_PASSWORD" | docker login -u assaflavie --password-stdin
+      make pypi push
+    fi
