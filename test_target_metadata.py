@@ -50,6 +50,29 @@ def test_pinned_docker_installer_uses_python3_before_poetry_is_installed():
     assert "python3 -" in installer
 
 
+def test_pinned_docker_installer_handles_preinstalled_newer_docker_packages():
+    installer = (ROOT / "tools" / "install_pinned_docker.sh").read_text()
+    cleanup_block = installer.split("cleanup_packages=(", 1)[1]
+    cleanup_block = cleanup_block.split(")", 1)[0]
+    cleanup_packages = {
+        line.strip()
+        for line in cleanup_block.splitlines()
+        if line.strip()
+    }
+
+    assert "sudo_cmd apt-get install -y --allow-downgrades" in installer
+    assert "dpkg-query -W" in installer
+    for package in (
+        "docker-ce",
+        "docker-ce-cli",
+        "docker-ce-rootless-extras",
+        "containerd.io",
+        "docker-buildx-plugin",
+        "docker-compose-plugin",
+    ):
+        assert package in cleanup_packages
+
+
 def test_verify_docker_target_accepts_matching_docker_version_payload():
     module = load_verify_module()
     target = {

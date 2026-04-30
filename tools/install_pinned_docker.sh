@@ -55,7 +55,30 @@ DEB_VERSION="5:${ENGINE_VERSION}-1~ubuntu.${VERSION_ID}~${VERSION_CODENAME}"
 echo "Installing Docker Engine and CLI ${ENGINE_VERSION} (${DEB_VERSION})"
 
 if [[ "${CI:-}" == "true" || -n "${TRAVIS:-}" ]]; then
-  sudo_cmd apt-get remove -y docker docker-engine docker.io containerd runc || true
+  cleanup_packages=(
+    docker
+    docker-engine
+    docker.io
+    docker-ce
+    docker-ce-cli
+    docker-ce-rootless-extras
+    containerd
+    containerd.io
+    runc
+    docker-buildx-plugin
+    docker-compose-plugin
+  )
+  installed_cleanup_packages=()
+  for package in "${cleanup_packages[@]}"; do
+    if dpkg-query -W -f='${db:Status-Abbrev}' "$package" 2>/dev/null | grep -q '^i'; then
+      installed_cleanup_packages+=("$package")
+    fi
+  done
+
+  if (( ${#installed_cleanup_packages[@]} > 0 )); then
+    sudo_cmd apt-get remove -y \
+      "${installed_cleanup_packages[@]}" || true
+  fi
 fi
 
 sudo_cmd apt-get update
@@ -79,7 +102,7 @@ if ! apt-cache madison docker-ce | awk '{print $3}' | grep -Fx "$DEB_VERSION" >/
   exit 1
 fi
 
-sudo_cmd apt-get install -y \
+sudo_cmd apt-get install -y --allow-downgrades \
   "docker-ce=${DEB_VERSION}" \
   "docker-ce-cli=${DEB_VERSION}" \
   containerd.io \
