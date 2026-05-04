@@ -146,12 +146,58 @@ def _skip_run_only_option(tokens, index):
     return None
 
 
+def _is_short_option_token(token):
+    return token.startswith("-") and not token.startswith("--") and token != "-"
+
+
+def _copy_short_option(tokens, index, output):
+    token = tokens[index]
+    if not _is_short_option_token(token):
+        return None
+
+    short_name = token[:2]
+    attached_value = token[2:]
+    if short_name in VALUE_FLAGS:
+        output.append(short_name)
+        if attached_value:
+            output.append(attached_value)
+            return index + 1
+        if index + 1 < len(tokens):
+            output.append(tokens[index + 1])
+            return index + 2
+        return index + 1
+
+    short_flags = token[1:]
+    if len(short_flags) > 1:
+        for offset, flag in enumerate(short_flags):
+            option = "-" + flag
+            remaining = short_flags[offset + 1:]
+            if option in VALUE_FLAGS:
+                output.append(option)
+                if remaining:
+                    output.append(remaining)
+                    return index + 1
+                if index + 1 < len(tokens):
+                    output.append(tokens[index + 1])
+                    return index + 2
+                return index + 1
+            if option not in RUN_ONLY_FLAGS:
+                output.append(option)
+        return index + 1
+
+    return None
+
+
 def _copy_option(tokens, index, output):
     token = tokens[index]
     option = _option_name(token)
-    output.append(token)
     if token.startswith("--") and "=" in token:
+        output.append(token)
         return index + 1
+    next_index = _copy_short_option(tokens, index, output)
+    if next_index is not None:
+        return next_index
+    output.append(token)
     if option in VALUE_FLAGS and index + 1 < len(tokens):
         output.append(tokens[index + 1])
         return index + 2
@@ -184,9 +230,7 @@ def prepare_clone_create_command(rendered_command, clone_name):
             index += 1
             continue
 
-        if token == "--":
-            rewritten.append(token)
-            image_seen = True
+        if not image_seen and token == "--":
             index += 1
             continue
 
@@ -257,20 +301,28 @@ def resolve_probe_definition(probe, dictionary_path=DEFAULT_DICTIONARY_PATH):
     resolved = dict(probe)
     option_id = resolved.get("option_id")
     dictionary_entry = None
-    if option_id:
-        dictionary_entry = _load_dictionary_entry(option_id, dictionary_path)
 
-    if "compare_profile" not in resolved:
-        if dictionary_entry is None:
+    def dictionary_defaults():
+        if not option_id:
             raise ValueError(
                 "Probe %s needs compare_profile or option_id." % resolved.get("id"))
+        return _load_dictionary_entry(option_id, dictionary_path)
+
+    if "compare_profile" not in resolved:
+        dictionary_entry = dictionary_defaults()
         resolved["compare_profile"] = dictionary_entry["compare_profile"]
 
     if "paths" not in resolved:
-        if dictionary_entry is None:
-            resolved["paths"] = ["container_name", "stdin"]
-        else:
+        if option_id:
+            if dictionary_entry is None:
+                dictionary_entry = dictionary_defaults()
             resolved["paths"] = _detectable_paths(dictionary_entry)
+        else:
+            resolved["paths"] = ["container_name", "stdin"]
+
+    if not resolved.get("paths"):
+        raise ValueError(
+            "Probe %s has no input paths to run." % resolved.get("id"))
 
     return resolved
 
@@ -311,7 +363,8 @@ def _run_path(
         names,
         command_runner,
         runlike_command,
-        docker_command):
+        docker_command,
+        created_names=None):
     if path_name == "container_name":
         runlike_result = _run_runlike(
             command_runner,
@@ -329,13 +382,14 @@ def _run_path(
         raise ValueError("unknown probe input path %s" % path_name)
 
     rendered_command = _normalize_stream(runlike_result.stdout)
-    clone_create_command = prepare_clone_create_command(
+    clone_create_payload = prepare_clone_create_command(
         rendered_command,
-        clone_name)
-    if docker_command != DEFAULT_DOCKER_COMMAND:
-        clone_create_command = docker_command + clone_create_command[1:]
+        clone_name)[3:]
+    clone_create_command = docker_command + ["container", "create"] + clone_create_payload
 
     _checked_run(command_runner, clone_create_command)
+    if created_names is not None:
+        created_names.append(clone_name)
     clone_inspect_text = _inspect_container(
         command_runner,
         docker_command,
@@ -356,6 +410,13 @@ def _run_path(
         "stderr_lines": _stream_lines(runlike_result.stderr),
         "stdout": rendered_command,
     }
+
+
+def _record_cleanup_error(result, error):
+    cleanup_error = _error_path_result(error)
+    result.setdefault("cleanup_errors", []).append(cleanup_error)
+    if "cleanup_error" not in result:
+        result["cleanup_error"] = cleanup_error
 
 
 def _error_path_result(error):
@@ -395,9 +456,11 @@ def run_probe(
         "probe_id": probe["id"],
     }
 
+    created_names = []
     try:
         _run_helper_commands(command_runner, probe.get("setup", []), context)
         _create_original(probe, names, command_runner, docker_command)
+        created_names.append(names["original"])
         original_inspect_text = _inspect_container(
             command_runner,
             docker_command,
@@ -412,25 +475,30 @@ def run_probe(
                     names,
                     command_runner,
                     runlike_command,
-                    docker_command)
+                    docker_command,
+                    created_names=created_names)
             except Exception as error:
                 result["paths"][path_name] = _error_path_result(error)
     except Exception as error:
         result["setup_error"] = _error_path_result(error)
     finally:
-        cleanup_names = [
-            names["original"],
-            names["container_name_clone"],
-            names["stdin_clone"],
-        ]
-        command_runner.run(
-            docker_command + ["container", "rm", "-f"] + cleanup_names)
-        _run_helper_commands(command_runner, probe.get("cleanup", []), context)
+        if created_names:
+            try:
+                _checked_run(
+                    command_runner,
+                    docker_command + ["container", "rm", "-f"] + created_names)
+            except Exception as error:
+                _record_cleanup_error(result, error)
+        try:
+            _run_helper_commands(command_runner, probe.get("cleanup", []), context)
+        except Exception as error:
+            _record_cleanup_error(result, error)
 
     result["passed"] = (
         bool(result["paths"])
         and all(path_result["passed"] for path_result in result["paths"].values())
-        and "setup_error" not in result)
+        and "setup_error" not in result
+        and "cleanup_error" not in result)
     return result
 
 

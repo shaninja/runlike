@@ -78,6 +78,46 @@ def test_prepare_clone_create_command_rewrites_run_command_for_probe_clone():
     ]
 
 
+def test_prepare_clone_create_command_omits_option_delimiter_before_image():
+    module = load_probe_module()
+
+    command = module.prepare_clone_create_command(
+        "docker run --name original -- busybox sh",
+        "clone")
+
+    assert command == [
+        "docker",
+        "container",
+        "create",
+        "--name",
+        "clone",
+        "busybox",
+        "sh",
+    ]
+
+
+def test_prepare_clone_create_command_expands_short_flags_and_drops_detach():
+    module = load_probe_module()
+
+    command = module.prepare_clone_create_command(
+        "docker run -itd --name original -eA=1 busybox sh",
+        "clone")
+
+    assert command == [
+        "docker",
+        "container",
+        "create",
+        "--name",
+        "clone",
+        "-i",
+        "-t",
+        "-e",
+        "A=1",
+        "busybox",
+        "sh",
+    ]
+
+
 def test_value_flags_are_derived_from_docker_option_manifest():
     module = load_probe_module()
 
@@ -109,6 +149,124 @@ def test_resolve_probe_defaults_from_option_dictionary():
         "profile": "inspect-projection",
     }
     assert probe["paths"] == ["container_name", "stdin"]
+
+
+def test_probe_runner_cleans_up_only_created_containers_for_selected_paths():
+    run_probes = load_probe_module()
+    original = json.dumps(inspect_document("original", ["A=1"]))
+    clone = json.dumps(inspect_document("clone", ["A=1"]))
+    responses = [
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(0, original, ""),
+        run_probes.CommandResult(
+            0,
+            "docker run --name=original --env A=1 busybox sh -c 'sleep 600'\n",
+            ""),
+        run_probes.CommandResult(0, "clone-id\n", ""),
+        run_probes.CommandResult(0, clone, ""),
+        run_probes.CommandResult(0, "removed\n", ""),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "env-smoke",
+        "option_id": "env",
+        "image": "busybox",
+        "docker_run_args": ["--env", "A=1"],
+        "command": ["sh", "-c", "sleep 600"],
+        "compare_profile": {
+            "profile": "inspect-projection",
+            "fields": ["Config.Env"],
+        },
+        "paths": ["container_name"],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is True
+    assert fake.calls[-1]["command"] == [
+        "docker",
+        "container",
+        "rm",
+        "-f",
+        "runlike-probe-env-smoke-original",
+        "runlike-probe-env-smoke-container-name-clone",
+    ]
+
+
+def test_probe_runner_preserves_first_cleanup_error():
+    run_probes = load_probe_module()
+    responses = [
+        run_probes.CommandResult(0, "", ""),
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(1, "", "inspect failed"),
+        run_probes.CommandResult(1, "", "rm failed"),
+        run_probes.CommandResult(1, "", "helper cleanup failed"),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "env-smoke",
+        "option_id": "env",
+        "image": "busybox",
+        "compare_profile": {
+            "profile": "inspect-projection",
+            "fields": ["Config.Env"],
+        },
+        "paths": ["container_name"],
+        "setup": [
+            {"command": ["docker", "network", "create", "{probe_id}"]},
+        ],
+        "cleanup": [
+            {"command": ["docker", "network", "rm", "{probe_id}"]},
+        ],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is False
+    assert result["cleanup_error"]["stderr"] == "rm failed"
+    assert [error["stderr"] for error in result["cleanup_errors"]] == [
+        "rm failed",
+        "helper cleanup failed",
+    ]
+
+
+def test_probe_runner_reports_non_command_path_errors_structurally():
+    run_probes = load_probe_module()
+    original = json.dumps(inspect_document("original", ["A=1"]))
+    responses = [
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(0, original, ""),
+        run_probes.CommandResult(0, "not a docker run command\n", ""),
+        run_probes.CommandResult(0, "removed\n", ""),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "env-smoke",
+        "option_id": "env",
+        "image": "busybox",
+        "compare_profile": {
+            "profile": "inspect-projection",
+            "fields": ["Config.Env"],
+        },
+        "paths": ["container_name"],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is False
+    assert result["paths"]["container_name"]["passed"] is False
+    assert result["paths"]["container_name"]["status"] == "error"
+    assert result["paths"]["container_name"]["error"] == (
+        "probe clone command must start with docker run")
 
 
 def test_probe_runner_executes_both_input_paths_and_captures_results():

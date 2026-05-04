@@ -8,6 +8,9 @@ import sys
 ORDER_SENSITIVE_LIST_PATHS = set([
     "Config.Cmd",
     "Config.Entrypoint",
+    # TODO: Add regression coverage for healthcheck and shell ordering.
+    "Config.Healthcheck.Test",
+    "Config.Shell",
 ])
 
 TOP_LEVEL_DYNAMIC_FIELDS = set([
@@ -68,24 +71,42 @@ def normalize_inspect_document(inspect_document):
     if isinstance(inspect_document, list):
         if not inspect_document:
             raise ValueError("docker inspect document is empty")
+        if len(inspect_document) != 1:
+            raise ValueError("docker inspect document must contain exactly one object")
         return inspect_document[0]
     if isinstance(inspect_document, dict):
         return inspect_document
     raise ValueError("docker inspect document must be an object or single-item list")
 
 
+def _path_parts(path):
+    if isinstance(path, tuple):
+        return path
+    if not path:
+        return ()
+    return tuple(path.split("."))
+
+
+def _path_string(path):
+    if isinstance(path, tuple):
+        return ".".join(path)
+    return path
+
+
 def _path_join(path, key):
-    if path:
-        return path + "." + key
-    return key
+    return _path_parts(path) + (key,)
 
 
 def _is_dynamic_field(path, key):
-    if not path and key in TOP_LEVEL_DYNAMIC_FIELDS:
+    parts = _path_parts(path)
+    if not parts and key in TOP_LEVEL_DYNAMIC_FIELDS:
         return True
-    if path == "NetworkSettings" and key in NETWORK_SETTINGS_DYNAMIC_FIELDS:
+    if parts == ("NetworkSettings",) and key in NETWORK_SETTINGS_DYNAMIC_FIELDS:
         return True
-    if path.startswith("NetworkSettings.Networks.") and key in NETWORK_DYNAMIC_FIELDS:
+    if (
+            len(parts) == 3
+            and parts[:2] == ("NetworkSettings", "Networks")
+            and key in NETWORK_DYNAMIC_FIELDS):
         return True
     return False
 
@@ -108,7 +129,7 @@ def canonicalize_value(value, path=""):
             canonicalize_value(item, path)
             for item in value
         ]
-        if path in ORDER_SENSITIVE_LIST_PATHS:
+        if _path_string(path) in ORDER_SENSITIVE_LIST_PATHS:
             return canonical_list
         return sorted(canonical_list, key=_sort_key)
 

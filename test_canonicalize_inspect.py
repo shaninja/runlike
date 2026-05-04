@@ -84,6 +84,43 @@ def test_canonical_projection_uses_compare_profile_fields():
     }
 
 
+def test_network_dynamic_fields_handle_dotted_names_without_dropping_nested_values():
+    module = load_canonicalize_module()
+    network = {
+        "test.net": {
+            "Aliases": ["fixture-alias"],
+            "DriverOpts": {
+                "Gateway": "user-controlled-gateway",
+            },
+            "EndpointID": "dynamic-endpoint",
+            "Gateway": "172.18.0.1",
+            "IPAddress": "172.18.0.2",
+            "MacAddress": "02:42:ac:12:00:02",
+            "NetworkID": "dynamic-network",
+        },
+    }
+
+    projection = module.canonicalize_for_compare(
+        inspect_document(network=network),
+        {
+            "profile": "inspect-projection",
+            "fields": [
+                "NetworkSettings.Networks",
+            ],
+        })
+
+    assert projection == {
+        "NetworkSettings.Networks": {
+            "test.net": {
+                "Aliases": ["fixture-alias"],
+                "DriverOpts": {
+                    "Gateway": "user-controlled-gateway",
+                },
+            },
+        },
+    }
+
+
 def test_full_canonicalization_removes_top_level_dynamic_fields():
     module = load_canonicalize_module()
 
@@ -93,6 +130,20 @@ def test_full_canonicalization_removes_top_level_dynamic_fields():
     assert "Created" not in projection
     assert "State" not in projection
     assert projection["Config"]["Cmd"] == ["sh", "-c", "sleep 600"]
+
+
+def test_normalize_inspect_document_rejects_multi_container_lists():
+    module = load_canonicalize_module()
+
+    try:
+        module.normalize_inspect_document([
+            {"Name": "/one"},
+            {"Name": "/two"},
+        ])
+    except ValueError as error:
+        assert str(error) == "docker inspect document must contain exactly one object"
+    else:
+        assert False, "expected multi-container inspect lists to be rejected"
 
 
 def test_normalized_container_name_profile_strips_leading_slash():
