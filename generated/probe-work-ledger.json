@@ -1,0 +1,2099 @@
+{
+  "entries": [
+    {
+      "comparison_results": {},
+      "option_id": "add-host",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-add-host"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "annotation",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "attach",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-attach"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "blkio-weight",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "blkio-weight-device",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cap-add",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-cap-add"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cap-drop",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-cap-drop"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cgroup-parent",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cgroupns",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cidfile",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-count",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "windows_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-percent",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "windows_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-period",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-quota",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-rt-period",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_rt_runtime_runner"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-rt-runtime",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_rt_runtime_runner"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpu-shares",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpus",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpuset-cpus",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-cpuset-cpus"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "cpuset-mems",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-cpuset-mems"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "detach",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-detach"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "detach-keys",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-device"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device-cgroup-rule",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device-read-bps",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device-read-iops",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device-write-bps",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "device-write-iops",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_special_host_device"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "disable-content-trust",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "dns",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-dns"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "dns-option",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "dns-search",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "domainname",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "entrypoint",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-entrypoint"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "env",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-env"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "env-file",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "non_observable_from_inspect"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "expose",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-expose"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "gpus",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_gpu_runner"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "group-add",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-cmd",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-interval",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-retries",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-start-interval",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-start-period",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "health-timeout",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "help",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "hostname",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-hostname"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "init",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "interactive",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-interactive"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "io-maxbandwidth",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "windows_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "io-maxiops",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "windows_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "ip",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-ip"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "ip6",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-ip6"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "ipc",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "isolation",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "windows_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "kernel-memory",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "label",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-label"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "label-file",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "non_observable_from_inspect"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "link",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-link"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "link-local-ip",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "log-driver",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-log-driver"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "log-opt",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-log-opt"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "mac-address",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-mac-address"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "memory",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-memory"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "memory-reservation",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-memory-reservation"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "memory-swap",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "memory-swappiness",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "mount",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-mount"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "name",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-name"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "network",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-network"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "network-alias",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "P0",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "docker_inspect_aliases_include_implicit_container_aliases"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "no-healthcheck",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "oom-kill-disable",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "oom-score-adj",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "pid",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-pid"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "pids-limit",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "platform",
+      "path_coverage": {
+        "container_name": "not_observable",
+        "stdin": "not_observable"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "non_observable_from_inspect"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "privileged",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-privileged"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "publish",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-publish"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "publish-all",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-publish-all"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "pull",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "quiet",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "read-only",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "restart",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-restart"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "rm",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-rm"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "runtime",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-runtime"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "security-opt",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "shm-size",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-shm-size"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "sig-proxy",
+      "path_coverage": {
+        "container_name": "client_side_only",
+        "stdin": "client_side_only"
+      },
+      "priority": "not_applicable",
+      "probe_ids": [],
+      "probe_status": "not_applicable",
+      "remaining_work": [],
+      "scope": {
+        "classification": "out_of_scope",
+        "reason": "client_side_only"
+      },
+      "support_status": "out_of_scope",
+      "warning_expectation": false
+    },
+    {
+      "comparison_results": {},
+      "option_id": "stop-signal",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "stop-timeout",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "storage-opt",
+      "path_coverage": {
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
+      },
+      "priority": "P2",
+      "probe_ids": [],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
+      "scope": {
+        "classification": "blocked_by_runner",
+        "reason": "needs_storage_driver_runner"
+      },
+      "support_status": "blocked_by_runner",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "sysctl",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "tmpfs",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "tty",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-tty"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "ulimit",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "user",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-user"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "userns",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "uts",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "volume",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-volume"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "volume-driver",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P1",
+      "probe_ids": [],
+      "probe_status": "missing_probe",
+      "remaining_work": [
+        "Add focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "volumes-from",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-volumes-from"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    },
+    {
+      "comparison_results": {},
+      "option_id": "workdir",
+      "path_coverage": {
+        "container_name": "detectable",
+        "stdin": "detectable"
+      },
+      "priority": "P0",
+      "probe_ids": [
+        "p0-workdir"
+      ],
+      "probe_status": "defined_unrun",
+      "remaining_work": [
+        "Run focused probe definition."
+      ],
+      "scope": {
+        "classification": "in_scope",
+        "reason": null
+      },
+      "support_status": "unsupported",
+      "warning_expectation": true
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "defined_unrun": 39,
+    "failed": 0,
+    "missing_probe": 38,
+    "not_applicable": 16,
+    "passed": 0,
+    "runner_blocked": 10
+  }
+}

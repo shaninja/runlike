@@ -1,0 +1,39 @@
+{
+  "cleanup": [
+    {
+      "command": [
+        "docker",
+        "network",
+        "rm",
+        "runlike-probe-{probe_id}-net"
+      ]
+    }
+  ],
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--network",
+    "runlike-probe-{probe_id}-net",
+    "--ip6",
+    "fd00:5::10"
+  ],
+  "id": "p0-ip6",
+  "image": "busybox",
+  "option_id": "ip6",
+  "setup": [
+    {
+      "command": [
+        "docker",
+        "network",
+        "create",
+        "--ipv6",
+        "--subnet",
+        "fd00:5::/64",
+        "runlike-probe-{probe_id}-net"
+      ]
+    }
+  ]
+}

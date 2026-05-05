@@ -34,6 +34,7 @@ TOP_LEVEL_DYNAMIC_FIELDS = set([
 ])
 
 NETWORK_DYNAMIC_FIELDS = set([
+    "Aliases",
     "EndpointID",
     "Gateway",
     "GlobalIPv6Address",
@@ -190,11 +191,31 @@ def _normalize_restart_policy(value):
     }
 
 
+def _normalize_links(value):
+    if not isinstance(value, list):
+        return value
+
+    normalized = []
+    for link in value:
+        if not isinstance(link, str) or ":" not in link:
+            normalized.append(link)
+            continue
+        source, destination = link.split(":", 1)
+        destination_parts = destination.split("/")
+        if len(destination_parts) >= 3:
+            destination_parts[1] = "<container>"
+            destination = "/".join(destination_parts)
+        normalized.append("%s:%s" % (source, destination))
+    return normalized
+
+
 def _normalize_profile_value(profile_name, field, value):
     if profile_name == "normalized-container-name" and field == "Name":
         return _normalize_container_name(value)
     if profile_name == "restart-policy" and field == "HostConfig.RestartPolicy":
         return _normalize_restart_policy(value)
+    if field == "HostConfig.Links":
+        return _normalize_links(value)
     return value
 
 

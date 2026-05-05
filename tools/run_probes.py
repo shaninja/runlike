@@ -261,6 +261,46 @@ def prepare_clone_create_command(rendered_command, clone_name):
     ] + rewritten
 
 
+def prepare_clone_run_command(rendered_command, clone_name):
+    tokens = shlex.split(rendered_command.strip())
+    payload = _docker_run_payload(tokens)
+    rewritten = []
+    image_seen = False
+    index = 0
+
+    while index < len(payload):
+        token = payload[index]
+        if image_seen:
+            rewritten.append(token)
+            index += 1
+            continue
+
+        if not image_seen and token == "--":
+            index += 1
+            continue
+
+        next_index = _skip_name_option(payload, index)
+        if next_index is not None:
+            index = next_index
+            continue
+
+        if token.startswith("-"):
+            index = _copy_option(payload, index, rewritten)
+            continue
+
+        rewritten.append(token)
+        image_seen = True
+        index += 1
+
+    return [
+        "docker",
+        "container",
+        "run",
+        "--name",
+        clone_name,
+    ] + rewritten
+
+
 def _container_names(probe):
     safe_id = _safe_name(probe["id"])
     prefix = "runlike-probe-" + safe_id
@@ -335,13 +375,21 @@ def _run_helper_commands(command_runner, helper_commands, context):
             _format_template_command(command, context))
 
 
+def _probe_command_parts(probe, context):
+    return (
+        _format_template_command(probe.get("docker_run_args", []), context)
+        + [probe["image"]]
+        + _format_template_command(probe.get("command", []), context))
+
+
 def _create_original(probe, names, command_runner, docker_command):
+    lifecycle = probe.get("original_lifecycle", "create")
+    if lifecycle not in ("create", "run"):
+        raise ValueError("unknown original lifecycle %s" % lifecycle)
     command = (
         docker_command
-        + ["container", "create", "--name", names["original"]]
-        + probe.get("docker_run_args", [])
-        + [probe["image"]]
-        + probe.get("command", []))
+        + ["container", lifecycle, "--name", names["original"]]
+        + _probe_command_parts(probe, _context(probe, names)))
     _checked_run(command_runner, command)
 
 
@@ -354,6 +402,18 @@ def _inspect_container(command_runner, docker_command, container_name):
 
 def _run_runlike(command_runner, runlike_command, args, stdin=None):
     return _checked_run(command_runner, runlike_command + args, stdin=stdin)
+
+
+def _stdout_assertions(probe, rendered_command, context):
+    assertions = []
+    for expected in probe.get("stdout_contains", []):
+        expected_text = expected.format(**context)
+        assertions.append({
+            "expected": expected_text,
+            "passed": expected_text in rendered_command,
+            "type": "contains",
+        })
+    return assertions
 
 
 def _run_path(
@@ -382,12 +442,23 @@ def _run_path(
         raise ValueError("unknown probe input path %s" % path_name)
 
     rendered_command = _normalize_stream(runlike_result.stdout)
-    clone_create_payload = prepare_clone_create_command(
-        rendered_command,
-        clone_name)[3:]
-    clone_create_command = docker_command + ["container", "create"] + clone_create_payload
+    context = _context(probe, names)
+    stdout_assertions = _stdout_assertions(probe, rendered_command, context)
+    clone_lifecycle = probe.get("clone_lifecycle", "create")
+    if clone_lifecycle == "create":
+        clone_payload = prepare_clone_create_command(
+            rendered_command,
+            clone_name)[3:]
+        clone_command = docker_command + ["container", "create"] + clone_payload
+    elif clone_lifecycle == "run":
+        clone_payload = prepare_clone_run_command(
+            rendered_command,
+            clone_name)[3:]
+        clone_command = docker_command + ["container", "run"] + clone_payload
+    else:
+        raise ValueError("unknown clone lifecycle %s" % clone_lifecycle)
 
-    _checked_run(command_runner, clone_create_command)
+    _checked_run(command_runner, clone_command)
     if created_names is not None:
         created_names.append(clone_name)
     clone_inspect_text = _inspect_container(
@@ -399,16 +470,21 @@ def _run_path(
         canonicalize_inspect.load_inspect(original_inspect_text),
         canonicalize_inspect.load_inspect(clone_inspect_text),
         probe["compare_profile"])
+    assertions_passed = all(
+        assertion["passed"]
+        for assertion in stdout_assertions)
+    passed = compare_result["passed"] and assertions_passed
 
     return {
-        "clone_create_command": clone_create_command,
+        "clone_create_command": clone_command,
         "compare": compare_result,
-        "passed": compare_result["passed"],
+        "passed": passed,
         "rendered_command": rendered_command,
-        "status": "passed" if compare_result["passed"] else "failed",
+        "status": "passed" if passed else "failed",
         "stderr": _normalize_stream(runlike_result.stderr),
         "stderr_lines": _stream_lines(runlike_result.stderr),
         "stdout": rendered_command,
+        "stdout_assertions": stdout_assertions,
     }
 
 
@@ -512,7 +588,8 @@ def _expand_probe_paths(paths):
     for path in paths:
         probe_path = Path(path)
         if probe_path.is_dir():
-            expanded.extend(sorted(str(item) for item in probe_path.glob("*.json")))
+            expanded.extend(
+                sorted(str(item) for item in probe_path.glob("**/*.json")))
         else:
             expanded.append(path)
     return expanded

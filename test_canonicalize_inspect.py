@@ -77,7 +77,6 @@ def test_canonical_projection_uses_compare_profile_fields():
         "Config.Env": ["A=1", "B=2"],
         "NetworkSettings.Networks": {
             "bridge": {
-                "Aliases": None,
                 "DriverOpts": None,
             },
         },
@@ -112,7 +111,6 @@ def test_network_dynamic_fields_handle_dotted_names_without_dropping_nested_valu
     assert projection == {
         "NetworkSettings.Networks": {
             "test.net": {
-                "Aliases": ["fixture-alias"],
                 "DriverOpts": {
                     "Gateway": "user-controlled-gateway",
                 },
@@ -180,3 +178,61 @@ def test_compare_inspects_reports_field_mismatches():
         "expected": ["A=1"],
         "actual": ["A=2"],
     }]
+
+
+def test_network_aliases_are_ignored_as_dynamic_compare_values():
+    module = load_canonicalize_module()
+    original = inspect_document(network={
+        "runlike-net": {
+            "Aliases": ["original-hostname"],
+            "DNSNames": None,
+            "DriverOpts": None,
+            "EndpointID": "dynamic",
+        },
+    })
+    clone = inspect_document(network={
+        "runlike-net": {
+            "Aliases": ["clone-id", "original-hostname"],
+            "DNSNames": None,
+            "DriverOpts": None,
+            "EndpointID": "dynamic",
+        },
+    })
+
+    result = module.compare_inspects(
+        original,
+        clone,
+        {
+            "profile": "inspect-projection",
+            "fields": ["NetworkSettings.Networks"],
+        })
+
+    assert result["passed"] is True
+
+
+def test_link_compare_normalizes_destination_container_name():
+    module = load_canonicalize_module()
+    original = [{
+        "HostConfig": {
+            "Links": [
+                "/runlike-target:/runlike-probe-original/linked",
+            ],
+        },
+    }]
+    clone = [{
+        "HostConfig": {
+            "Links": [
+                "/runlike-target:/runlike-probe-clone/linked",
+            ],
+        },
+    }]
+
+    result = module.compare_inspects(
+        original,
+        clone,
+        {
+            "profile": "inspect-projection",
+            "fields": ["HostConfig.Links"],
+        })
+
+    assert result["passed"] is True

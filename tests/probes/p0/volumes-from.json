@@ -1,0 +1,42 @@
+{
+  "cleanup": [
+    {
+      "command": [
+        "docker",
+        "container",
+        "rm",
+        "-f",
+        "runlike-probe-{probe_id}-source"
+      ]
+    }
+  ],
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--volumes-from",
+    "runlike-probe-{probe_id}-source"
+  ],
+  "id": "p0-volumes-from",
+  "image": "busybox",
+  "option_id": "volumes-from",
+  "setup": [
+    {
+      "command": [
+        "docker",
+        "container",
+        "create",
+        "--name",
+        "runlike-probe-{probe_id}-source",
+        "--volume",
+        "/runlike-source-volume",
+        "busybox",
+        "sh",
+        "-c",
+        "sleep 600"
+      ]
+    }
+  ]
+}

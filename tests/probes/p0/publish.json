@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--publish",
+    "18080:80"
+  ],
+  "id": "p0-publish",
+  "image": "busybox",
+  "option_id": "publish"
+}

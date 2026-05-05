@@ -1,0 +1,15 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--publish-all",
+    "--expose",
+    "8083/tcp"
+  ],
+  "id": "p0-publish-all",
+  "image": "busybox",
+  "option_id": "publish-all"
+}
