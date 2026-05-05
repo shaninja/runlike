@@ -3,7 +3,13 @@ import os
 import pipes
 from subprocess import check_output
 from json import dumps
+from click.testing import CliRunner
 from unittest.mock import patch
+from runlike.option_warnings import (
+    UnsupportedOptionWarningEngine,
+    rendered_option_ids,
+)
+from runlike.runlike import cli
 from runlike.inspector import Inspector
 
 
@@ -60,6 +66,99 @@ def minimal_inspect_facts(host_config=None, config=None):
 
 
 class TestCompatibilityDefaults(unittest.TestCase):
+
+    def test_warning_engine_reports_detected_unsupported_options_in_dictionary_order(self):
+        facts = minimal_inspect_facts({
+            "CgroupnsMode": "host",
+            "Init": True,
+        }, config={
+            "Env": ["SUPPORTED=1"],
+            "Healthcheck": {
+                "Test": ["CMD-SHELL", "true"],
+            },
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--cgroupns, --health-cmd, --init",
+            ],
+            engine.warning_lines(
+                facts,
+                "stdin",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--env=SUPPORTED=1 fixture_image")))
+
+    def test_warning_engine_ignores_rendered_options_and_default_values(self):
+        facts = minimal_inspect_facts({
+            "CgroupnsMode": "private",
+            "Init": False,
+        }, config={
+            "Env": ["SUPPORTED=1"],
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--env=SUPPORTED=1 fixture_image")))
+
+    def test_rendered_option_ids_are_derived_from_command_aliases(self):
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            set(["env", "interactive", "publish", "tty"]),
+            rendered_option_ids(
+                "docker run -i -t -p 8080:80 --env=A=1 busybox",
+                engine.dictionary_entries))
+
+    def test_warning_engine_ignores_image_inherited_unsupported_options(self):
+        facts = minimal_inspect_facts(config={
+            "Healthcheck": {
+                "Test": ["CMD-SHELL", "true"],
+            },
+            "StopSignal": "SIGTERM",
+        })
+        image_facts = [{
+            "Config": {
+                "Healthcheck": {
+                    "Test": ["CMD-SHELL", "true"],
+                },
+                "StopSignal": "SIGTERM",
+            },
+        }]
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                image_facts=image_facts,
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "fixture_image")))
+
+    def test_cli_writes_unsupported_option_warnings_to_stderr_only(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts({
+            "Init": True,
+        })
+
+        result = runner.invoke(cli, ["--stdin"], input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual(
+            "runlike: warning: unsupported Docker option-states detected: --init\n",
+            result.stderr)
+        self.assertTrue(result.stdout.startswith("docker run "))
+        self.assertNotIn("warning:", result.stdout)
 
     def test_default_bridge_network_is_not_rendered(self):
         ins = Inspector(no_name=True)
