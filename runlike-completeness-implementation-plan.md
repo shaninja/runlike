@@ -532,6 +532,12 @@ Create the round-trip correctness machinery.
 
 Move to one-probe-per-option coverage.
 
+#### Workflow control requirement
+
+Use the workflow-controller skill and process for Phase 5 and later per-option completion work. The controller must maintain durable accounting for every dictionary option or option group, including probe status, path coverage, comparison result, warning expectation, support status, and remaining work.
+
+Do not rely on prompt memory or ad hoc checklist tracking for per-option completion. Each option must be represented in a resumable work ledger so skipped, partial, blocked, and completed options remain visible.
+
 #### Tasks
 
 1. Add P0 probes first.

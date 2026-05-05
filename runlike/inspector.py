@@ -98,6 +98,8 @@ class Inspector(object):
     def parse_ports(self):
         ports = self.get_fact("NetworkSettings.Ports") or {}
         ports.update(self.get_fact("HostConfig.PortBindings") or {})
+        for exposed_port in self.get_fact("Config.ExposedPorts") or {}:
+            ports.setdefault(exposed_port, None)
 
         if ports:
             for container_port_and_protocol, options in ports.items():
@@ -148,6 +150,47 @@ class Inspector(object):
             if max_retries > 0:
                 restart += ":%d" % max_retries
         self.options.append("--restart=%s" % restart)
+
+    def parse_host_config_value(self, path, option, default=None):
+        value = self.get_fact(path)
+        if value in (None, "", default):
+            return
+        self.options.append("--%s=%s" % (option, value))
+
+    def parse_auto_remove(self):
+        if self.get_fact("HostConfig.AutoRemove"):
+            self.options.append("--rm")
+
+    def parse_publish_all(self):
+        if self.get_fact("HostConfig.PublishAllPorts"):
+            self.options.append("--publish-all")
+
+    def parse_attach(self):
+        attached = []
+        if self.get_fact("Config.AttachStdin"):
+            attached.append("stdin")
+        if self.get_fact("Config.AttachStdout") is False and attached:
+            pass
+        if self.get_fact("Config.AttachStdout") and attached:
+            attached.append("stdout")
+        if self.get_fact("Config.AttachStderr") and attached:
+            attached.append("stderr")
+        for stream in attached:
+            self.options.append("--attach %s" % stream)
+
+    def parse_interactive(self):
+        if self.get_fact("Config.OpenStdin"):
+            self.options.append("-i")
+
+    def parse_entrypoint(self):
+        entrypoint = self.get_fact("Config.Entrypoint")
+        if not entrypoint:
+            return
+        if entrypoint == self.get_image_fact("Config.Entrypoint"):
+            return
+        if isinstance(entrypoint, list):
+            entrypoint = " ".join(quote(part) for part in entrypoint)
+        self.options.append("--entrypoint=%s" % entrypoint)
 
     def parse_devices(self):
         devices = self.get_fact("HostConfig.Devices")
@@ -206,6 +249,35 @@ class Inspector(object):
         if network_mode not in (None, "", "default", "bridge"):
             self.options.append("--network=" + network_mode)
 
+    def parse_network_ipam(self):
+        networks = self.get_fact("NetworkSettings.Networks") or {}
+        for network_name in sorted(networks):
+            ipam_config = networks[network_name].get("IPAMConfig") or {}
+            ipv4_address = ipam_config.get("IPv4Address")
+            ipv6_address = ipam_config.get("IPv6Address")
+            if ipv4_address:
+                self.options.append("--ip=%s" % ipv4_address)
+            if ipv6_address:
+                self.options.append("--ip6=%s" % ipv6_address)
+
+    def parse_mounts(self):
+        mounts = self.get_fact("HostConfig.Mounts") or []
+        for mount in mounts:
+            mount_type = mount.get("Type")
+            source = mount.get("Source")
+            target = mount.get("Target")
+            if not mount_type or not target:
+                continue
+            parts = [
+                "type=%s" % mount_type,
+            ]
+            if source:
+                parts.append("source=%s" % quote(source))
+            parts.append("target=%s" % quote(target))
+            if mount.get("ReadOnly"):
+                parts.append("readonly")
+            self.options.append("--mount %s" % ",".join(parts))
+
     def format_cli(self):
         self.output = "docker run "
 
@@ -227,22 +299,42 @@ class Inspector(object):
         self.multi_option("HostConfig.CapDrop", "cap-drop")
         self.multi_option("HostConfig.Dns", "dns")
         self.parse_network()
+        self.parse_network_ipam()
         privileged = self.get_fact('HostConfig.Privileged')
         if privileged:
             self.options.append("--privileged")
 
+        self.parse_auto_remove()
+        self.parse_publish_all()
+        self.parse_attach()
+        self.parse_interactive()
+        self.parse_entrypoint()
         self.parse_workdir()
         self.parse_ports()
         self.parse_links()
         self.parse_restart()
         self.parse_devices()
+        self.parse_mounts()
         self.parse_labels()
         self.parse_log()
         self.parse_extra_hosts()
         self.parse_runtime()
+        self.parse_host_config_value("HostConfig.CpusetCpus", "cpuset-cpus")
+        self.parse_host_config_value("HostConfig.CpusetMems", "cpuset-mems")
+        self.parse_host_config_value("HostConfig.Memory", "memory", 0)
+        self.parse_host_config_value(
+            "HostConfig.MemoryReservation",
+            "memory-reservation",
+            0)
+        self.parse_host_config_value("HostConfig.PidMode", "pid")
+        self.parse_host_config_value(
+            "HostConfig.ShmSize",
+            "shm-size",
+            67108864)
 
         stdout_attached = self.get_fact("Config.AttachStdout")
-        if not stdout_attached:
+        stdin_attached = self.get_fact("Config.AttachStdin")
+        if not stdout_attached and not stdin_attached:
             self.options.append("--detach=true")
 
         if self.get_fact("Config.Tty"):

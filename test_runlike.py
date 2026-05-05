@@ -141,7 +141,110 @@ class TestCompatibilityDefaults(unittest.TestCase):
 
         self.assertIsNone(ins.image_facts)
 
+    def test_expose_is_rendered_from_config_exposed_ports(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts(config={
+            "ExposedPorts": {
+                "8080/tcp": {},
+            },
+        })
 
+        self.assertIn("--expose=8080", ins.format_cli())
+
+    def test_p0_host_config_options_are_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts({
+            "AutoRemove": True,
+            "CpusetCpus": "0",
+            "CpusetMems": "0",
+            "Memory": 67108864,
+            "MemoryReservation": 33554432,
+            "PidMode": "host",
+            "PublishAllPorts": True,
+            "ShmSize": 134217728,
+        })
+
+        output = ins.format_cli()
+
+        self.assertIn("--rm", output)
+        self.assertIn("--cpuset-cpus=0", output)
+        self.assertIn("--cpuset-mems=0", output)
+        self.assertIn("--memory=67108864", output)
+        self.assertIn("--memory-reservation=33554432", output)
+        self.assertIn("--pid=host", output)
+        self.assertIn("--publish-all", output)
+        self.assertIn("--shm-size=134217728", output)
+
+    def test_entrypoint_interactive_and_attach_are_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts(config={
+            "AttachStdin": True,
+            "AttachStdout": False,
+            "AttachStderr": False,
+            "Entrypoint": ["/bin/sh"],
+            "OpenStdin": True,
+            "StdinOnce": True,
+        })
+
+        output = ins.format_cli()
+
+        self.assertIn("--attach stdin", output)
+        self.assertIn("--entrypoint=/bin/sh", output)
+        self.assertIn("-i", output)
+        self.assertNotIn("--detach=true", output)
+
+    def test_image_inherited_entrypoint_is_not_rendered_when_image_facts_exist(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts(config={
+            "Entrypoint": ["/bin/sh"],
+        })
+        ins.image_facts = [{
+            "Config": {
+                "Entrypoint": ["/bin/sh"],
+            },
+        }]
+
+        self.assertNotIn("--entrypoint", ins.format_cli())
+
+    def test_network_ip_addresses_are_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts({
+            "NetworkMode": "runlike-net",
+        })
+        ins.facts[0]["NetworkSettings"]["Networks"] = {
+            "runlike-net": {
+                "IPAMConfig": {
+                    "IPv4Address": "172.28.5.10",
+                    "IPv6Address": "fd00:5::10",
+                },
+            },
+        }
+
+        output = ins.format_cli()
+
+        self.assertIn("--network=runlike-net", output)
+        self.assertIn("--ip=172.28.5.10", output)
+        self.assertIn("--ip6=fd00:5::10", output)
+
+    def test_mounts_are_rendered(self):
+        ins = Inspector(no_name=True)
+        ins.facts = minimal_inspect_facts({
+            "Mounts": [{
+                "ReadOnly": True,
+                "Source": "/tmp",
+                "Target": "/runlike-mount",
+                "Type": "bind",
+            }],
+        })
+
+        output = ins.format_cli()
+
+        self.assertIn(
+            "--mount type=bind,source=/tmp,target=/runlike-mount,readonly",
+            output)
+
+
+@unittest.skip("Legacy live fixture suite replaced by Phase 5 focused probes.")
 class TestInspection(unittest.TestCase):
 
     @classmethod

@@ -22,6 +22,10 @@ push: rebuild
 test:
 	poetry run pytest
 
+.PHONY: test-probes-p0
+test-probes-p0:
+	poetry run python tools/run_probes.py tests/probes/p0 --output $${PROBE_RESULTS:-/tmp/runlike-p0-probe-results.json}
+
 .PHONY: verify-docker-target
 verify-docker-target:
 	poetry run python tools/verify_docker_target.py
