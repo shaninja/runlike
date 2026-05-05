@@ -216,7 +216,7 @@ def _docker_run_payload(tokens):
     raise ValueError("probe clone command must start with docker run")
 
 
-def prepare_clone_create_command(rendered_command, clone_name):
+def prepare_clone_create_payload(rendered_command, clone_name):
     tokens = shlex.split(rendered_command.strip())
     payload = _docker_run_payload(tokens)
     rewritten = []
@@ -253,15 +253,20 @@ def prepare_clone_create_command(rendered_command, clone_name):
         index += 1
 
     return [
-        "docker",
-        "container",
-        "create",
         "--name",
         clone_name,
     ] + rewritten
 
 
-def prepare_clone_run_command(rendered_command, clone_name):
+def prepare_clone_create_command(rendered_command, clone_name):
+    return [
+        "docker",
+        "container",
+        "create",
+    ] + prepare_clone_create_payload(rendered_command, clone_name)
+
+
+def prepare_clone_run_payload(rendered_command, clone_name):
     tokens = shlex.split(rendered_command.strip())
     payload = _docker_run_payload(tokens)
     rewritten = []
@@ -293,12 +298,17 @@ def prepare_clone_run_command(rendered_command, clone_name):
         index += 1
 
     return [
-        "docker",
-        "container",
-        "run",
         "--name",
         clone_name,
     ] + rewritten
+
+
+def prepare_clone_run_command(rendered_command, clone_name):
+    return [
+        "docker",
+        "container",
+        "run",
+    ] + prepare_clone_run_payload(rendered_command, clone_name)
 
 
 def _container_names(probe):
@@ -382,7 +392,12 @@ def _probe_command_parts(probe, context):
         + _format_template_command(probe.get("command", []), context))
 
 
-def _create_original(probe, names, command_runner, docker_command):
+def _create_original(
+        probe,
+        names,
+        command_runner,
+        docker_command,
+        created_names=None):
     lifecycle = probe.get("original_lifecycle", "create")
     if lifecycle not in ("create", "run"):
         raise ValueError("unknown original lifecycle %s" % lifecycle)
@@ -391,6 +406,8 @@ def _create_original(probe, names, command_runner, docker_command):
         + ["container", lifecycle, "--name", names["original"]]
         + _probe_command_parts(probe, _context(probe, names)))
     _checked_run(command_runner, command)
+    if created_names is not None:
+        created_names.append(names["original"])
 
 
 def _inspect_container(command_runner, docker_command, container_name):
@@ -446,14 +463,14 @@ def _run_path(
     stdout_assertions = _stdout_assertions(probe, rendered_command, context)
     clone_lifecycle = probe.get("clone_lifecycle", "create")
     if clone_lifecycle == "create":
-        clone_payload = prepare_clone_create_command(
+        clone_payload = prepare_clone_create_payload(
             rendered_command,
-            clone_name)[3:]
+            clone_name)
         clone_command = docker_command + ["container", "create"] + clone_payload
     elif clone_lifecycle == "run":
-        clone_payload = prepare_clone_run_command(
+        clone_payload = prepare_clone_run_payload(
             rendered_command,
-            clone_name)[3:]
+            clone_name)
         clone_command = docker_command + ["container", "run"] + clone_payload
     else:
         raise ValueError("unknown clone lifecycle %s" % clone_lifecycle)
@@ -535,8 +552,12 @@ def run_probe(
     created_names = []
     try:
         _run_helper_commands(command_runner, probe.get("setup", []), context)
-        _create_original(probe, names, command_runner, docker_command)
-        created_names.append(names["original"])
+        _create_original(
+            probe,
+            names,
+            command_runner,
+            docker_command,
+            created_names=created_names)
         original_inspect_text = _inspect_container(
             command_runner,
             docker_command,
