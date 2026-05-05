@@ -118,6 +118,35 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 "docker run -i -t -p 8080:80 --env=A=1 busybox",
                 engine.dictionary_entries))
 
+    def test_rendered_option_ids_stop_at_container_command_boundary(self):
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            set(["env", "name"]),
+            rendered_option_ids(
+                "docker run --name fixture_container --env A=1 "
+                "busybox --init -c --health-cmd",
+                engine.dictionary_entries))
+
+    def test_warning_engine_does_not_ignore_unsupported_command_arguments(self):
+        facts = minimal_inspect_facts({
+            "Init": True,
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--init",
+            ],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container "
+                    "--hostname=fixture "
+                    "fixture_image --init")))
+
     def test_warning_engine_ignores_image_inherited_unsupported_options(self):
         facts = minimal_inspect_facts(config={
             "Healthcheck": {

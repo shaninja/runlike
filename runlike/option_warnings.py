@@ -99,16 +99,28 @@ def _flag_from_token(token):
     return None
 
 
+def _entry_spellings(entry):
+    return (
+        [entry["canonical_output_form"]]
+        + entry.get("manifest_flags", [])
+        + entry.get("aliases", []))
+
+
 def _flag_owner_by_spelling(dictionary_entries):
     owners = {}
     for entry in dictionary_entries:
-        spellings = (
-            [entry["canonical_output_form"]]
-            + entry.get("manifest_flags", [])
-            + entry.get("aliases", []))
-        for spelling in spellings:
+        for spelling in _entry_spellings(entry):
             owners[spelling] = entry["id"]
     return owners
+
+
+def _flag_takes_value_by_spelling(dictionary_entries):
+    takes_value = {}
+    for entry in dictionary_entries:
+        value_type = entry.get("render_profile", {}).get("value_type")
+        for spelling in _entry_spellings(entry):
+            takes_value[spelling] = value_type is not None
+    return takes_value
 
 
 def _rendered_command_tokens(rendered_command):
@@ -120,10 +132,41 @@ def _rendered_command_tokens(rendered_command):
         return []
 
 
+def _docker_run_option_tokens(tokens, flag_takes_value):
+    index = 0
+    if index < len(tokens) and tokens[index] == "docker":
+        index += 1
+    if index < len(tokens) and tokens[index] == "run":
+        index += 1
+
+    option_tokens = []
+    skip_value = False
+    for token in tokens[index:]:
+        if skip_value:
+            skip_value = False
+            continue
+        if token == "--":
+            break
+
+        flag = _flag_from_token(token)
+        if not flag:
+            break
+
+        option_tokens.append(token)
+        if "=" not in token and flag_takes_value.get(flag):
+            skip_value = True
+
+    return option_tokens
+
+
 def rendered_option_ids(rendered_command, dictionary_entries):
     owners = _flag_owner_by_spelling(dictionary_entries)
+    flag_takes_value = _flag_takes_value_by_spelling(dictionary_entries)
     option_ids = set()
-    for token in _rendered_command_tokens(rendered_command):
+    tokens = _docker_run_option_tokens(
+        _rendered_command_tokens(rendered_command),
+        flag_takes_value)
+    for token in tokens:
         flag = _flag_from_token(token)
         if flag in owners:
             option_ids.add(owners[flag])
