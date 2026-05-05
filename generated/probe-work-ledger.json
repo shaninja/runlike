@@ -942,10 +942,12 @@
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
+      "probe_ids": [
+        "p1-init-warning"
+      ],
+      "probe_status": "defined_unrun",
       "remaining_work": [
-        "Add focused probe definition."
+        "Run focused probe definition."
       ],
       "scope": {
         "classification": "in_scope",
@@ -2089,9 +2091,9 @@
   ],
   "schema_version": 1,
   "summary": {
-    "defined_unrun": 39,
+    "defined_unrun": 40,
     "failed": 0,
-    "missing_probe": 38,
+    "missing_probe": 37,
     "not_applicable": 16,
     "passed": 0,
     "runner_blocked": 10

@@ -4,6 +4,7 @@ version = "1.1.2"
 description = "Reverse-engineer docker run command line arguments based on running containers"
 authors = ["Assaf Lavie <a@assaflavie.com>"]
 license = "MIT"
+include = ["spec/option-dictionary/*.json"]
 
 [tool.poetry.dependencies]
 python = "^3.6"

@@ -4,8 +4,19 @@ import click
 
 try:
     from .inspector import Inspector
+    from .option_warnings import UnsupportedOptionWarningEngine
 except ValueError:
     from inspector import Inspector
+    from option_warnings import UnsupportedOptionWarningEngine
+
+
+def emit_unsupported_warnings(inspector, input_path, rendered_command):
+    for line in UnsupportedOptionWarningEngine().warning_lines(
+            inspector.facts,
+            input_path,
+            image_facts=inspector.image_facts,
+            rendered_command=rendered_command):
+        click.echo(line, err=True)
 
 
 @click.command(
@@ -23,13 +34,17 @@ def cli(container, no_name, pretty, stdin):
     if container:
         ins = Inspector(container, no_name, pretty)
         ins.inspect()
-        print(ins.format_cli())
+        rendered_command = ins.format_cli()
+        emit_unsupported_warnings(ins, "container_name", rendered_command)
+        print(rendered_command)
     elif stdin:
         ins = Inspector()
         ins.pretty = pretty
         raw_json = click.get_text_stream('stdin').read()
         ins.set_facts(raw_json)
-        print(ins.format_cli())
+        rendered_command = ins.format_cli()
+        emit_unsupported_warnings(ins, "stdin", rendered_command)
+        print(rendered_command)
     else: 
         raise click.UsageError("usage error")
 

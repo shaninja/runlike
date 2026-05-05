@@ -421,16 +421,32 @@ def _run_runlike(command_runner, runlike_command, args, stdin=None):
     return _checked_run(command_runner, runlike_command + args, stdin=stdin)
 
 
-def _stdout_assertions(probe, rendered_command, context):
+def _stream_contains_assertions(probe, stream_name, stream_value, context):
     assertions = []
-    for expected in probe.get("stdout_contains", []):
+    for expected in probe.get("%s_contains" % stream_name, []):
         expected_text = expected.format(**context)
         assertions.append({
             "expected": expected_text,
-            "passed": expected_text in rendered_command,
+            "passed": expected_text in stream_value,
             "type": "contains",
         })
     return assertions
+
+
+def _stdout_assertions(probe, rendered_command, context):
+    return _stream_contains_assertions(
+        probe,
+        "stdout",
+        rendered_command,
+        context)
+
+
+def _stderr_assertions(probe, stderr, context):
+    return _stream_contains_assertions(
+        probe,
+        "stderr",
+        stderr,
+        context)
 
 
 def _run_path(
@@ -459,8 +475,10 @@ def _run_path(
         raise ValueError("unknown probe input path %s" % path_name)
 
     rendered_command = _normalize_stream(runlike_result.stdout)
+    stderr = _normalize_stream(runlike_result.stderr)
     context = _context(probe, names)
     stdout_assertions = _stdout_assertions(probe, rendered_command, context)
+    stderr_assertions = _stderr_assertions(probe, stderr, context)
     clone_lifecycle = probe.get("clone_lifecycle", "create")
     if clone_lifecycle == "create":
         clone_payload = prepare_clone_create_payload(
@@ -489,7 +507,7 @@ def _run_path(
         probe["compare_profile"])
     assertions_passed = all(
         assertion["passed"]
-        for assertion in stdout_assertions)
+        for assertion in stdout_assertions + stderr_assertions)
     passed = compare_result["passed"] and assertions_passed
 
     return {
@@ -498,7 +516,8 @@ def _run_path(
         "passed": passed,
         "rendered_command": rendered_command,
         "status": "passed" if passed else "failed",
-        "stderr": _normalize_stream(runlike_result.stderr),
+        "stderr": stderr,
+        "stderr_assertions": stderr_assertions,
         "stderr_lines": _stream_lines(runlike_result.stderr),
         "stdout": rendered_command,
         "stdout_assertions": stdout_assertions,

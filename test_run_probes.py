@@ -308,6 +308,51 @@ def test_probe_runner_supports_stdout_contains_assertions():
     ]
 
 
+def test_probe_runner_supports_stderr_contains_assertions():
+    run_probes = load_probe_module()
+    original = json.dumps(inspect_document("original", ["A=1"]))
+    clone = json.dumps(inspect_document("clone", ["A=1"]))
+    responses = [
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(0, original, ""),
+        run_probes.CommandResult(
+            0,
+            "docker run --name=original --env A=1 busybox sh -c 'sleep 600'\n",
+            "runlike: warning: unsupported Docker option-states detected: --init\n"),
+        run_probes.CommandResult(0, "clone-id\n", ""),
+        run_probes.CommandResult(0, clone, ""),
+        run_probes.CommandResult(0, "removed\n", ""),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "init-warning-smoke",
+        "option_id": "init",
+        "image": "busybox",
+        "compare_profile": {
+            "profile": "not-observable",
+            "fields": [],
+        },
+        "paths": ["container_name"],
+        "stderr_contains": [
+            "unsupported Docker option-states detected: --init",
+        ],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is True
+    assert result["paths"]["container_name"]["stderr_assertions"] == [
+        {
+            "expected": "unsupported Docker option-states detected: --init",
+            "passed": True,
+            "type": "contains",
+        },
+    ]
+
+
 def test_probe_runner_cleans_up_only_created_containers_for_selected_paths():
     run_probes = load_probe_module()
     original = json.dumps(inspect_document("original", ["A=1"]))
