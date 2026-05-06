@@ -113,6 +113,17 @@ def _path_probe_statuses(path_name, probe_ids, results_by_probe_id):
     return statuses
 
 
+def _probe_applies_to_path(probe, path_name):
+    return path_name in (probe.get("paths") or INPUT_PATHS)
+
+
+def _probe_ids_for_path(option_probes, path_name):
+    return sorted(
+        probe["id"]
+        for probe in option_probes
+        if _probe_applies_to_path(probe, path_name))
+
+
 def _collapse_path_statuses(statuses):
     if not statuses:
         return "missing_probe"
@@ -210,10 +221,10 @@ def build_support_matrix(
         scope = dictionary_entry["scope"]
         scope_classification = scope["classification"]
         option_probes = probes_by_option_id.get(option_id, [])
-        probe_ids = sorted(probe["id"] for probe in option_probes)
 
         for path_name in INPUT_PATHS:
             path_coverage = dictionary_entry["path_coverage"].get(path_name)
+            probe_ids = _probe_ids_for_path(option_probes, path_name)
             path_statuses = _path_probe_statuses(
                 path_name,
                 probe_ids,

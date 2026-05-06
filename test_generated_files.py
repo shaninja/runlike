@@ -59,6 +59,44 @@ def test_check_generated_files_accepts_current_files(tmp_path):
     assert stale == []
 
 
+def test_check_generated_files_refreshes_probe_result_metadata():
+    module = load_check_module()
+    probe_results = {
+        "probe_definitions": {
+            "count": 0,
+            "ids": [],
+            "sha256": "stale",
+            "tool_hashes": {},
+        },
+        "results": [],
+        "schema_version": 1,
+        "summary": {
+            "failed": 0,
+            "passed": 0,
+            "total": 0,
+        },
+    }
+
+    expected = module.build_expected_probe_results(
+        probe_results,
+        [{"id": "env"}, {"id": "name"}],
+        ROOT)
+
+    assert expected["results"] == []
+    assert expected["probe_definitions"]["count"] == 2
+    assert expected["probe_definitions"]["ids"] == ["env", "name"]
+    assert expected["probe_definitions"]["sha256"] != "stale"
+
+
+def test_check_generated_files_reports_missing_probe_results_first(tmp_path):
+    module = load_check_module()
+
+    checks = module.build_checks(tmp_path)
+
+    assert len(checks) == 1
+    assert checks[0]["path"] == tmp_path / "generated" / "probe-results.json"
+
+
 def test_phase8_generated_artifacts_are_registered_for_checks():
     module = load_check_module()
     paths = [
@@ -66,6 +104,19 @@ def test_phase8_generated_artifacts_are_registered_for_checks():
         for check in module.build_checks(ROOT)
     ]
 
+    assert "generated/probe-results.json" in paths
     assert "generated/probe-work-ledger.json" in paths
     assert "generated/support-matrix.json" in paths
     assert "generated/support-matrix.md" in paths
+
+
+def test_check_generated_files_points_to_full_refresh_command(capsys):
+    module = load_check_module()
+
+    exit_code = module.report_stale_files(["generated/probe-results.json"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert (
+        "make generate-probe-results generate-support-artifacts"
+        in captured.err)

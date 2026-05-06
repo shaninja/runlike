@@ -212,6 +212,53 @@ def test_support_matrix_marks_mixed_probe_results_as_partial_for_a_path():
     assert container_row["comparison_status"] == "partial"
 
 
+def test_support_matrix_uses_only_probes_declared_for_each_path():
+    module = load_matrix_module()
+    entries = [dictionary_entry("env")]
+    probes = [
+        {
+            "id": "env-container",
+            "option_id": "env",
+            "paths": ["container_name"],
+        },
+        {
+            "id": "env-stdin",
+            "option_id": "env",
+            "paths": ["stdin"],
+        },
+    ]
+    probe_results = {
+        "results": [
+            {
+                "probe_id": "env-container",
+                "paths": {
+                    "container_name": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                },
+            },
+            {
+                "probe_id": "env-stdin",
+                "paths": {
+                    "stdin": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                },
+            },
+        ],
+    }
+
+    matrix = module.build_support_matrix(entries, probes, probe_results)
+    rows = dict((row["path"], row) for row in matrix["entries"])
+
+    assert rows["container_name"]["status"] == "supported"
+    assert rows["stdin"]["status"] == "supported"
+
+
 def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
     module = load_matrix_module()
     matrix = module.build_support_matrix(

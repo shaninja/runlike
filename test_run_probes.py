@@ -1,7 +1,10 @@
 import importlib.util
 import json
 import sys
+import time
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parent
@@ -523,6 +526,72 @@ def test_subprocess_command_runner_times_out_hung_commands():
     assert result.timed_out is True
     assert result.returncode != 0
     assert "timed out" in result.stderr
+
+
+def test_subprocess_command_runner_times_out_descendants_holding_pipes():
+    run_probes = load_probe_module()
+    runner = run_probes.SubprocessCommandRunner(timeout_seconds=0.1)
+
+    started = time.time()
+    result = runner.run([
+        sys.executable,
+        "-c",
+        (
+            "import subprocess, sys, time; "
+            "subprocess.Popen([sys.executable, '-c', "
+            "'import time; time.sleep(2)']); "
+            "time.sleep(10)"
+        ),
+    ])
+    elapsed = time.time() - started
+
+    assert result.timed_out is True
+    assert elapsed < 1
+
+
+def test_probe_runner_reports_invalid_timeout_env_without_traceback(
+        monkeypatch,
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+    monkeypatch.setenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", "")
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path)])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "RUNLIKE_PROBE_COMMAND_TIMEOUT must be a number" in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_probe_runner_reports_non_finite_timeout_env_without_traceback(
+        monkeypatch,
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+    monkeypatch.setenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", "nan")
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path)])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "RUNLIKE_PROBE_COMMAND_TIMEOUT must be finite" in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_subprocess_command_runner_uses_default_timeout(monkeypatch):
+    run_probes = load_probe_module()
+    monkeypatch.delenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", raising=False)
+
+    runner = run_probes.SubprocessCommandRunner()
+
+    assert runner.timeout_seconds == 120
 
 
 def test_probe_runner_executes_both_input_paths_and_captures_results():

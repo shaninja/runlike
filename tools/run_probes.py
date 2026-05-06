@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
 import argparse
+import hashlib
 import importlib.util
 import json
+import math
 import os
 import re
 import shlex
+import signal
 import subprocess
 import sys
 from pathlib import Path
@@ -59,6 +62,46 @@ def load_value_flags_from_manifest(manifest_path=DEFAULT_MANIFEST_PATH):
     return value_flags
 
 
+def _json_sha256(payload):
+    encoded = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as source:
+        while True:
+            chunk = source.read(65536)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def build_probe_results_metadata(probes, root=None):
+    if root is None:
+        root = Path(__file__).resolve().parents[1]
+    root = Path(root)
+    tool_paths = [
+        Path("tools/canonicalize_inspect.py"),
+        Path("tools/run_probes.py"),
+    ]
+    return {
+        "count": len(probes),
+        "ids": sorted(
+            probe["id"]
+            for probe in probes
+            if probe.get("id")),
+        "sha256": _json_sha256(probes),
+        "tool_hashes": dict(
+            (str(path), _file_sha256(root / path))
+            for path in tool_paths),
+    }
+
+
 VALUE_FLAGS = load_value_flags_from_manifest()
 
 
@@ -81,29 +124,69 @@ class ProbeCommandError(Exception):
         super(ProbeCommandError, self).__init__(message)
 
 
+class ProbeConfigurationError(Exception):
+    pass
+
+
+def _parse_timeout_seconds(timeout_seconds, source):
+    try:
+        parsed = float(timeout_seconds)
+    except (TypeError, ValueError):
+        raise ProbeConfigurationError(
+            "%s must be a number of seconds; got %r" % (
+                source,
+                timeout_seconds))
+    if not math.isfinite(parsed):
+        raise ProbeConfigurationError(
+            "%s must be finite; got %r" % (source, timeout_seconds))
+    return parsed
+
+
 class SubprocessCommandRunner(object):
 
     def __init__(self, timeout_seconds=None):
+        timeout_source = "--command-timeout"
         if timeout_seconds is None:
-            timeout_seconds = os.environ.get(
-                "RUNLIKE_PROBE_COMMAND_TIMEOUT",
-                DEFAULT_COMMAND_TIMEOUT_SECONDS)
-        timeout_seconds = float(timeout_seconds)
+            env_timeout_seconds = os.environ.get("RUNLIKE_PROBE_COMMAND_TIMEOUT")
+            if env_timeout_seconds is not None:
+                timeout_source = "RUNLIKE_PROBE_COMMAND_TIMEOUT"
+                timeout_seconds = env_timeout_seconds
+            else:
+                timeout_source = "default command timeout"
+                timeout_seconds = DEFAULT_COMMAND_TIMEOUT_SECONDS
+        timeout_seconds = _parse_timeout_seconds(
+            timeout_seconds,
+            timeout_source)
         self.timeout_seconds = timeout_seconds if timeout_seconds > 0 else None
+
+    def _popen_kwargs(self):
+        if self.timeout_seconds is not None and hasattr(os, "setsid"):
+            return {"preexec_fn": os.setsid}
+        return {}
+
+    def _kill_timed_out_process(self, process):
+        if self.timeout_seconds is not None and hasattr(os, "killpg"):
+            try:
+                os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+                return
+            except OSError:
+                pass
+        process.kill()
 
     def run(self, command, stdin=None):
         process = subprocess.Popen(
             command,
             stdin=subprocess.PIPE if stdin is not None else None,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+            stderr=subprocess.PIPE,
+            **self._popen_kwargs())
         try:
             stdout, stderr = process.communicate(
                 stdin.encode("utf-8") if stdin is not None else None,
                 timeout=self.timeout_seconds)
             timed_out = False
         except subprocess.TimeoutExpired:
-            process.kill()
+            self._kill_timed_out_process(process)
             stdout, stderr = process.communicate()
             timeout_message = "Command timed out after %s seconds." % (
                 self.timeout_seconds,)
@@ -679,6 +762,7 @@ def run_probe_suite(
         if not result["passed"]
     ]
     return {
+        "probe_definitions": build_probe_results_metadata(probes),
         "results": results,
         "schema_version": 1,
         "summary": {
@@ -710,7 +794,8 @@ def main(argv=None):
         type=float,
         help=(
             "Per-command timeout in seconds. Use 0 to disable. "
-            "Defaults to RUNLIKE_PROBE_COMMAND_TIMEOUT or 120."))
+            "Defaults to RUNLIKE_PROBE_COMMAND_TIMEOUT, or 120 seconds "
+            "when the environment variable is unset."))
     parser.add_argument(
         "--output",
         help="Optional path for structured JSON probe results.")
@@ -721,10 +806,15 @@ def main(argv=None):
         load_probe(path)
         for path in probe_paths
     ]
+    try:
+        command_runner = SubprocessCommandRunner(
+            timeout_seconds=args.command_timeout)
+    except ProbeConfigurationError as error:
+        parser.error(str(error))
+
     payload = run_probe_suite(
         probes,
-        command_runner=SubprocessCommandRunner(
-            timeout_seconds=args.command_timeout),
+        command_runner=command_runner,
         runlike_command=shlex.split(args.runlike_command),
         docker_command=shlex.split(args.docker_command))
 
