@@ -89,7 +89,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 "stdin",
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "--env=SUPPORTED=1 fixture_image")))
+                    "--env=SUPPORTED=1 --detach fixture_image")))
 
     def test_warning_engine_ignores_rendered_options_and_default_values(self):
         facts = minimal_inspect_facts({
@@ -107,7 +107,169 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 "container_name",
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "--env=SUPPORTED=1 fixture_image")))
+                    "--env=SUPPORTED=1 --detach fixture_image")))
+
+    def test_warning_engine_uses_normalized_defaults_for_runtime_state(self):
+        facts = minimal_inspect_facts({
+            "ShmSize": 67108864,
+        }, config={
+            "AttachStdout": True,
+            "AttachStderr": True,
+        })
+        facts[0]["NetworkSettings"]["Networks"] = {
+            "bridge": {
+                "Aliases": None,
+                "IPAddress": "172.17.0.2",
+            },
+        }
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "fixture_image")))
+
+    def test_warning_engine_does_not_treat_rendered_mount_as_volume(self):
+        facts = minimal_inspect_facts()
+        facts[0]["Mounts"] = [{
+                "ReadOnly": True,
+                "Source": "/tmp",
+                "Target": "/runlike-mount",
+                "Type": "bind",
+        }]
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--mount type=bind,source=/tmp,target=/runlike-mount,readonly "
+                    "--detach "
+                    "fixture_image")))
+
+    def test_rendered_mount_does_not_hide_unrendered_volume_warning(self):
+        facts = minimal_inspect_facts({
+            "Binds": ["/host/path:/container/path"],
+        })
+        facts[0]["Mounts"] = [{
+                "ReadOnly": True,
+                "Source": "/tmp",
+                "Target": "/runlike-mount",
+                "Type": "bind",
+        }]
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--volume",
+            ],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--mount type=bind,source=/tmp,target=/runlike-mount,readonly "
+                    "--detach "
+                    "fixture_image")))
+
+    def test_warning_engine_uses_detection_profile_for_unrendered_entries(self):
+        facts = minimal_inspect_facts({
+            "SyntheticUnsupported": True,
+        })
+        dictionary_entries = [{
+            "aliases": [],
+            "canonical_output_form": "--synthetic-unsupported",
+            "detection_profile": {
+                "fields": ["HostConfig.SyntheticUnsupported"],
+                "profile": "inspect-fields",
+            },
+            "id": "synthetic-unsupported",
+            "inspect_fields": ["HostConfig.SyntheticUnsupported"],
+            "manifest_flags": ["--synthetic-unsupported"],
+            "path_coverage": {
+                "container_name": "detectable",
+            },
+            "render_profile": {
+                "command_family": "both",
+                "flag": "--synthetic-unsupported",
+                "profile": "not-yet-normalized",
+                "value_type": None,
+            },
+            "scope": {
+                "classification": "in_scope",
+            },
+            "warning_behavior": {
+                "warn_when_detected_unsupported": True,
+            },
+        }]
+        engine = UnsupportedOptionWarningEngine(dictionary_entries)
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--synthetic-unsupported",
+            ],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command="docker run fixture_image"))
+
+    def test_warning_engine_does_not_warn_detach_when_stderr_is_rendered(self):
+        facts = minimal_inspect_facts(config={
+            "AttachStderr": True,
+            "AttachStdin": False,
+            "AttachStdout": False,
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--attach stderr fixture_image")))
+
+    def test_warning_engine_ignores_memory_swap_derived_from_memory(self):
+        facts = minimal_inspect_facts({
+            "Memory": 67108864,
+            "MemorySwap": 134217728,
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--memory=67108864 --detach fixture_image")))
+
+    def test_warning_engine_ignores_security_opt_side_effects(self):
+        facts = minimal_inspect_facts({
+            "PidMode": "host",
+            "SecurityOpt": ["label=disable"],
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--pid=host --detach fixture_image")))
 
     def test_rendered_option_ids_are_derived_from_command_aliases(self):
         engine = UnsupportedOptionWarningEngine()
@@ -145,7 +307,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 rendered_command=(
                     "docker run --name=fixture_container "
                     "--hostname=fixture "
-                    "fixture_image --init")))
+                    "--detach fixture_image --init")))
 
     def test_warning_engine_ignores_image_inherited_unsupported_options(self):
         facts = minimal_inspect_facts(config={
@@ -172,7 +334,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 image_facts=image_facts,
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "fixture_image")))
+                    "--detach fixture_image")))
 
     def test_cli_writes_unsupported_option_warnings_to_stderr_only(self):
         runner = CliRunner(mix_stderr=False)
