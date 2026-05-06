@@ -46,7 +46,7 @@
     "sha256": "605149a34e02a8d3fd0a364c189390a35071c28fd443c31530213f6c579ad5a5",
     "tool_hashes": {
       "tools/canonicalize_inspect.py": "4daf059caec9bb035e511754e022dfcf1c863fb812efd35ad762bd38a2149d44",
-      "tools/run_probes.py": "eaa369385db41c4c5332374d6332810713c2cf0e31556e4f380658b636be016c"
+      "tools/run_probes.py": "18b04cb024bb081c9fd794db688f140d14aec5d4bf6a1381bf488230708e0570"
     }
   },
   "results": [

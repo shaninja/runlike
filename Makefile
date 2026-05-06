@@ -28,12 +28,18 @@ test-probes-p0:
 
 .PHONY: generate-probe-results
 generate-probe-results:
-	poetry run python tools/run_probes.py tests/probes --output generated/probe-results.json
+	poetry run python tools/run_probes.py tests/probes --output generated/probe-results.json --allow-failures
 
 .PHONY: generate-support-artifacts
 generate-support-artifacts:
 	poetry run python tools/build_probe_work_ledger.py --output generated/probe-work-ledger.json
 	poetry run python tools/build_support_matrix.py
+
+.PHONY: refresh-support-artifacts
+refresh-support-artifacts: verify-docker-target
+	$(MAKE) generate-probe-results
+	$(MAKE) generate-support-artifacts
+	$(MAKE) check-generated
 
 .PHONY: check-generated
 check-generated:

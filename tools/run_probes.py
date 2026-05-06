@@ -773,6 +773,12 @@ def run_probe_suite(
     }
 
 
+def probe_suite_exit_code(payload, allow_failures=False):
+    if allow_failures:
+        return 0
+    return 0 if payload["summary"]["failed"] == 0 else 1
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Run runlike round-trip probe definitions.")
@@ -799,6 +805,12 @@ def main(argv=None):
     parser.add_argument(
         "--output",
         help="Optional path for structured JSON probe results.")
+    parser.add_argument(
+        "--allow-failures",
+        action="store_true",
+        help=(
+            "Write structured probe results and exit 0 even when probes fail. "
+            "Use this when failed probes are support-matrix evidence."))
     args = parser.parse_args(argv)
 
     probe_paths = _expand_probe_paths(args.probes)
@@ -824,7 +836,7 @@ def main(argv=None):
             output_file.write(output)
     else:
         sys.stdout.write(output)
-    return 0 if payload["summary"]["failed"] == 0 else 1
+    return probe_suite_exit_code(payload, allow_failures=args.allow_failures)
 
 
 if __name__ == "__main__":

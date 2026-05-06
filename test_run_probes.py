@@ -594,6 +594,20 @@ def test_subprocess_command_runner_uses_default_timeout(monkeypatch):
     assert runner.timeout_seconds == 120
 
 
+def test_probe_runner_exit_code_allows_recording_failed_probe_results():
+    run_probes = load_probe_module()
+    payload = {
+        "summary": {
+            "failed": 1,
+            "passed": 39,
+            "total": 40,
+        },
+    }
+
+    assert run_probes.probe_suite_exit_code(payload, allow_failures=False) == 1
+    assert run_probes.probe_suite_exit_code(payload, allow_failures=True) == 0
+
+
 def test_probe_runner_executes_both_input_paths_and_captures_results():
     run_probes = load_probe_module()
     original = json.dumps(inspect_document("original", ["A=1"]))

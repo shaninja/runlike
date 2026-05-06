@@ -110,7 +110,7 @@ def report_stale_files(stale):
     for path in stale:
         print("  %s" % path, file=sys.stderr)
     print(
-        "Run `make generate-probe-results generate-support-artifacts` "
+        "Run `make refresh-support-artifacts` "
         "after updating generated inputs.",
         file=sys.stderr)
     return 1

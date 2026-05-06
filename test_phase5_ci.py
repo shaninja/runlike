@@ -21,3 +21,12 @@ def test_travis_runs_phase8_generated_file_checks():
     travis = (ROOT / ".travis.yml").read_text()
 
     assert "make check-generated" in travis
+
+
+def test_makefile_exposes_phase8_refresh_support_artifacts_target():
+    makefile = (ROOT / "Makefile").read_text()
+
+    assert ".PHONY: refresh-support-artifacts" in makefile
+    assert "refresh-support-artifacts: verify-docker-target" in makefile
+    assert "--allow-failures" in makefile
+    assert "generate-support-artifacts" in makefile

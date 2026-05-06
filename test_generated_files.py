@@ -117,6 +117,4 @@ def test_check_generated_files_points_to_full_refresh_command(capsys):
 
     captured = capsys.readouterr()
     assert exit_code == 1
-    assert (
-        "make generate-probe-results generate-support-artifacts"
-        in captured.err)
+    assert "make refresh-support-artifacts" in captured.err
