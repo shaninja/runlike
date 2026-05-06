@@ -3,6 +3,7 @@
 import argparse
 import importlib.util
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -16,6 +17,7 @@ DEFAULT_RUNLIKE_COMMAND = [
     "-m",
     "runlike.runlike",
 ]
+DEFAULT_COMMAND_TIMEOUT_SECONDS = 120
 DEFAULT_MANIFEST_PATH = (
     Path(__file__).resolve().parents[1] / "spec" / "docker-option-manifest.json")
 DEFAULT_DICTIONARY_PATH = (
@@ -62,10 +64,11 @@ VALUE_FLAGS = load_value_flags_from_manifest()
 
 class CommandResult(object):
 
-    def __init__(self, returncode, stdout, stderr):
+    def __init__(self, returncode, stdout, stderr, timed_out=False):
         self.returncode = returncode
         self.stdout = stdout
         self.stderr = stderr
+        self.timed_out = timed_out
 
 
 class ProbeCommandError(Exception):
@@ -80,18 +83,39 @@ class ProbeCommandError(Exception):
 
 class SubprocessCommandRunner(object):
 
+    def __init__(self, timeout_seconds=None):
+        if timeout_seconds is None:
+            timeout_seconds = os.environ.get(
+                "RUNLIKE_PROBE_COMMAND_TIMEOUT",
+                DEFAULT_COMMAND_TIMEOUT_SECONDS)
+        timeout_seconds = float(timeout_seconds)
+        self.timeout_seconds = timeout_seconds if timeout_seconds > 0 else None
+
     def run(self, command, stdin=None):
         process = subprocess.Popen(
             command,
             stdin=subprocess.PIPE if stdin is not None else None,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate(
-            stdin.encode("utf-8") if stdin is not None else None)
+        try:
+            stdout, stderr = process.communicate(
+                stdin.encode("utf-8") if stdin is not None else None,
+                timeout=self.timeout_seconds)
+            timed_out = False
+        except subprocess.TimeoutExpired:
+            process.kill()
+            stdout, stderr = process.communicate()
+            timeout_message = "Command timed out after %s seconds." % (
+                self.timeout_seconds,)
+            if stderr:
+                stderr += b"\n"
+            stderr += timeout_message.encode("utf-8")
+            timed_out = True
         return CommandResult(
             process.returncode,
             stdout.decode("utf-8"),
-            stderr.decode("utf-8"))
+            stderr.decode("utf-8"),
+            timed_out=timed_out)
 
 
 def _checked_run(command_runner, command, stdin=None):
@@ -537,10 +561,11 @@ def _error_path_result(error):
             "command": error.command,
             "passed": False,
             "returncode": error.result.returncode,
-            "status": "error",
+            "status": "timeout" if error.result.timed_out else "error",
             "stderr": _normalize_stream(error.result.stderr),
             "stderr_lines": _stream_lines(error.result.stderr),
             "stdout": _normalize_stream(error.result.stdout),
+            "timed_out": error.result.timed_out,
         }
     return {
         "error": str(error),
@@ -680,6 +705,13 @@ def main(argv=None):
         default=" ".join(DEFAULT_DOCKER_COMMAND),
         help="Docker command prefix.")
     parser.add_argument(
+        "--command-timeout",
+        default=None,
+        type=float,
+        help=(
+            "Per-command timeout in seconds. Use 0 to disable. "
+            "Defaults to RUNLIKE_PROBE_COMMAND_TIMEOUT or 120."))
+    parser.add_argument(
         "--output",
         help="Optional path for structured JSON probe results.")
     args = parser.parse_args(argv)
@@ -691,6 +723,8 @@ def main(argv=None):
     ]
     payload = run_probe_suite(
         probes,
+        command_runner=SubprocessCommandRunner(
+            timeout_seconds=args.command_timeout),
         runlike_command=shlex.split(args.runlike_command),
         docker_command=shlex.split(args.docker_command))
 

@@ -15,3 +15,9 @@ def test_travis_runs_phase5_p0_probe_target():
     travis = (ROOT / ".travis.yml").read_text()
 
     assert "make test-probes-p0" in travis
+
+
+def test_travis_runs_phase8_generated_file_checks():
+    travis = (ROOT / ".travis.yml").read_text()
+
+    assert "make check-generated" in travis

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 
@@ -469,6 +470,59 @@ def test_probe_runner_reports_non_command_path_errors_structurally():
     assert result["paths"]["container_name"]["status"] == "error"
     assert result["paths"]["container_name"]["error"] == (
         "probe clone command must start with docker run")
+
+
+def test_probe_runner_reports_timed_out_path_commands_structurally():
+    run_probes = load_probe_module()
+    original = json.dumps(inspect_document("original", ["A=1"]))
+    responses = [
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(0, original, ""),
+        run_probes.CommandResult(
+            124,
+            "",
+            "Command timed out after 1 seconds.",
+            timed_out=True),
+        run_probes.CommandResult(0, "removed\n", ""),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "env-smoke",
+        "option_id": "env",
+        "image": "busybox",
+        "compare_profile": {
+            "profile": "inspect-projection",
+            "fields": ["Config.Env"],
+        },
+        "paths": ["container_name"],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is False
+    assert result["paths"]["container_name"]["passed"] is False
+    assert result["paths"]["container_name"]["status"] == "timeout"
+    assert result["paths"]["container_name"]["timed_out"] is True
+    assert result["paths"]["container_name"]["stderr"] == (
+        "Command timed out after 1 seconds.")
+
+
+def test_subprocess_command_runner_times_out_hung_commands():
+    run_probes = load_probe_module()
+    runner = run_probes.SubprocessCommandRunner(timeout_seconds=0.1)
+
+    result = runner.run([
+        sys.executable,
+        "-c",
+        "import time; time.sleep(10)",
+    ])
+
+    assert result.timed_out is True
+    assert result.returncode != 0
+    assert "timed out" in result.stderr
 
 
 def test_probe_runner_executes_both_input_paths_and_captures_results():
