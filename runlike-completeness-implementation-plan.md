@@ -604,11 +604,15 @@ Make the support matrix the official source of truth.
 
 - support claims are generated and current.
 
-### Phase 9 — complete remaining options in priority order
+### Phase 9 — complete priority P1 options
 
 #### Goal
 
-Drive support work from the dictionary and probes until the first pass is complete.
+Finish P1 as a complete, reviewable, mergeable increment before any P2 work starts.
+
+#### Required workflow skill
+
+Use the `workflow-controller` skill for this phase. P1 is repeated option-by-option work with generated artifacts and resumable progress, so the implementation should be driven by a small controller with explicit accounting rather than by a long prompt or manual checklist.
 
 #### Per-option workflow
 
@@ -624,12 +628,60 @@ For each option-state:
 8. regenerate support artifacts;
 9. commit code, probe, and generated support updates together.
 
+#### Tasks
+
+P1 completes the remaining common Linux option-states that are in scope but not yet proven complete.
+
+Work through every P1 dictionary entry, and only P1 dictionary entries:
+
+1. create or continue the P1 phase branch from the current completion branch;
+2. finish or correct the dictionary entry, including detection, renderer, comparator, path coverage, warning behavior, and reason metadata;
+3. add focused probes for the container-name path and stdin path when the option-state is observable through both;
+4. implement missing normalized model, renderer, warning, and comparator behavior;
+5. regenerate `probe-results.json`, `support-matrix.json`, and `support-matrix.md`;
+6. commit each coherent option or option group with its probes and generated support artifacts.
+
 #### Exit criteria
 
-- every in-scope observable option-state has an explicit support status;
-- support is earned by passing probes.
+- every P1 option-state has an explicit support, unsupported, or out-of-scope status for the relevant input paths;
+- every in-scope observable P1 option-state is supported by passing probes;
+- unsupported detectable P1 option-states emit deterministic runtime warnings;
+- generated support artifacts are current for the completed P1 state;
+- no P2 option-state work is included in the P1 phase branch.
 
-### Phase 10 — merge gate and release review
+
+### Phase 10 — complete priority P2 options
+
+#### Goal
+
+Complete runner-sensitive and host-sensitive option-states from the merged P1 state.
+
+#### Required workflow skill
+
+Continue using the `workflow-controller` skill for P2. P2 adds runner-specific branching and blocked-state accounting, so it needs the same explicit controller and checkpoint discipline.
+
+#### Tasks
+
+P2 completes runner-sensitive and host-sensitive option-states after P1 is stable.
+
+Work through every P2 dictionary entry:
+
+1. create the P2 phase branch from the merged P1 commit;
+2. confirm whether the option-state is probeable on the standard pinned runner, requires a specialized runner, or is out of scope for the first maintained target;
+3. record runner requirements, skip conditions, blocked status, and reason metadata in the dictionary;
+4. add focused probes and runner-specific CI coverage for probeable P2 option-states;
+5. implement missing normalized model, renderer, warning, and comparator behavior for supported P2 option-states;
+6. regenerate `probe-results.json`, `support-matrix.json`, and `support-matrix.md`;
+7. commit each coherent option or option group with its probes, runner metadata, and generated support artifacts.
+
+#### Exit criteria
+
+- every P2 option-state has an explicit support, unsupported, out-of-scope, or runner-blocked status;
+- every in-scope observable P2 option-state that can run on the required runner has support earned by passing probes;
+- every runner-blocked P2 option-state has reason metadata and a path to future verification;
+- generated support artifacts are current for the completed P2 state.
+
+### Phase 11 — merge gate and release review
 
 #### Goal
 
@@ -724,5 +776,6 @@ Start in this order:
 8. move the authoritative test path to the new probes;
 9. implement runtime unsupported-option warnings;
 10. generate the first support matrix and update the README to point to it;
-11. continue option-by-option until the matrix is complete for the first pass;
-12. run the merge gate and merge the completion branch back.
+11. use the `workflow-controller` skill to complete P1 option-states option-by-option until common Linux coverage is proven;
+12. continue under the same `workflow-controller` flow to complete P2 option-states with runner metadata and runner-specific probes where needed;
+13. run the merge gate and final release review, then merge the completion branch back.
