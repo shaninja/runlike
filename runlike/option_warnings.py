@@ -88,6 +88,11 @@ def _is_default_value(option_id, value):
 def _is_detected_value(option_id, value):
     if option_id == "health-cmd":
         return isinstance(value, list) and value and value[0] != "NONE"
+    if option_id == "link-local-ip" and isinstance(value, dict):
+        ipam_config = value.get("IPAMConfig") or {}
+        link_local_ips = ipam_config.get("LinkLocalIPs") or []
+        link_local_ipv6 = value.get("LinkLocalIPv6Address")
+        return bool(link_local_ips or link_local_ipv6)
     return not _is_default_value(option_id, value)
 
 
@@ -253,28 +258,56 @@ class UnsupportedOptionWarningEngine(object):
 
     def _detected_option_ids_from_model(self, facts, image_facts=None):
         try:
-            from .normalized_model import build_normalized_model
+            from .normalized_model import (
+                build_normalized_model,
+                normalized_model_can_resolve_entry,
+            )
         except ValueError:
-            from normalized_model import build_normalized_model
+            from normalized_model import (
+                build_normalized_model,
+                normalized_model_can_resolve_entry,
+            )
         model = build_normalized_model(
             facts,
             image_facts=image_facts,
             dictionary_entries=self.dictionary_entries)
-        return set(model.option_values)
+        return set(
+            entry["id"]
+            for entry in self.dictionary_entries
+            if self._entry_is_detected(
+                entry,
+                facts,
+                image_facts=image_facts,
+                model=model,
+                can_resolve_entry=normalized_model_can_resolve_entry))
 
-    def _entry_is_detected(self, entry, facts, image_facts=None):
+    def _entry_is_detected(
+            self,
+            entry,
+            facts,
+            image_facts=None,
+            model=None,
+            can_resolve_entry=None):
         profile = entry.get("detection_profile", {}).get("profile")
         if profile == "not-observable":
             return False
         if profile == "healthcheck-none-sentinel":
-            return self._healthcheck_none_is_detected(
+            detected = self._healthcheck_none_is_detected(
                 entry,
                 facts,
                 image_facts=image_facts)
-        return self._inspect_fields_are_detected(
-            entry,
-            facts,
-            image_facts=image_facts)
+        else:
+            detected = self._inspect_fields_are_detected(
+                entry,
+                facts,
+                image_facts=image_facts)
+        if not detected:
+            return False
+        if can_resolve_entry is None:
+            return True
+        if can_resolve_entry(entry):
+            return entry["id"] in model.option_values
+        return True
 
     def _healthcheck_none_is_detected(self, entry, facts, image_facts=None):
         for path in entry.get("inspect_fields", []):

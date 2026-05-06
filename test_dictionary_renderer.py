@@ -173,3 +173,48 @@ def test_mount_renderer_quotes_full_mount_value_once():
     assert tokens[mount_index + 1] == (
         "type=bind,source=/tmp/run like source,"
         "target=/run like target,readonly")
+
+
+def test_string_command_is_rendered_as_one_command_argument():
+    facts = minimal_inspect_facts(config={
+        "Cmd": "echo ok",
+    })
+    model = build_normalized_model(facts)
+
+    command = DictionaryRenderer().render(model)
+
+    assert model.command == ["echo ok"]
+    assert command == (
+        "docker run --name=fixture --hostname=fixture-host "
+        "--detach busybox 'echo ok'")
+
+
+def test_attach_streams_render_without_requiring_stdin():
+    facts = minimal_inspect_facts(config={
+        "AttachStderr": True,
+        "AttachStdin": False,
+        "AttachStdout": False,
+    })
+    model = build_normalized_model(facts)
+
+    command = DictionaryRenderer().render(model)
+
+    assert model.value_for("attach") == ["stderr"]
+    assert "--attach stderr" in command
+    assert "--detach" not in command
+
+
+def test_attach_streams_preserve_explicit_stdin_stdout_stderr_set():
+    facts = minimal_inspect_facts(config={
+        "AttachStderr": True,
+        "AttachStdin": True,
+        "AttachStdout": True,
+    })
+    model = build_normalized_model(facts)
+
+    command = DictionaryRenderer().render(model)
+
+    assert model.value_for("attach") == ["stdin", "stdout", "stderr"]
+    assert "--attach stdin" in command
+    assert "--attach stdout" in command
+    assert "--attach stderr" in command

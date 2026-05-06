@@ -88,7 +88,7 @@ class NormalizedContainerModel(object):
             if dictionary_entries is not None
             else load_dictionary_entries())
         self.image = self.get("Config.Image")
-        self.command = self.get("Config.Cmd") or []
+        self.command = self._command_parts(self.get("Config.Cmd"))
         self.option_values = OrderedDict()
 
     def get(self, path, default=None):
@@ -116,6 +116,13 @@ class NormalizedContainerModel(object):
     def value_for(self, option_id):
         return self.option_values.get(option_id)
 
+    def _command_parts(self, command):
+        if not command:
+            return []
+        if isinstance(command, str):
+            return [command]
+        return command
+
 
 def build_normalized_model(
         facts,
@@ -131,6 +138,10 @@ def build_normalized_model(
     return model
 
 
+def normalized_model_can_resolve_entry(entry):
+    return NormalizedModelBuilder.can_resolve_entry(entry)
+
+
 class NormalizedModelBuilder(object):
 
     def __init__(self, model):
@@ -142,10 +153,21 @@ class NormalizedModelBuilder(object):
             self.model.set_option(entry["id"], value)
         return self.model
 
+    @classmethod
+    def can_resolve_entry(cls, entry):
+        if getattr(cls, cls._resolver_name(entry), None) is not None:
+            return True
+        profile = entry.get("render_profile", {}).get("profile")
+        return profile == "canonical-docker-flag"
+
+    @staticmethod
+    def _resolver_name(entry):
+        return "_resolve_" + entry["id"].replace("-", "_")
+
     def _resolve_entry(self, entry):
         resolver = getattr(
             self,
-            "_resolve_" + entry["id"].replace("-", "_"),
+            self._resolver_name(entry),
             None)
         if resolver is not None:
             return resolver(entry)
@@ -177,8 +199,12 @@ class NormalizedModelBuilder(object):
         option_id = entry["id"]
         if option_id == "detach":
             stdout_attached = self.model.get("Config.AttachStdout")
+            stderr_attached = self.model.get("Config.AttachStderr")
             stdin_attached = self.model.get("Config.AttachStdin")
-            return not stdout_attached and not stdin_attached
+            return (
+                not stdout_attached
+                and not stderr_attached
+                and not stdin_attached)
         for value in values:
             if value is True:
                 return True
@@ -244,12 +270,19 @@ class NormalizedModelBuilder(object):
         return name
 
     def _resolve_attach(self, entry):
+        stdin = self.model.get("Config.AttachStdin")
+        stdout = self.model.get("Config.AttachStdout")
+        stderr = self.model.get("Config.AttachStderr")
+        default_stdout_stderr = (
+            not stdin
+            and stdout is True
+            and stderr is True)
         streams = []
-        if self.model.get("Config.AttachStdin"):
+        if stdin:
             streams.append("stdin")
-        if self.model.get("Config.AttachStdout") and streams:
+        if stdout and not default_stdout_stderr:
             streams.append("stdout")
-        if self.model.get("Config.AttachStderr") and streams:
+        if stderr and not default_stdout_stderr:
             streams.append("stderr")
         return streams
 
