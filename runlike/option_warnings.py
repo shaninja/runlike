@@ -190,11 +190,14 @@ class UnsupportedOptionWarningEngine(object):
         rendered_ids = rendered_option_ids(
             rendered_command,
             self.dictionary_entries)
+        detected_option_ids = self._detected_option_ids_from_model(
+            facts,
+            image_facts=image_facts)
         detected = []
         for entry in self.dictionary_entries:
             if not self._should_warn_for_entry(entry, input_path, rendered_ids):
                 continue
-            if self._entry_is_detected(entry, facts, image_facts=image_facts):
+            if entry["id"] in detected_option_ids:
                 detected.append(entry)
         return sorted(
             detected,
@@ -247,6 +250,17 @@ class UnsupportedOptionWarningEngine(object):
         return entry.get(
             "warning_behavior",
             {}).get("warn_when_detected_unsupported") is True
+
+    def _detected_option_ids_from_model(self, facts, image_facts=None):
+        try:
+            from .normalized_model import build_normalized_model
+        except ValueError:
+            from normalized_model import build_normalized_model
+        model = build_normalized_model(
+            facts,
+            image_facts=image_facts,
+            dictionary_entries=self.dictionary_entries)
+        return set(model.option_values)
 
     def _entry_is_detected(self, entry, facts, image_facts=None):
         profile = entry.get("detection_profile", {}).get("profile")

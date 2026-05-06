@@ -8,6 +8,13 @@ from subprocess import (
 from json import loads, dumps
 from pipes import quote
 
+try:
+    from .dictionary_renderer import DictionaryRenderer
+    from .normalized_model import build_normalized_model
+except ValueError:
+    from dictionary_renderer import DictionaryRenderer
+    from normalized_model import build_normalized_model
+
 
 def die(message):
     sys.stderr.write(message + "\n")
@@ -279,87 +286,8 @@ class Inspector(object):
             self.options.append("--mount %s" % ",".join(parts))
 
     def format_cli(self):
-        self.output = "docker run "
-
-        image = self.get_fact("Config.Image")
-        self.options = []
-
-        name = self.get_fact("Name").split("/")[1]
-        if not self.no_name:
-            self.options.append("--name=%s" % name)
-        self.parse_hostname()
-        self.parse_user()
-        self.parse_macaddress()
-
-        self.multi_option("Config.Env", "env")
-        self.multi_option("HostConfig.Binds", "volume")
-        self.multi_option("Config.Volumes", "volume")
-        self.multi_option("HostConfig.VolumesFrom", "volumes-from")
-        self.multi_option("HostConfig.CapAdd", "cap-add")
-        self.multi_option("HostConfig.CapDrop", "cap-drop")
-        self.multi_option("HostConfig.Dns", "dns")
-        self.parse_network()
-        self.parse_network_ipam()
-        privileged = self.get_fact('HostConfig.Privileged')
-        if privileged:
-            self.options.append("--privileged")
-
-        self.parse_auto_remove()
-        self.parse_publish_all()
-        self.parse_attach()
-        self.parse_interactive()
-        self.parse_entrypoint()
-        self.parse_workdir()
-        self.parse_ports()
-        self.parse_links()
-        self.parse_restart()
-        self.parse_devices()
-        self.parse_mounts()
-        self.parse_labels()
-        self.parse_log()
-        self.parse_extra_hosts()
-        self.parse_runtime()
-        self.parse_host_config_value("HostConfig.CpusetCpus", "cpuset-cpus")
-        self.parse_host_config_value("HostConfig.CpusetMems", "cpuset-mems")
-        self.parse_host_config_value("HostConfig.Memory", "memory", 0)
-        self.parse_host_config_value(
-            "HostConfig.MemoryReservation",
-            "memory-reservation",
-            0)
-        self.parse_host_config_value("HostConfig.PidMode", "pid")
-        self.parse_host_config_value(
-            "HostConfig.ShmSize",
-            "shm-size",
-            67108864)
-
-        stdout_attached = self.get_fact("Config.AttachStdout")
-        stdin_attached = self.get_fact("Config.AttachStdin")
-        if not stdout_attached and not stdin_attached:
-            self.options.append("--detach=true")
-
-        if self.get_fact("Config.Tty"):
-            self.options.append('-t')
-
-        parameters = ["run"]
-        if self.options:
-            parameters += self.options
-        parameters.append(image)
-
-        cmd_parts = self.get_fact("Config.Cmd")
-        if cmd_parts:
-            # NOTE: pipes.quote() performs syntactically correct
-            # quoting and replace operation below is needed just for
-            # aesthetic reasons and visual similarity with old output.
-            quoted = [
-                quote(p).replace("'\"'\"'", r"\'")
-                for p in cmd_parts
-            ]
-            command = " ".join(quoted)
-            parameters.append(command)
-
-        joiner = " "
-        if self.pretty:
-            joiner += "\\\n\t"
-        parameters = joiner.join(parameters)
-
-        return "docker %s" % parameters
+        model = build_normalized_model(
+            self.facts,
+            image_facts=self.image_facts,
+            no_name=self.no_name)
+        return DictionaryRenderer().render(model, pretty=self.pretty)

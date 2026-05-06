@@ -89,7 +89,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 "stdin",
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "--env=SUPPORTED=1 fixture_image")))
+                    "--env=SUPPORTED=1 --detach fixture_image")))
 
     def test_warning_engine_ignores_rendered_options_and_default_values(self):
         facts = minimal_inspect_facts({
@@ -107,7 +107,84 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 "container_name",
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "--env=SUPPORTED=1 fixture_image")))
+                    "--env=SUPPORTED=1 --detach fixture_image")))
+
+    def test_warning_engine_uses_normalized_defaults_for_runtime_state(self):
+        facts = minimal_inspect_facts({
+            "ShmSize": 67108864,
+        }, config={
+            "AttachStdout": True,
+            "AttachStderr": True,
+        })
+        facts[0]["NetworkSettings"]["Networks"] = {
+            "bridge": {
+                "Aliases": None,
+                "IPAddress": "172.17.0.2",
+            },
+        }
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "fixture_image")))
+
+    def test_warning_engine_does_not_treat_rendered_mount_as_volume(self):
+        facts = minimal_inspect_facts()
+        facts[0]["Mounts"] = [{
+                "ReadOnly": True,
+                "Source": "/tmp",
+                "Target": "/runlike-mount",
+                "Type": "bind",
+        }]
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--mount type=bind,source=/tmp,target=/runlike-mount,readonly "
+                    "--detach "
+                    "fixture_image")))
+
+    def test_warning_engine_ignores_memory_swap_derived_from_memory(self):
+        facts = minimal_inspect_facts({
+            "Memory": 67108864,
+            "MemorySwap": 134217728,
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--memory=67108864 --detach fixture_image")))
+
+    def test_warning_engine_ignores_security_opt_side_effects(self):
+        facts = minimal_inspect_facts({
+            "PidMode": "host",
+            "SecurityOpt": ["label=disable"],
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [],
+            engine.warning_lines(
+                facts,
+                "container_name",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--pid=host --detach fixture_image")))
 
     def test_rendered_option_ids_are_derived_from_command_aliases(self):
         engine = UnsupportedOptionWarningEngine()
@@ -145,7 +222,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 rendered_command=(
                     "docker run --name=fixture_container "
                     "--hostname=fixture "
-                    "fixture_image --init")))
+                    "--detach fixture_image --init")))
 
     def test_warning_engine_ignores_image_inherited_unsupported_options(self):
         facts = minimal_inspect_facts(config={
@@ -172,7 +249,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                 image_facts=image_facts,
                 rendered_command=(
                     "docker run --name=fixture_container --hostname=fixture "
-                    "fixture_image")))
+                    "--detach fixture_image")))
 
     def test_cli_writes_unsupported_option_warnings_to_stderr_only(self):
         runner = CliRunner(mix_stderr=False)
