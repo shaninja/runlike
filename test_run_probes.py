@@ -1,6 +1,10 @@
 import importlib.util
 import json
+import sys
+import time
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parent
@@ -469,6 +473,139 @@ def test_probe_runner_reports_non_command_path_errors_structurally():
     assert result["paths"]["container_name"]["status"] == "error"
     assert result["paths"]["container_name"]["error"] == (
         "probe clone command must start with docker run")
+
+
+def test_probe_runner_reports_timed_out_path_commands_structurally():
+    run_probes = load_probe_module()
+    original = json.dumps(inspect_document("original", ["A=1"]))
+    responses = [
+        run_probes.CommandResult(0, "original-id\n", ""),
+        run_probes.CommandResult(0, original, ""),
+        run_probes.CommandResult(
+            124,
+            "",
+            "Command timed out after 1 seconds.",
+            timed_out=True),
+        run_probes.CommandResult(0, "removed\n", ""),
+    ]
+    fake = FakeCommandRunner(run_probes, responses)
+    probe = {
+        "id": "env-smoke",
+        "option_id": "env",
+        "image": "busybox",
+        "compare_profile": {
+            "profile": "inspect-projection",
+            "fields": ["Config.Env"],
+        },
+        "paths": ["container_name"],
+    }
+
+    result = run_probes.run_probe(
+        probe,
+        command_runner=fake,
+        runlike_command=["runlike"])
+
+    assert result["passed"] is False
+    assert result["paths"]["container_name"]["passed"] is False
+    assert result["paths"]["container_name"]["status"] == "timeout"
+    assert result["paths"]["container_name"]["timed_out"] is True
+    assert result["paths"]["container_name"]["stderr"] == (
+        "Command timed out after 1 seconds.")
+
+
+def test_subprocess_command_runner_times_out_hung_commands():
+    run_probes = load_probe_module()
+    runner = run_probes.SubprocessCommandRunner(timeout_seconds=0.1)
+
+    result = runner.run([
+        sys.executable,
+        "-c",
+        "import time; time.sleep(10)",
+    ])
+
+    assert result.timed_out is True
+    assert result.returncode != 0
+    assert "timed out" in result.stderr
+
+
+def test_subprocess_command_runner_times_out_descendants_holding_pipes():
+    run_probes = load_probe_module()
+    runner = run_probes.SubprocessCommandRunner(timeout_seconds=0.1)
+
+    started = time.time()
+    result = runner.run([
+        sys.executable,
+        "-c",
+        (
+            "import subprocess, sys, time; "
+            "subprocess.Popen([sys.executable, '-c', "
+            "'import time; time.sleep(2)']); "
+            "time.sleep(10)"
+        ),
+    ])
+    elapsed = time.time() - started
+
+    assert result.timed_out is True
+    assert elapsed < 1
+
+
+def test_probe_runner_reports_invalid_timeout_env_without_traceback(
+        monkeypatch,
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+    monkeypatch.setenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", "")
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path)])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "RUNLIKE_PROBE_COMMAND_TIMEOUT must be a number" in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_probe_runner_reports_non_finite_timeout_env_without_traceback(
+        monkeypatch,
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+    monkeypatch.setenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", "nan")
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path)])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "RUNLIKE_PROBE_COMMAND_TIMEOUT must be finite" in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_subprocess_command_runner_uses_default_timeout(monkeypatch):
+    run_probes = load_probe_module()
+    monkeypatch.delenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", raising=False)
+
+    runner = run_probes.SubprocessCommandRunner()
+
+    assert runner.timeout_seconds == 120
+
+
+def test_probe_runner_exit_code_allows_recording_failed_probe_results():
+    run_probes = load_probe_module()
+    payload = {
+        "summary": {
+            "failed": 1,
+            "passed": 39,
+            "total": 40,
+        },
+    }
+
+    assert run_probes.probe_suite_exit_code(payload, allow_failures=False) == 1
+    assert run_probes.probe_suite_exit_code(payload, allow_failures=True) == 0
 
 
 def test_probe_runner_executes_both_input_paths_and_captures_results():

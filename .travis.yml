@@ -20,6 +20,7 @@ before_script:
   - poetry run python tools/verify_docker_target.py
 script:
   - make test
+  - make check-generated
   - make test-probes-p0
 after_failure:
   - ./inspect_fixtures.sh

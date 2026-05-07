@@ -1,0 +1,3605 @@
+{
+  "probe_definitions": {
+    "count": 40,
+    "ids": [
+      "p0-add-host",
+      "p0-attach",
+      "p0-cap-add",
+      "p0-cap-drop",
+      "p0-cpuset-cpus",
+      "p0-cpuset-mems",
+      "p0-detach",
+      "p0-device",
+      "p0-dns",
+      "p0-entrypoint",
+      "p0-env",
+      "p0-expose",
+      "p0-hostname",
+      "p0-interactive",
+      "p0-ip",
+      "p0-ip6",
+      "p0-label",
+      "p0-link",
+      "p0-log-driver",
+      "p0-log-opt",
+      "p0-mac-address",
+      "p0-memory",
+      "p0-memory-reservation",
+      "p0-mount",
+      "p0-name",
+      "p0-network",
+      "p0-pid",
+      "p0-privileged",
+      "p0-publish",
+      "p0-publish-all",
+      "p0-restart",
+      "p0-rm",
+      "p0-runtime",
+      "p0-shm-size",
+      "p0-tty",
+      "p0-user",
+      "p0-volume",
+      "p0-volumes-from",
+      "p0-workdir",
+      "p1-init-warning"
+    ],
+    "sha256": "605149a34e02a8d3fd0a364c189390a35071c28fd443c31530213f6c579ad5a5",
+    "tool_hashes": {
+      "tools/canonicalize_inspect.py": "4daf059caec9bb035e511754e022dfcf1c863fb812efd35ad762bd38a2149d44",
+      "tools/run_probes.py": "18b04cb024bb081c9fd794db688f140d14aec5d4bf6a1381bf488230708e0570"
+    }
+  },
+  "results": [
+    {
+      "option_id": "add-host",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-add-host-container-name-clone",
+            "--hostname=5466d1a68c7f",
+            "--add-host",
+            "runlike.test:127.0.0.9",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.ExtraHosts": [
+                "runlike.test:127.0.0.9"
+              ]
+            },
+            "expected": {
+              "HostConfig.ExtraHosts": [
+                "runlike.test:127.0.0.9"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-add-host-original --hostname=5466d1a68c7f --add-host runlike.test:127.0.0.9 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-add-host-original --hostname=5466d1a68c7f --add-host runlike.test:127.0.0.9 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-add-host-stdin-clone",
+            "--hostname=5466d1a68c7f",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--add-host",
+            "runlike.test:127.0.0.9",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.ExtraHosts": [
+                "runlike.test:127.0.0.9"
+              ]
+            },
+            "expected": {
+              "HostConfig.ExtraHosts": [
+                "runlike.test:127.0.0.9"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-add-host-original --hostname=5466d1a68c7f --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --add-host runlike.test:127.0.0.9 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-add-host-original --hostname=5466d1a68c7f --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --add-host runlike.test:127.0.0.9 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-add-host"
+    },
+    {
+      "option_id": "attach",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-attach-container-name-clone",
+            "--hostname=c2c4bddc9d18",
+            "--attach",
+            "stdin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdin": true,
+              "Config.AttachStdout": false
+            },
+            "expected": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdin": true,
+              "Config.AttachStdout": false
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "attach-streams"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-attach-original --hostname=c2c4bddc9d18 --attach stdin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-attach-original --hostname=c2c4bddc9d18 --attach stdin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-attach-stdin-clone",
+            "--hostname=c2c4bddc9d18",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--attach",
+            "stdin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdin": true,
+              "Config.AttachStdout": false
+            },
+            "expected": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdin": true,
+              "Config.AttachStdout": false
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "attach-streams"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-attach-original --hostname=c2c4bddc9d18 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --attach stdin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-attach-original --hostname=c2c4bddc9d18 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --attach stdin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-attach"
+    },
+    {
+      "option_id": "cap-add",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cap-add-container-name-clone",
+            "--hostname=fb4a3e7f4d41",
+            "--cap-add=CHOWN",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CapAdd": [
+                "CHOWN"
+              ]
+            },
+            "expected": {
+              "HostConfig.CapAdd": [
+                "CHOWN"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cap-add-original --hostname=fb4a3e7f4d41 --cap-add=CHOWN --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cap-add-original --hostname=fb4a3e7f4d41 --cap-add=CHOWN --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cap-add-stdin-clone",
+            "--hostname=fb4a3e7f4d41",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--cap-add=CHOWN",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CapAdd": [
+                "CHOWN"
+              ]
+            },
+            "expected": {
+              "HostConfig.CapAdd": [
+                "CHOWN"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cap-add-original --hostname=fb4a3e7f4d41 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --cap-add=CHOWN --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cap-add-original --hostname=fb4a3e7f4d41 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --cap-add=CHOWN --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-cap-add"
+    },
+    {
+      "option_id": "cap-drop",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cap-drop-container-name-clone",
+            "--hostname=eaacf4a33506",
+            "--cap-drop=NET_RAW",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CapDrop": [
+                "NET_RAW"
+              ]
+            },
+            "expected": {
+              "HostConfig.CapDrop": [
+                "NET_RAW"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cap-drop-original --hostname=eaacf4a33506 --cap-drop=NET_RAW --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cap-drop-original --hostname=eaacf4a33506 --cap-drop=NET_RAW --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cap-drop-stdin-clone",
+            "--hostname=eaacf4a33506",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--cap-drop=NET_RAW",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CapDrop": [
+                "NET_RAW"
+              ]
+            },
+            "expected": {
+              "HostConfig.CapDrop": [
+                "NET_RAW"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cap-drop-original --hostname=eaacf4a33506 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --cap-drop=NET_RAW --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cap-drop-original --hostname=eaacf4a33506 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --cap-drop=NET_RAW --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-cap-drop"
+    },
+    {
+      "option_id": "cpuset-cpus",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cpuset-cpus-container-name-clone",
+            "--hostname=5c6a4d709473",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CpusetCpus": ""
+            },
+            "expected": {
+              "HostConfig.CpusetCpus": ""
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cpuset-cpus-original --hostname=5c6a4d709473 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cpuset-cpus-original --hostname=5c6a4d709473 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cpuset-cpus-stdin-clone",
+            "--hostname=5c6a4d709473",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CpusetCpus": ""
+            },
+            "expected": {
+              "HostConfig.CpusetCpus": ""
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cpuset-cpus-original --hostname=5c6a4d709473 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cpuset-cpus-original --hostname=5c6a4d709473 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-cpuset-cpus"
+    },
+    {
+      "option_id": "cpuset-mems",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cpuset-mems-container-name-clone",
+            "--hostname=78e02c614250",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CpusetMems": ""
+            },
+            "expected": {
+              "HostConfig.CpusetMems": ""
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cpuset-mems-original --hostname=78e02c614250 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cpuset-mems-original --hostname=78e02c614250 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-cpuset-mems-stdin-clone",
+            "--hostname=78e02c614250",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.CpusetMems": ""
+            },
+            "expected": {
+              "HostConfig.CpusetMems": ""
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-cpuset-mems-original --hostname=78e02c614250 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-cpuset-mems-original --hostname=78e02c614250 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-cpuset-mems"
+    },
+    {
+      "option_id": "detach",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "run",
+            "--name",
+            "runlike-probe-p0-detach-container-name-clone",
+            "--hostname=8aac5c2b5229",
+            "--mac-address=02:42:ac:11:00:02",
+            "--runtime=runc",
+            "--detach",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdout": false
+            },
+            "expected": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdout": false
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-detach-original --hostname=8aac5c2b5229 --mac-address=02:42:ac:11:00:02 --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --oom-score-adj",
+          "stderr_assertions": [],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --oom-score-adj"
+          ],
+          "stdout": "docker run --name=runlike-probe-p0-detach-original --hostname=8aac5c2b5229 --mac-address=02:42:ac:11:00:02 --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "run",
+            "--name",
+            "runlike-probe-p0-detach-stdin-clone",
+            "--hostname=8aac5c2b5229",
+            "--mac-address=02:42:ac:11:00:02",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--detach",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdout": false
+            },
+            "expected": {
+              "Config.AttachStderr": false,
+              "Config.AttachStdout": false
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-detach-original --hostname=8aac5c2b5229 --mac-address=02:42:ac:11:00:02 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --oom-score-adj",
+          "stderr_assertions": [],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --oom-score-adj"
+          ],
+          "stdout": "docker run --name=runlike-probe-p0-detach-original --hostname=8aac5c2b5229 --mac-address=02:42:ac:11:00:02 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-detach"
+    },
+    {
+      "option_id": "device",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-device-container-name-clone",
+            "--hostname=3cd1e2ce95ac",
+            "--device",
+            "/dev/null:/dev/null:r",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Devices": [
+                {
+                  "CgroupPermissions": "r",
+                  "PathInContainer": "/dev/null",
+                  "PathOnHost": "/dev/null"
+                }
+              ]
+            },
+            "expected": {
+              "HostConfig.Devices": [
+                {
+                  "CgroupPermissions": "r",
+                  "PathInContainer": "/dev/null",
+                  "PathOnHost": "/dev/null"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-device-original --hostname=3cd1e2ce95ac --device /dev/null:/dev/null:r --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-device-original --hostname=3cd1e2ce95ac --device /dev/null:/dev/null:r --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-device-stdin-clone",
+            "--hostname=3cd1e2ce95ac",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--device",
+            "/dev/null:/dev/null:r",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Devices": [
+                {
+                  "CgroupPermissions": "r",
+                  "PathInContainer": "/dev/null",
+                  "PathOnHost": "/dev/null"
+                }
+              ]
+            },
+            "expected": {
+              "HostConfig.Devices": [
+                {
+                  "CgroupPermissions": "r",
+                  "PathInContainer": "/dev/null",
+                  "PathOnHost": "/dev/null"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-device-original --hostname=3cd1e2ce95ac --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --device /dev/null:/dev/null:r --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-device-original --hostname=3cd1e2ce95ac --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --device /dev/null:/dev/null:r --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-device"
+    },
+    {
+      "option_id": "dns",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-dns-container-name-clone",
+            "--hostname=ddff5abeda6c",
+            "--dns=8.8.8.8",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Dns": [
+                "8.8.8.8"
+              ]
+            },
+            "expected": {
+              "HostConfig.Dns": [
+                "8.8.8.8"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-dns-original --hostname=ddff5abeda6c --dns=8.8.8.8 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-dns-original --hostname=ddff5abeda6c --dns=8.8.8.8 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-dns-stdin-clone",
+            "--hostname=ddff5abeda6c",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--dns=8.8.8.8",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Dns": [
+                "8.8.8.8"
+              ]
+            },
+            "expected": {
+              "HostConfig.Dns": [
+                "8.8.8.8"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-dns-original --hostname=ddff5abeda6c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --dns=8.8.8.8 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-dns-original --hostname=ddff5abeda6c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --dns=8.8.8.8 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-dns"
+    },
+    {
+      "option_id": "entrypoint",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-entrypoint-container-name-clone",
+            "--hostname=c1cdadbcb77b",
+            "--entrypoint=/bin/sh",
+            "--runtime=runc",
+            "busybox",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Entrypoint": [
+                "/bin/sh"
+              ]
+            },
+            "expected": {
+              "Config.Entrypoint": [
+                "/bin/sh"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "image-default-aware"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-entrypoint-original --hostname=c1cdadbcb77b --entrypoint=/bin/sh --runtime=runc busybox -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-entrypoint-original --hostname=c1cdadbcb77b --entrypoint=/bin/sh --runtime=runc busybox -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-entrypoint-stdin-clone",
+            "--hostname=c1cdadbcb77b",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--entrypoint=/bin/sh",
+            "--runtime=runc",
+            "busybox",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Entrypoint": [
+                "/bin/sh"
+              ]
+            },
+            "expected": {
+              "Config.Entrypoint": [
+                "/bin/sh"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "image-default-aware"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-entrypoint-original --hostname=c1cdadbcb77b --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --entrypoint=/bin/sh --runtime=runc busybox -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-entrypoint-original --hostname=c1cdadbcb77b --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --entrypoint=/bin/sh --runtime=runc busybox -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-entrypoint"
+    },
+    {
+      "option_id": "env",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-env-container-name-clone",
+            "--hostname=da79b4289e22",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--env=RUNLIKE_PHASE5=env",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "RUNLIKE_PHASE5=env"
+              ]
+            },
+            "expected": {
+              "Config.Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "RUNLIKE_PHASE5=env"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-env-original --hostname=da79b4289e22 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=RUNLIKE_PHASE5=env --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-env-original --hostname=da79b4289e22 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=RUNLIKE_PHASE5=env --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-env-stdin-clone",
+            "--hostname=da79b4289e22",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--env=RUNLIKE_PHASE5=env",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "RUNLIKE_PHASE5=env"
+              ]
+            },
+            "expected": {
+              "Config.Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "RUNLIKE_PHASE5=env"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-env-original --hostname=da79b4289e22 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=RUNLIKE_PHASE5=env --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-env-original --hostname=da79b4289e22 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=RUNLIKE_PHASE5=env --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-env"
+    },
+    {
+      "option_id": "expose",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-expose-container-name-clone",
+            "--hostname=92a261b6806c",
+            "--expose=8080",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.ExposedPorts": {
+                "8080/tcp": {}
+              }
+            },
+            "expected": {
+              "Config.ExposedPorts": {
+                "8080/tcp": {}
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "image-default-aware"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-expose-original --hostname=92a261b6806c --expose=8080 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-expose-original --hostname=92a261b6806c --expose=8080 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-expose-stdin-clone",
+            "--hostname=92a261b6806c",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--expose=8080",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.ExposedPorts": {
+                "8080/tcp": {}
+              }
+            },
+            "expected": {
+              "Config.ExposedPorts": {
+                "8080/tcp": {}
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "image-default-aware"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-expose-original --hostname=92a261b6806c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --expose=8080 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-expose-original --hostname=92a261b6806c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --expose=8080 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-expose"
+    },
+    {
+      "option_id": "hostname",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-hostname-container-name-clone",
+            "--hostname=runlike-p5-host",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Hostname": "runlike-p5-host"
+            },
+            "expected": {
+              "Config.Hostname": "runlike-p5-host"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-hostname-original --hostname=runlike-p5-host --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-hostname-original --hostname=runlike-p5-host --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-hostname-stdin-clone",
+            "--hostname=runlike-p5-host",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Hostname": "runlike-p5-host"
+            },
+            "expected": {
+              "Config.Hostname": "runlike-p5-host"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-hostname-original --hostname=runlike-p5-host --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-hostname-original --hostname=runlike-p5-host --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-hostname"
+    },
+    {
+      "option_id": "interactive",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-interactive-container-name-clone",
+            "--hostname=496a22dc0a2a",
+            "--attach",
+            "stdin",
+            "--attach",
+            "stdout",
+            "--attach",
+            "stderr",
+            "--interactive",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.OpenStdin": true,
+              "Config.StdinOnce": true
+            },
+            "expected": {
+              "Config.OpenStdin": true,
+              "Config.StdinOnce": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-interactive-original --hostname=496a22dc0a2a --attach stdin --attach stdout --attach stderr --interactive --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-interactive-original --hostname=496a22dc0a2a --attach stdin --attach stdout --attach stderr --interactive --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-interactive-stdin-clone",
+            "--hostname=496a22dc0a2a",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--attach",
+            "stdin",
+            "--attach",
+            "stdout",
+            "--attach",
+            "stderr",
+            "--interactive",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.OpenStdin": true,
+              "Config.StdinOnce": true
+            },
+            "expected": {
+              "Config.OpenStdin": true,
+              "Config.StdinOnce": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-interactive-original --hostname=496a22dc0a2a --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --attach stdin --attach stdout --attach stderr --interactive --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-interactive-original --hostname=496a22dc0a2a --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --attach stdin --attach stdout --attach stderr --interactive --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-interactive"
+    },
+    {
+      "option_id": "ip",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-ip-container-name-clone",
+            "--hostname=157d2cec80c7",
+            "--network=runlike-probe-p0-ip-net",
+            "--ip=172.28.5.10",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv4Address": {
+                "runlike-probe-p0-ip-net": "172.28.5.10"
+              }
+            },
+            "expected": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv4Address": {
+                "runlike-probe-p0-ip-net": "172.28.5.10"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "network-ipam-address"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-ip-original --hostname=157d2cec80c7 --network=runlike-probe-p0-ip-net --ip=172.28.5.10 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-ip-original --hostname=157d2cec80c7 --network=runlike-probe-p0-ip-net --ip=172.28.5.10 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-ip-stdin-clone",
+            "--hostname=157d2cec80c7",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--network=runlike-probe-p0-ip-net",
+            "--ip=172.28.5.10",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv4Address": {
+                "runlike-probe-p0-ip-net": "172.28.5.10"
+              }
+            },
+            "expected": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv4Address": {
+                "runlike-probe-p0-ip-net": "172.28.5.10"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "network-ipam-address"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-ip-original --hostname=157d2cec80c7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-ip-net --ip=172.28.5.10 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-ip-original --hostname=157d2cec80c7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-ip-net --ip=172.28.5.10 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-ip"
+    },
+    {
+      "option_id": "ip6",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-ip6-container-name-clone",
+            "--hostname=d2b49bd73879",
+            "--network=runlike-probe-p0-ip6-net",
+            "--ip6=fd00:5::10",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv6Address": {
+                "runlike-probe-p0-ip6-net": "fd00:5::10"
+              }
+            },
+            "expected": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv6Address": {
+                "runlike-probe-p0-ip6-net": "fd00:5::10"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "network-ipam-address"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-ip6-original --hostname=d2b49bd73879 --network=runlike-probe-p0-ip6-net --ip6=fd00:5::10 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-ip6-original --hostname=d2b49bd73879 --network=runlike-probe-p0-ip6-net --ip6=fd00:5::10 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-ip6-stdin-clone",
+            "--hostname=d2b49bd73879",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--network=runlike-probe-p0-ip6-net",
+            "--ip6=fd00:5::10",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv6Address": {
+                "runlike-probe-p0-ip6-net": "fd00:5::10"
+              }
+            },
+            "expected": {
+              "NetworkSettings.Networks.*.IPAMConfig.IPv6Address": {
+                "runlike-probe-p0-ip6-net": "fd00:5::10"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "network-ipam-address"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-ip6-original --hostname=d2b49bd73879 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-ip6-net --ip6=fd00:5::10 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-ip6-original --hostname=d2b49bd73879 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-ip6-net --ip6=fd00:5::10 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-ip6"
+    },
+    {
+      "option_id": "label",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-label-container-name-clone",
+            "--hostname=77db94d51688",
+            "--label=com.example.runlike.phase=5",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Labels": {
+                "com.example.runlike.phase": "5"
+              }
+            },
+            "expected": {
+              "Config.Labels": {
+                "com.example.runlike.phase": "5"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-label-original --hostname=77db94d51688 --label=com.example.runlike.phase=5 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-label-original --hostname=77db94d51688 --label=com.example.runlike.phase=5 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-label-stdin-clone",
+            "--hostname=77db94d51688",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--label=com.example.runlike.phase=5",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Labels": {
+                "com.example.runlike.phase": "5"
+              }
+            },
+            "expected": {
+              "Config.Labels": {
+                "com.example.runlike.phase": "5"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-label-original --hostname=77db94d51688 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --label=com.example.runlike.phase=5 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-label-original --hostname=77db94d51688 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --label=com.example.runlike.phase=5 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-label"
+    },
+    {
+      "option_id": "link",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-link-container-name-clone",
+            "--hostname=d53da1ba8645",
+            "--link",
+            "runlike-probe-p0-link-target:linked",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Links": [
+                "/runlike-probe-p0-link-target:/<container>/linked"
+              ]
+            },
+            "expected": {
+              "HostConfig.Links": [
+                "/runlike-probe-p0-link-target:/<container>/linked"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-link-original --hostname=d53da1ba8645 --link runlike-probe-p0-link-target:linked --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-link-original --hostname=d53da1ba8645 --link runlike-probe-p0-link-target:linked --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-link-stdin-clone",
+            "--hostname=d53da1ba8645",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--link",
+            "runlike-probe-p0-link-target:linked",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Links": [
+                "/runlike-probe-p0-link-target:/<container>/linked"
+              ]
+            },
+            "expected": {
+              "HostConfig.Links": [
+                "/runlike-probe-p0-link-target:/<container>/linked"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-link-original --hostname=d53da1ba8645 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --link runlike-probe-p0-link-target:linked --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-link-original --hostname=d53da1ba8645 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --link runlike-probe-p0-link-target:linked --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-link"
+    },
+    {
+      "option_id": "log-driver",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-log-driver-container-name-clone",
+            "--hostname=4fbf01231b19",
+            "--log-driver=local",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.LogConfig.Type": "local"
+            },
+            "expected": {
+              "HostConfig.LogConfig.Type": "local"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-log-driver-original --hostname=4fbf01231b19 --log-driver=local --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-log-driver-original --hostname=4fbf01231b19 --log-driver=local --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-log-driver-stdin-clone",
+            "--hostname=4fbf01231b19",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--log-driver=local",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.LogConfig.Type": "local"
+            },
+            "expected": {
+              "HostConfig.LogConfig.Type": "local"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-log-driver-original --hostname=4fbf01231b19 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --log-driver=local --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-log-driver-original --hostname=4fbf01231b19 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --log-driver=local --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-log-driver"
+    },
+    {
+      "option_id": "log-opt",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-log-opt-container-name-clone",
+            "--hostname=f9eee6536989",
+            "--log-opt",
+            "max-size=10m",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.LogConfig.Config": {
+                "max-size": "10m"
+              }
+            },
+            "expected": {
+              "HostConfig.LogConfig.Config": {
+                "max-size": "10m"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-log-opt-original --hostname=f9eee6536989 --log-opt max-size=10m --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-log-opt-original --hostname=f9eee6536989 --log-opt max-size=10m --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-log-opt-stdin-clone",
+            "--hostname=f9eee6536989",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--log-opt",
+            "max-size=10m",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.LogConfig.Config": {
+                "max-size": "10m"
+              }
+            },
+            "expected": {
+              "HostConfig.LogConfig.Config": {
+                "max-size": "10m"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-log-opt-original --hostname=f9eee6536989 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --log-opt max-size=10m --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-log-opt-original --hostname=f9eee6536989 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --log-opt max-size=10m --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-log-opt"
+    },
+    {
+      "option_id": "mac-address",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-mac-address-container-name-clone",
+            "--hostname=ce977e3ff7fb",
+            "--mac-address=02:42:ac:11:00:ff",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.Networks.*.MacAddress": {
+                "bridge": "02:42:ac:11:00:ff"
+              }
+            },
+            "expected": {
+              "Config.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.Networks.*.MacAddress": {
+                "bridge": "02:42:ac:11:00:ff"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-mac-address-original --hostname=ce977e3ff7fb --mac-address=02:42:ac:11:00:ff --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-mac-address-original --hostname=ce977e3ff7fb --mac-address=02:42:ac:11:00:ff --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-mac-address-stdin-clone",
+            "--hostname=ce977e3ff7fb",
+            "--mac-address=02:42:ac:11:00:ff",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.Networks.*.MacAddress": {
+                "bridge": "02:42:ac:11:00:ff"
+              }
+            },
+            "expected": {
+              "Config.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.MacAddress": "02:42:ac:11:00:ff",
+              "NetworkSettings.Networks.*.MacAddress": {
+                "bridge": "02:42:ac:11:00:ff"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-mac-address-original --hostname=ce977e3ff7fb --mac-address=02:42:ac:11:00:ff --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-mac-address-original --hostname=ce977e3ff7fb --mac-address=02:42:ac:11:00:ff --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-mac-address"
+    },
+    {
+      "option_id": "memory-reservation",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-memory-reservation-container-name-clone",
+            "--hostname=ac2938d1f79e",
+            "--runtime=runc",
+            "--memory-reservation=33554432",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.MemoryReservation": 33554432
+            },
+            "expected": {
+              "HostConfig.MemoryReservation": 33554432
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-memory-reservation-original --hostname=ac2938d1f79e --runtime=runc --memory-reservation=33554432 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-memory-reservation-original --hostname=ac2938d1f79e --runtime=runc --memory-reservation=33554432 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-memory-reservation-stdin-clone",
+            "--hostname=ac2938d1f79e",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--memory-reservation=33554432",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.MemoryReservation": 33554432
+            },
+            "expected": {
+              "HostConfig.MemoryReservation": 33554432
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-memory-reservation-original --hostname=ac2938d1f79e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --memory-reservation=33554432 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-memory-reservation-original --hostname=ac2938d1f79e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --memory-reservation=33554432 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-memory-reservation"
+    },
+    {
+      "option_id": "memory",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-memory-container-name-clone",
+            "--hostname=e05d125efcc1",
+            "--runtime=runc",
+            "--memory=67108864",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Memory": 67108864
+            },
+            "expected": {
+              "HostConfig.Memory": 67108864
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-memory-original --hostname=e05d125efcc1 --runtime=runc --memory=67108864 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-memory-original --hostname=e05d125efcc1 --runtime=runc --memory=67108864 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-memory-stdin-clone",
+            "--hostname=e05d125efcc1",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--memory=67108864",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Memory": 67108864
+            },
+            "expected": {
+              "HostConfig.Memory": 67108864
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-memory-original --hostname=e05d125efcc1 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --memory=67108864 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-memory-original --hostname=e05d125efcc1 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --memory=67108864 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-memory"
+    },
+    {
+      "option_id": "mount",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-mount-container-name-clone",
+            "--hostname=b01c0936d23e",
+            "--mount",
+            "type=bind,source=/tmp,target=/runlike-mount,readonly",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/tmp",
+                  "Target": "/runlike-mount",
+                  "Type": "bind"
+                }
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-mount",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "expected": {
+              "HostConfig.Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/tmp",
+                  "Target": "/runlike-mount",
+                  "Type": "bind"
+                }
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-mount",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-mount-original --hostname=b01c0936d23e --mount type=bind,source=/tmp,target=/runlike-mount,readonly --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-mount-original --hostname=b01c0936d23e --mount type=bind,source=/tmp,target=/runlike-mount,readonly --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-mount-stdin-clone",
+            "--hostname=b01c0936d23e",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--mount",
+            "type=bind,source=/tmp,target=/runlike-mount,readonly",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/tmp",
+                  "Target": "/runlike-mount",
+                  "Type": "bind"
+                }
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-mount",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "expected": {
+              "HostConfig.Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/tmp",
+                  "Target": "/runlike-mount",
+                  "Type": "bind"
+                }
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-mount",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-mount-original --hostname=b01c0936d23e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --mount type=bind,source=/tmp,target=/runlike-mount,readonly --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-mount-original --hostname=b01c0936d23e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --mount type=bind,source=/tmp,target=/runlike-mount,readonly --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-mount"
+    },
+    {
+      "option_id": "name",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-name-container-name-clone",
+            "--hostname=3228d421e057",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {},
+            "expected": {},
+            "mismatches": [],
+            "passed": true,
+            "profile": "not-observable"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-name-original --hostname=3228d421e057 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-name-original --hostname=3228d421e057 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": [
+            {
+              "expected": "--name=runlike-probe-p0-name-original",
+              "passed": true,
+              "type": "contains"
+            }
+          ]
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-name-stdin-clone",
+            "--hostname=3228d421e057",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {},
+            "expected": {},
+            "mismatches": [],
+            "passed": true,
+            "profile": "not-observable"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-name-original --hostname=3228d421e057 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-name-original --hostname=3228d421e057 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": [
+            {
+              "expected": "--name=runlike-probe-p0-name-original",
+              "passed": true,
+              "type": "contains"
+            }
+          ]
+        }
+      },
+      "probe_id": "p0-name"
+    },
+    {
+      "option_id": "network",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-network-container-name-clone",
+            "--hostname=424b54caae2a",
+            "--network=runlike-probe-p0-network-net",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.NetworkMode": "runlike-probe-p0-network-net",
+              "NetworkSettings.Networks": {
+                "runlike-probe-p0-network-net": {
+                  "DNSNames": null,
+                  "DriverOpts": null,
+                  "IPAMConfig": null,
+                  "Links": null
+                }
+              }
+            },
+            "expected": {
+              "HostConfig.NetworkMode": "runlike-probe-p0-network-net",
+              "NetworkSettings.Networks": {
+                "runlike-probe-p0-network-net": {
+                  "DNSNames": null,
+                  "DriverOpts": null,
+                  "IPAMConfig": null,
+                  "Links": null
+                }
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-network-original --hostname=424b54caae2a --network=runlike-probe-p0-network-net --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-network-original --hostname=424b54caae2a --network=runlike-probe-p0-network-net --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-network-stdin-clone",
+            "--hostname=424b54caae2a",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--network=runlike-probe-p0-network-net",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.NetworkMode": "runlike-probe-p0-network-net",
+              "NetworkSettings.Networks": {
+                "runlike-probe-p0-network-net": {
+                  "DNSNames": null,
+                  "DriverOpts": null,
+                  "IPAMConfig": null,
+                  "Links": null
+                }
+              }
+            },
+            "expected": {
+              "HostConfig.NetworkMode": "runlike-probe-p0-network-net",
+              "NetworkSettings.Networks": {
+                "runlike-probe-p0-network-net": {
+                  "DNSNames": null,
+                  "DriverOpts": null,
+                  "IPAMConfig": null,
+                  "Links": null
+                }
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-network-original --hostname=424b54caae2a --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-network-net --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-network-original --hostname=424b54caae2a --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --network=runlike-probe-p0-network-net --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-network"
+    },
+    {
+      "option_id": "pid",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-pid-container-name-clone",
+            "--hostname=10e5063af849",
+            "--runtime=runc",
+            "--pid=host",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PidMode": "host"
+            },
+            "expected": {
+              "HostConfig.PidMode": "host"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-pid-original --hostname=10e5063af849 --runtime=runc --pid=host busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-pid-original --hostname=10e5063af849 --runtime=runc --pid=host busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-pid-stdin-clone",
+            "--hostname=10e5063af849",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--pid=host",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PidMode": "host"
+            },
+            "expected": {
+              "HostConfig.PidMode": "host"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-pid-original --hostname=10e5063af849 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --pid=host busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-pid-original --hostname=10e5063af849 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --pid=host busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-pid"
+    },
+    {
+      "option_id": "privileged",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-privileged-container-name-clone",
+            "--hostname=650f2adae873",
+            "--privileged",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Privileged": true
+            },
+            "expected": {
+              "HostConfig.Privileged": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-privileged-original --hostname=650f2adae873 --privileged --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-privileged-original --hostname=650f2adae873 --privileged --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-privileged-stdin-clone",
+            "--hostname=650f2adae873",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--privileged",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Privileged": true
+            },
+            "expected": {
+              "HostConfig.Privileged": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-privileged-original --hostname=650f2adae873 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --privileged --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-privileged-original --hostname=650f2adae873 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --privileged --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-privileged"
+    },
+    {
+      "option_id": "publish-all",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-publish-all-container-name-clone",
+            "--hostname=45431b75c88c",
+            "--publish-all",
+            "--expose=8083",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PublishAllPorts": true
+            },
+            "expected": {
+              "HostConfig.PublishAllPorts": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-publish-all-original --hostname=45431b75c88c --publish-all --expose=8083 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-publish-all-original --hostname=45431b75c88c --publish-all --expose=8083 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-publish-all-stdin-clone",
+            "--hostname=45431b75c88c",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--publish-all",
+            "--expose=8083",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PublishAllPorts": true
+            },
+            "expected": {
+              "HostConfig.PublishAllPorts": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-publish-all-original --hostname=45431b75c88c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --publish-all --expose=8083 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-publish-all-original --hostname=45431b75c88c --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --publish-all --expose=8083 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-publish-all"
+    },
+    {
+      "option_id": "publish",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-publish-container-name-clone",
+            "--hostname=d038eb189306",
+            "--expose=80",
+            "--publish=18080:80",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PortBindings": {
+                "80/tcp": [
+                  {
+                    "HostIp": "",
+                    "HostPort": "18080"
+                  }
+                ]
+              },
+              "NetworkSettings.Ports": {}
+            },
+            "expected": {
+              "HostConfig.PortBindings": {
+                "80/tcp": [
+                  {
+                    "HostIp": "",
+                    "HostPort": "18080"
+                  }
+                ]
+              },
+              "NetworkSettings.Ports": {}
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-publish-original --hostname=d038eb189306 --expose=80 --publish=18080:80 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-publish-original --hostname=d038eb189306 --expose=80 --publish=18080:80 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-publish-stdin-clone",
+            "--hostname=d038eb189306",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--expose=80",
+            "--publish=18080:80",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.PortBindings": {
+                "80/tcp": [
+                  {
+                    "HostIp": "",
+                    "HostPort": "18080"
+                  }
+                ]
+              },
+              "NetworkSettings.Ports": {}
+            },
+            "expected": {
+              "HostConfig.PortBindings": {
+                "80/tcp": [
+                  {
+                    "HostIp": "",
+                    "HostPort": "18080"
+                  }
+                ]
+              },
+              "NetworkSettings.Ports": {}
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-publish-original --hostname=d038eb189306 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --expose=80 --publish=18080:80 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-publish-original --hostname=d038eb189306 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --expose=80 --publish=18080:80 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-publish"
+    },
+    {
+      "option_id": "restart",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-restart-container-name-clone",
+            "--hostname=501337e0cfe7",
+            "--restart=on-failure:3",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.RestartPolicy": {
+                "MaximumRetryCount": 3,
+                "Name": "on-failure"
+              }
+            },
+            "expected": {
+              "HostConfig.RestartPolicy": {
+                "MaximumRetryCount": 3,
+                "Name": "on-failure"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "restart-policy"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-restart-original --hostname=501337e0cfe7 --restart=on-failure:3 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-restart-original --hostname=501337e0cfe7 --restart=on-failure:3 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-restart-stdin-clone",
+            "--hostname=501337e0cfe7",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--restart=on-failure:3",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.RestartPolicy": {
+                "MaximumRetryCount": 3,
+                "Name": "on-failure"
+              }
+            },
+            "expected": {
+              "HostConfig.RestartPolicy": {
+                "MaximumRetryCount": 3,
+                "Name": "on-failure"
+              }
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "restart-policy"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-restart-original --hostname=501337e0cfe7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --restart=on-failure:3 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-restart-original --hostname=501337e0cfe7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --restart=on-failure:3 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-restart"
+    },
+    {
+      "option_id": "rm",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "run",
+            "--name",
+            "runlike-probe-p0-rm-container-name-clone",
+            "--hostname=a73dc7bdef15",
+            "--mac-address=02:42:ac:11:00:02",
+            "--rm",
+            "--runtime=runc",
+            "--detach",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.AutoRemove": true
+            },
+            "expected": {
+              "HostConfig.AutoRemove": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-rm-original --hostname=a73dc7bdef15 --mac-address=02:42:ac:11:00:02 --rm --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --oom-score-adj",
+          "stderr_assertions": [],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --oom-score-adj"
+          ],
+          "stdout": "docker run --name=runlike-probe-p0-rm-original --hostname=a73dc7bdef15 --mac-address=02:42:ac:11:00:02 --rm --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "run",
+            "--name",
+            "runlike-probe-p0-rm-stdin-clone",
+            "--hostname=a73dc7bdef15",
+            "--mac-address=02:42:ac:11:00:02",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--rm",
+            "--runtime=runc",
+            "--detach",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.AutoRemove": true
+            },
+            "expected": {
+              "HostConfig.AutoRemove": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-rm-original --hostname=a73dc7bdef15 --mac-address=02:42:ac:11:00:02 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --rm --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --oom-score-adj",
+          "stderr_assertions": [],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --oom-score-adj"
+          ],
+          "stdout": "docker run --name=runlike-probe-p0-rm-original --hostname=a73dc7bdef15 --mac-address=02:42:ac:11:00:02 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --rm --runtime=runc --detach busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-rm"
+    },
+    {
+      "option_id": "runtime",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-runtime-container-name-clone",
+            "--hostname=ff5e112e38b7",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Runtime": "runc"
+            },
+            "expected": {
+              "HostConfig.Runtime": "runc"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-runtime-original --hostname=ff5e112e38b7 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-runtime-original --hostname=ff5e112e38b7 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-runtime-stdin-clone",
+            "--hostname=ff5e112e38b7",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Runtime": "runc"
+            },
+            "expected": {
+              "HostConfig.Runtime": "runc"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-runtime-original --hostname=ff5e112e38b7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-runtime-original --hostname=ff5e112e38b7 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-runtime"
+    },
+    {
+      "option_id": "shm-size",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-shm-size-container-name-clone",
+            "--hostname=c485ac16f459",
+            "--runtime=runc",
+            "--shm-size=134217728",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.ShmSize": 134217728
+            },
+            "expected": {
+              "HostConfig.ShmSize": 134217728
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-shm-size-original --hostname=c485ac16f459 --runtime=runc --shm-size=134217728 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-shm-size-original --hostname=c485ac16f459 --runtime=runc --shm-size=134217728 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-shm-size-stdin-clone",
+            "--hostname=c485ac16f459",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--shm-size=134217728",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.ShmSize": 134217728
+            },
+            "expected": {
+              "HostConfig.ShmSize": 134217728
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-shm-size-original --hostname=c485ac16f459 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --shm-size=134217728 busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-shm-size-original --hostname=c485ac16f459 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --shm-size=134217728 busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-shm-size"
+    },
+    {
+      "option_id": "tty",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-tty-container-name-clone",
+            "--hostname=03bed22035ef",
+            "--runtime=runc",
+            "--tty",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Tty": true
+            },
+            "expected": {
+              "Config.Tty": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-tty-original --hostname=03bed22035ef --runtime=runc --tty busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-tty-original --hostname=03bed22035ef --runtime=runc --tty busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-tty-stdin-clone",
+            "--hostname=03bed22035ef",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "--tty",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Tty": true
+            },
+            "expected": {
+              "Config.Tty": true
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-tty-original --hostname=03bed22035ef --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --tty busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-tty-original --hostname=03bed22035ef --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc --tty busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-tty"
+    },
+    {
+      "option_id": "user",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-user-container-name-clone",
+            "--hostname=fcd83578b3df",
+            "--user=1234:5678",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.User": "1234:5678"
+            },
+            "expected": {
+              "Config.User": "1234:5678"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-user-original --hostname=fcd83578b3df --user=1234:5678 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-user-original --hostname=fcd83578b3df --user=1234:5678 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-user-stdin-clone",
+            "--hostname=fcd83578b3df",
+            "--user=1234:5678",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.User": "1234:5678"
+            },
+            "expected": {
+              "Config.User": "1234:5678"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-user-original --hostname=fcd83578b3df --user=1234:5678 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-user-original --hostname=fcd83578b3df --user=1234:5678 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-user"
+    },
+    {
+      "option_id": "volume",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-volume-container-name-clone",
+            "--hostname=a24ab2bc594e",
+            "--volume=/tmp:/runlike-tmp:ro",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Volumes": null,
+              "HostConfig.Binds": [
+                "/tmp:/runlike-tmp:ro"
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-tmp",
+                  "Mode": "ro",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "expected": {
+              "Config.Volumes": null,
+              "HostConfig.Binds": [
+                "/tmp:/runlike-tmp:ro"
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-tmp",
+                  "Mode": "ro",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-volume-original --hostname=a24ab2bc594e --volume=/tmp:/runlike-tmp:ro --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-volume-original --hostname=a24ab2bc594e --volume=/tmp:/runlike-tmp:ro --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-volume-stdin-clone",
+            "--hostname=a24ab2bc594e",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--volume=/tmp:/runlike-tmp:ro",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.Volumes": null,
+              "HostConfig.Binds": [
+                "/tmp:/runlike-tmp:ro"
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-tmp",
+                  "Mode": "ro",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "expected": {
+              "Config.Volumes": null,
+              "HostConfig.Binds": [
+                "/tmp:/runlike-tmp:ro"
+              ],
+              "Mounts": [
+                {
+                  "Destination": "/runlike-tmp",
+                  "Mode": "ro",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-volume-original --hostname=a24ab2bc594e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --volume=/tmp:/runlike-tmp:ro --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-volume-original --hostname=a24ab2bc594e --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --volume=/tmp:/runlike-tmp:ro --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-volume"
+    },
+    {
+      "option_id": "volumes-from",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-volumes-from-container-name-clone",
+            "--hostname=7da65670023b",
+            "--volumes-from=runlike-probe-p0-volumes-from-source",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.VolumesFrom": [
+                "runlike-probe-p0-volumes-from-source"
+              ]
+            },
+            "expected": {
+              "HostConfig.VolumesFrom": [
+                "runlike-probe-p0-volumes-from-source"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-volumes-from-original --hostname=7da65670023b --volumes-from=runlike-probe-p0-volumes-from-source --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-volumes-from-original --hostname=7da65670023b --volumes-from=runlike-probe-p0-volumes-from-source --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-volumes-from-stdin-clone",
+            "--hostname=7da65670023b",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--volumes-from=runlike-probe-p0-volumes-from-source",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.VolumesFrom": [
+                "runlike-probe-p0-volumes-from-source"
+              ]
+            },
+            "expected": {
+              "HostConfig.VolumesFrom": [
+                "runlike-probe-p0-volumes-from-source"
+              ]
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-volumes-from-original --hostname=7da65670023b --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --volumes-from=runlike-probe-p0-volumes-from-source --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-volumes-from-original --hostname=7da65670023b --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --volumes-from=runlike-probe-p0-volumes-from-source --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-volumes-from"
+    },
+    {
+      "option_id": "workdir",
+      "passed": true,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-workdir-container-name-clone",
+            "--hostname=4cc38c0f4b93",
+            "--workdir=/tmp",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.WorkingDir": "/tmp"
+            },
+            "expected": {
+              "Config.WorkingDir": "/tmp"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-workdir-original --hostname=4cc38c0f4b93 --workdir=/tmp --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-workdir-original --hostname=4cc38c0f4b93 --workdir=/tmp --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p0-workdir-stdin-clone",
+            "--hostname=4cc38c0f4b93",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--workdir=/tmp",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "Config.WorkingDir": "/tmp"
+            },
+            "expected": {
+              "Config.WorkingDir": "/tmp"
+            },
+            "mismatches": [],
+            "passed": true,
+            "profile": "inspect-projection"
+          },
+          "passed": true,
+          "rendered_command": "docker run --name=runlike-probe-p0-workdir-original --hostname=4cc38c0f4b93 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --workdir=/tmp --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "passed",
+          "stderr": "",
+          "stderr_assertions": [],
+          "stderr_lines": [],
+          "stdout": "docker run --name=runlike-probe-p0-workdir-original --hostname=4cc38c0f4b93 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --workdir=/tmp --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p0-workdir"
+    },
+    {
+      "option_id": "init",
+      "passed": false,
+      "paths": {
+        "container_name": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p1-init-warning-container-name-clone",
+            "--hostname=445f97c9d830",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Init": null
+            },
+            "expected": {
+              "HostConfig.Init": true
+            },
+            "mismatches": [
+              {
+                "actual": null,
+                "expected": true,
+                "field": "HostConfig.Init"
+              }
+            ],
+            "passed": false,
+            "profile": "inspect-projection"
+          },
+          "passed": false,
+          "rendered_command": "docker run --name=runlike-probe-p1-init-warning-original --hostname=445f97c9d830 --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "failed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --init",
+          "stderr_assertions": [
+            {
+              "expected": "unsupported Docker option-states detected: --init",
+              "passed": true,
+              "type": "contains"
+            }
+          ],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --init"
+          ],
+          "stdout": "docker run --name=runlike-probe-p1-init-warning-original --hostname=445f97c9d830 --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        },
+        "stdin": {
+          "clone_create_command": [
+            "docker",
+            "container",
+            "create",
+            "--name",
+            "runlike-probe-p1-init-warning-stdin-clone",
+            "--hostname=445f97c9d830",
+            "--env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "--runtime=runc",
+            "busybox",
+            "sh",
+            "-c",
+            "sleep 600"
+          ],
+          "compare": {
+            "actual": {
+              "HostConfig.Init": null
+            },
+            "expected": {
+              "HostConfig.Init": true
+            },
+            "mismatches": [
+              {
+                "actual": null,
+                "expected": true,
+                "field": "HostConfig.Init"
+              }
+            ],
+            "passed": false,
+            "profile": "inspect-projection"
+          },
+          "passed": false,
+          "rendered_command": "docker run --name=runlike-probe-p1-init-warning-original --hostname=445f97c9d830 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "status": "failed",
+          "stderr": "runlike: warning: unsupported Docker option-states detected: --init",
+          "stderr_assertions": [
+            {
+              "expected": "unsupported Docker option-states detected: --init",
+              "passed": true,
+              "type": "contains"
+            }
+          ],
+          "stderr_lines": [
+            "runlike: warning: unsupported Docker option-states detected: --init"
+          ],
+          "stdout": "docker run --name=runlike-probe-p1-init-warning-original --hostname=445f97c9d830 --env=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --runtime=runc busybox sh -c 'sleep 600'",
+          "stdout_assertions": []
+        }
+      },
+      "probe_id": "p1-init-warning"
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "failed": 1,
+    "passed": 39,
+    "total": 40
+  }
+}
