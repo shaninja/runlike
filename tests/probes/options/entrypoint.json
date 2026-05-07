@@ -1,0 +1,13 @@
+{
+  "command": [
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--entrypoint",
+    "/bin/sh"
+  ],
+  "id": "option-entrypoint",
+  "image": "busybox",
+  "option_id": "entrypoint"
+}

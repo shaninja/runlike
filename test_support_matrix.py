@@ -63,7 +63,7 @@ def test_support_matrix_records_one_status_row_per_option_path():
     ]
     probes = [
         {
-            "id": "p0-env",
+            "id": "option-env",
             "option_id": "env",
             "paths": ["container_name", "stdin"],
         },
@@ -76,7 +76,7 @@ def test_support_matrix_records_one_status_row_per_option_path():
         },
         "results": [
             {
-                "probe_id": "p0-env",
+                "probe_id": "option-env",
                 "passed": False,
                 "paths": {
                     "container_name": {
@@ -266,11 +266,11 @@ def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
             dictionary_entry("env"),
             dictionary_entry("gpus", priority="P2", scope="blocked_by_runner"),
         ],
-        [{"id": "p0-env", "option_id": "env"}],
+        [{"id": "option-env", "option_id": "env"}],
         {
             "results": [
                 {
-                    "probe_id": "p0-env",
+                    "probe_id": "option-env",
                     "paths": {
                         "container_name": {
                             "compare": {"passed": True},

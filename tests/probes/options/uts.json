@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--uts",
+    "host"
+  ],
+  "id": "option-uts",
+  "image": "busybox",
+  "option_id": "uts"
+}

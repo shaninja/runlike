@@ -224,7 +224,7 @@ def write_probe_work_ledger(path, ledger):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="Build the Phase 5 per-option probe work ledger.")
+        description="Build the per-option probe work ledger.")
     parser.add_argument(
         "--dictionary",
         default=DEFAULT_DICTIONARY_PATH,

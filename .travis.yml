@@ -21,7 +21,7 @@ before_script:
 script:
   - make test
   - make check-generated
-  - make test-probes-p0
+  - make test-probes-options
 after_failure:
   - ./inspect_fixtures.sh
 after_success:

@@ -57,26 +57,28 @@ def build_checks(root=ROOT):
     probes = ledger_module.load_probe_definitions([
         root / "tests" / "probes",
     ])
+    probe_results = ledger_module.load_probe_results(probe_results_path)
     ledger = ledger_module.build_probe_work_ledger(
         dictionary_entries,
-        probes)
+        probes,
+        probe_results)
 
     matrix_dictionary_entries = matrix_module.load_dictionary_entries(
         root / "spec" / "option-dictionary")
     matrix_probes = matrix_module.load_probe_definitions([
         root / "tests" / "probes",
     ])
-    probe_results = matrix_module.load_probe_results(probe_results_path)
+    matrix_probe_results = matrix_module.load_probe_results(probe_results_path)
     matrix = matrix_module.build_support_matrix(
         matrix_dictionary_entries,
         matrix_probes,
-        probe_results,
+        matrix_probe_results,
         target=matrix_module.load_target(root / "spec" / "current-target.json"))
 
     return [
         {
             "expected": _json_dump(build_expected_probe_results(
-                probe_results,
+                matrix_probe_results,
                 matrix_probes,
                 root)),
             "path": root / "generated" / "probe-results.json",

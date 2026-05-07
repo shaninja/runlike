@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--link-local-ip",
+    "169.254.42.42"
+  ],
+  "id": "option-link-local-ip",
+  "image": "busybox",
+  "option_id": "link-local-ip"
+}

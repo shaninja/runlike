@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--cpuset-cpus",
+    "0"
+  ],
+  "id": "option-cpuset-cpus",
+  "image": "busybox",
+  "option_id": "cpuset-cpus"
+}

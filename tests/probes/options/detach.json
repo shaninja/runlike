@@ -1,0 +1,15 @@
+{
+  "clone_lifecycle": "run",
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--detach"
+  ],
+  "id": "option-detach",
+  "image": "busybox",
+  "option_id": "detach",
+  "original_lifecycle": "run"
+}

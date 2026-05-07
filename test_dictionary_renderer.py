@@ -218,3 +218,119 @@ def test_attach_streams_preserve_explicit_stdin_stdout_stderr_set():
     assert "--attach stdin" in command
     assert "--attach stdout" in command
     assert "--attach stderr" in command
+
+
+def test_normalized_model_resolves_p1_values_from_inspect():
+    facts = minimal_inspect_facts(
+        host_config={
+            "CpuPeriod": 100000,
+            "CpuQuota": 50000,
+            "GroupAdd": ["1001"],
+            "Healthcheck": None,
+            "Init": True,
+            "MemorySwap": 134217728,
+            "MemorySwappiness": 10,
+            "NanoCpus": 1500000000,
+            "ReadonlyRootfs": True,
+            "Tmpfs": {
+                "/run": "rw,size=64k",
+            },
+            "Ulimits": [{
+                "Hard": 2048,
+                "Name": "nofile",
+                "Soft": 1024,
+            }],
+        },
+        config={
+            "Domainname": "example.test",
+            "Healthcheck": {
+                "Interval": 5000000000,
+                "Retries": 3,
+                "StartPeriod": 2000000000,
+                "Test": ["CMD-SHELL", "echo ok"],
+                "Timeout": 1000000000,
+            },
+        })
+
+    model = build_normalized_model(facts)
+
+    assert model.value_for("cpu-period") == 100000
+    assert model.value_for("cpu-quota") == 50000
+    assert model.value_for("cpus") == "1.5"
+    assert model.value_for("domainname") == "example.test"
+    assert model.value_for("group-add") == ["1001"]
+    assert model.value_for("health-cmd") == "echo ok"
+    assert model.value_for("health-interval") == "5000000000ns"
+    assert model.value_for("health-retries") == 3
+    assert model.value_for("health-start-period") == "2000000000ns"
+    assert model.value_for("health-timeout") == "1000000000ns"
+    assert model.value_for("init") is True
+    assert model.value_for("memory-swap") == 134217728
+    assert model.value_for("memory-swappiness") == 10
+    assert model.value_for("read-only") is True
+    assert model.value_for("tmpfs") == ["/run:rw,size=64k"]
+    assert model.value_for("ulimit") == ["nofile=1024:2048"]
+
+
+def test_dictionary_renderer_includes_supported_p1_options():
+    facts = minimal_inspect_facts(
+        host_config={
+            "CpuPeriod": 100000,
+            "CpuQuota": 50000,
+            "GroupAdd": ["1001"],
+            "Init": True,
+            "MemorySwap": 134217728,
+            "MemorySwappiness": 10,
+            "NanoCpus": 1500000000,
+            "ReadonlyRootfs": True,
+            "Tmpfs": {
+                "/run": "rw,size=64k",
+            },
+            "Ulimits": [{
+                "Hard": 2048,
+                "Name": "nofile",
+                "Soft": 1024,
+            }],
+        },
+        config={
+            "Domainname": "example.test",
+            "Healthcheck": {
+                "Interval": 5000000000,
+                "Retries": 3,
+                "StartPeriod": 2000000000,
+                "Test": ["CMD-SHELL", "echo ok"],
+                "Timeout": 1000000000,
+            },
+        })
+    model = build_normalized_model(facts)
+
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert "--domainname=example.test" in tokens
+    assert "--group-add=1001" in tokens
+    assert "--init" in tokens
+    assert "--read-only" in tokens
+    assert "--health-cmd=echo ok" in tokens
+    assert "--health-interval=5000000000ns" in tokens
+    assert "--health-retries=3" in tokens
+    assert "--health-start-period=2000000000ns" in tokens
+    assert "--health-timeout=1000000000ns" in tokens
+    assert "--cpu-period=100000" in tokens
+    assert "--cpu-quota=50000" in tokens
+    assert "--cpus=1.5" in tokens
+    assert "--memory-swap=134217728" in tokens
+    assert "--memory-swappiness=10" not in tokens
+    assert "--tmpfs=/run:rw,size=64k" in tokens
+    assert "--ulimit=nofile=1024:2048" in tokens
+
+
+def test_hostname_is_not_rendered_with_host_uts_mode():
+    facts = minimal_inspect_facts(host_config={
+        "UTSMode": "host",
+    })
+    model = build_normalized_model(facts)
+
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert "--uts=host" in tokens
+    assert "--hostname=fixture-host" not in tokens

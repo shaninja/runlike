@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--ulimit",
+    "nofile=1024:2048"
+  ],
+  "id": "option-ulimit",
+  "image": "busybox",
+  "option_id": "ulimit"
+}

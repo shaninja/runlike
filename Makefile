@@ -22,9 +22,9 @@ push: rebuild
 test:
 	poetry run pytest
 
-.PHONY: test-probes-p0
-test-probes-p0:
-	poetry run python tools/run_probes.py tests/probes/p0 --output $${PROBE_RESULTS:-/tmp/runlike-p0-probe-results.json}
+.PHONY: test-probes-options
+test-probes-options:
+	poetry run python tools/run_probes.py tests/probes/options --output $${PROBE_RESULTS:-/tmp/runlike-option-probe-results.json}
 
 .PHONY: generate-probe-results
 generate-probe-results:
@@ -32,7 +32,7 @@ generate-probe-results:
 
 .PHONY: generate-support-artifacts
 generate-support-artifacts:
-	poetry run python tools/build_probe_work_ledger.py --output generated/probe-work-ledger.json
+	poetry run python tools/build_probe_work_ledger.py --probe-results generated/probe-results.json --output generated/probe-work-ledger.json
 	poetry run python tools/build_support_matrix.py
 
 .PHONY: refresh-support-artifacts
