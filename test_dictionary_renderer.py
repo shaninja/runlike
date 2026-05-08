@@ -324,6 +324,39 @@ def test_dictionary_renderer_includes_supported_p1_options():
     assert "--ulimit=nofile=1024:2048" in tokens
 
 
+def test_no_healthcheck_suppresses_other_health_flags():
+    facts = minimal_inspect_facts(config={
+        "Healthcheck": {
+            "Interval": 5000000000,
+            "Retries": 3,
+            "Test": ["NONE"],
+            "Timeout": 1000000000,
+        },
+    })
+    model = build_normalized_model(facts)
+
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert "--no-healthcheck" in tokens
+    assert "--health-interval=5000000000ns" not in tokens
+    assert "--health-retries=3" not in tokens
+    assert "--health-timeout=1000000000ns" not in tokens
+
+
+def test_exec_form_healthcheck_is_not_rendered_as_shell_form():
+    facts = minimal_inspect_facts(config={
+        "Healthcheck": {
+            "Test": ["CMD", "test", "-f", "/tmp/has space"],
+        },
+    })
+    model = build_normalized_model(facts)
+
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert model.value_for("health-cmd") is None
+    assert "--health-cmd=test -f /tmp/has space" not in tokens
+
+
 def test_hostname_is_not_rendered_with_host_uts_mode():
     facts = minimal_inspect_facts(host_config={
         "UTSMode": "host",

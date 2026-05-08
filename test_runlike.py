@@ -91,6 +91,26 @@ class TestCompatibilityDefaults(unittest.TestCase):
                     "docker run --name=fixture_container --hostname=fixture "
                     "--env=SUPPORTED=1 --detach fixture_image")))
 
+    def test_warning_engine_reports_unrendered_exec_form_healthcheck(self):
+        facts = minimal_inspect_facts({}, config={
+            "Healthcheck": {
+                "Test": ["CMD", "test", "-f", "/tmp/has space"],
+            },
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--health-cmd",
+            ],
+            engine.warning_lines(
+                facts,
+                "stdin",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--detach fixture_image")))
+
     def test_warning_engine_ignores_rendered_options_and_default_values(self):
         facts = minimal_inspect_facts({
             "CgroupnsMode": "private",

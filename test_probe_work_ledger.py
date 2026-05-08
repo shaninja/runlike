@@ -21,11 +21,19 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
         "container_name": "detectable",
         "stdin": "detectable",
     }
+    reason = None
     if scope == "out_of_scope":
         path_coverage = {
             "container_name": "client_side_only",
             "stdin": "client_side_only",
         }
+        reason = "client_side_only"
+    elif scope == "blocked_by_runner":
+        path_coverage = {
+            "container_name": "runner_blocked",
+            "stdin": "runner_blocked",
+        }
+        reason = "needs_special_runner"
 
     return {
         "id": entry_id,
@@ -33,10 +41,10 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
         "priority": priority,
         "scope": {
             "classification": scope,
-            "reason": "client_side_only" if scope == "out_of_scope" else None,
+            "reason": reason,
         },
         "warning_behavior": {
-            "warn_when_detected_unsupported": scope == "in_scope",
+            "warn_when_detected_unsupported": scope != "out_of_scope",
         },
     }
 
@@ -45,13 +53,20 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
     module = load_ledger_module()
     entries = [
         dictionary_entry("env"),
+        dictionary_entry("gpus", priority="P2", scope="blocked_by_runner"),
         dictionary_entry("help", priority="not_applicable", scope="out_of_scope"),
         dictionary_entry("label"),
+        dictionary_entry("name"),
     ]
     probes = [
         {
             "id": "option-env",
             "option_id": "env",
+            "paths": ["container_name", "stdin"],
+        },
+        {
+            "id": "option-name",
+            "option_id": "name",
             "paths": ["container_name", "stdin"],
         },
     ]
@@ -73,6 +88,22 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
                     },
                 },
             },
+            {
+                "probe_id": "option-name",
+                "passed": True,
+                "paths": {
+                    "container_name": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                    "stdin": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                },
+            },
         ],
     }
 
@@ -83,8 +114,8 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
         "failed": 1,
         "missing_probe": 1,
         "not_applicable": 1,
-        "passed": 0,
-        "runner_blocked": 0,
+        "passed": 1,
+        "runner_blocked": 1,
     }
     assert ledger["entries"] == [
         {
@@ -106,6 +137,24 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
                 "reason": None,
             },
             "support_status": "partial",
+            "warning_expectation": True,
+        },
+        {
+            "comparison_results": {},
+            "option_id": "gpus",
+            "path_coverage": {
+                "container_name": "runner_blocked",
+                "stdin": "runner_blocked",
+            },
+            "priority": "P2",
+            "probe_ids": [],
+            "probe_status": "runner_blocked",
+            "remaining_work": [],
+            "scope": {
+                "classification": "blocked_by_runner",
+                "reason": "needs_special_runner",
+            },
+            "support_status": "blocked_by_runner",
             "warning_expectation": True,
         },
         {
@@ -143,6 +192,27 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
             },
             "support_status": "unsupported",
             "warning_expectation": True,
+        },
+        {
+            "comparison_results": {
+                "container_name": "passed",
+                "stdin": "passed",
+            },
+            "option_id": "name",
+            "path_coverage": {
+                "container_name": "detectable",
+                "stdin": "detectable",
+            },
+            "priority": "P0",
+            "probe_ids": ["option-name"],
+            "probe_status": "passed",
+            "remaining_work": [],
+            "scope": {
+                "classification": "in_scope",
+                "reason": None,
+            },
+            "support_status": "supported",
+            "warning_expectation": False,
         },
     ]
 

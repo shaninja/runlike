@@ -143,6 +143,12 @@ def _support_status(scope_classification, probe_status, comparison_results):
     return "unsupported"
 
 
+def _warning_expectation(dictionary_entry, support_status):
+    if support_status in ("out_of_scope", "supported"):
+        return False
+    return dictionary_entry["warning_behavior"]["warn_when_detected_unsupported"]
+
+
 def _remaining_work(probe_status, comparison_results):
     if probe_status in ("not_applicable", "passed", "runner_blocked"):
         return []
@@ -189,6 +195,10 @@ def build_probe_work_ledger(dictionary_entries, probes, probe_results=None):
             probe_ids,
             results_by_probe_id)
 
+        support_status = _support_status(
+            scope_classification,
+            probe_status,
+            comparison_results)
         ledger_entries.append({
             "comparison_results": comparison_results,
             "option_id": option_id,
@@ -198,12 +208,10 @@ def build_probe_work_ledger(dictionary_entries, probes, probe_results=None):
             "probe_status": probe_status,
             "remaining_work": _remaining_work(probe_status, comparison_results),
             "scope": scope,
-            "support_status": _support_status(
-                scope_classification,
-                probe_status,
-                comparison_results),
-            "warning_expectation": dictionary_entry[
-                "warning_behavior"]["warn_when_detected_unsupported"],
+            "support_status": support_status,
+            "warning_expectation": _warning_expectation(
+                dictionary_entry,
+                support_status),
         })
 
     return {

@@ -131,6 +131,10 @@ class DictionaryRenderer(object):
             entry = self.entries_by_id.get(option_id)
             if entry is None or not self._entry_is_renderable(entry):
                 continue
+            if (
+                    option_id.startswith("health-")
+                    and model.value_for("no-healthcheck")):
+                continue
             value = model.value_for(option_id)
             if self._empty_value(value):
                 continue

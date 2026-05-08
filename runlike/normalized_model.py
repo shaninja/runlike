@@ -338,9 +338,11 @@ class NormalizedModelBuilder(object):
         if isinstance(test, list) and test and test[0] == "NONE":
             return None
         if isinstance(test, list):
-            if test and test[0] in ("CMD", "CMD-SHELL"):
+            if test and test[0] == "CMD-SHELL":
                 return " ".join(str(part) for part in test[1:])
-            return " ".join(str(part) for part in test)
+            if test and test[0] == "CMD":
+                return None
+            return None
         return test
 
     def _resolve_health_interval(self, entry):

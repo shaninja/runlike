@@ -306,8 +306,28 @@ class UnsupportedOptionWarningEngine(object):
         if can_resolve_entry is None:
             return True
         if can_resolve_entry(entry):
+            if entry["id"] == "health-cmd":
+                return (
+                    entry["id"] in model.option_values
+                    or self._health_cmd_exec_form_is_detected(
+                        entry,
+                        facts,
+                        image_facts=image_facts))
             return entry["id"] in model.option_values
         return True
+
+    def _health_cmd_exec_form_is_detected(
+            self,
+            entry,
+            facts,
+            image_facts=None):
+        for path in entry.get("inspect_fields", []):
+            for value in _fact_values(facts, path):
+                if self._is_image_inherited(path, value, image_facts):
+                    continue
+                if isinstance(value, list) and value and value[0] == "CMD":
+                    return True
+        return False
 
     def _healthcheck_none_is_detected(self, entry, facts, image_facts=None):
         for path in entry.get("inspect_fields", []):
