@@ -22,8 +22,8 @@
   ],
   "observability": "observable",
   "path_coverage": {
-    "container_name": "detectable",
-    "stdin": "detectable"
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
   },
   "priority": "P1",
   "render_profile": {
@@ -33,10 +33,10 @@
     "value_type": "bytes"
   },
   "scope": {
-    "classification": "in_scope",
-    "reason": null
+    "classification": "blocked_by_runner",
+    "reason": "needs_cgroup_v1_kernel_memory_accounting"
   },
   "warning_behavior": {
-    "warn_when_detected_unsupported": true
+    "warn_when_detected_unsupported": false
   }
 }

@@ -12,17 +12,24 @@ except ValueError:
 RENDER_ORDER = [
     "name",
     "hostname",
+    "domainname",
     "user",
+    "group-add",
     "mac-address",
     "env",
     "volume",
+    "volume-driver",
     "volumes-from",
     "cap-add",
     "cap-drop",
+    "security-opt",
     "dns",
+    "dns-option",
+    "dns-search",
     "network",
     "ip",
     "ip6",
+    "link-local-ip",
     "privileged",
     "rm",
     "publish-all",
@@ -31,22 +38,53 @@ RENDER_ORDER = [
     "entrypoint",
     "workdir",
     "expose",
+    "health-cmd",
+    "health-interval",
+    "health-retries",
+    "health-start-interval",
+    "health-start-period",
+    "health-timeout",
+    "no-healthcheck",
     "publish",
     "link",
     "restart",
     "device",
     "mount",
+    "tmpfs",
     "label",
     "log-driver",
     "log-opt",
     "add-host",
     "runtime",
+    "init",
+    "read-only",
+    "annotation",
+    "blkio-weight",
+    "cgroup-parent",
+    "cgroupns",
+    "cpu-period",
+    "cpu-quota",
+    "cpu-shares",
+    "cpus",
     "cpuset-cpus",
     "cpuset-mems",
     "memory",
     "memory-reservation",
+    "memory-swap",
+    "memory-swappiness",
+    "kernel-memory",
+    "oom-kill-disable",
+    "oom-score-adj",
     "pid",
+    "ipc",
+    "pids-limit",
     "shm-size",
+    "stop-signal",
+    "stop-timeout",
+    "sysctl",
+    "ulimit",
+    "userns",
+    "uts",
     "detach",
     "tty",
 ]
@@ -93,6 +131,10 @@ class DictionaryRenderer(object):
             entry = self.entries_by_id.get(option_id)
             if entry is None or not self._entry_is_renderable(entry):
                 continue
+            if (
+                    option_id.startswith("health-")
+                    and model.value_for("no-healthcheck")):
+                continue
             value = model.value_for(option_id)
             if self._empty_value(value):
                 continue
@@ -100,7 +142,7 @@ class DictionaryRenderer(object):
         return tokens
 
     def _entry_is_renderable(self, entry):
-        if entry.get("priority") != "P0":
+        if entry.get("priority") not in ("P0", "P1"):
             return False
         if entry.get("scope", {}).get("classification") != "in_scope":
             return False

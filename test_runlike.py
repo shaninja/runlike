@@ -91,6 +91,26 @@ class TestCompatibilityDefaults(unittest.TestCase):
                     "docker run --name=fixture_container --hostname=fixture "
                     "--env=SUPPORTED=1 --detach fixture_image")))
 
+    def test_warning_engine_reports_unrendered_exec_form_healthcheck(self):
+        facts = minimal_inspect_facts({}, config={
+            "Healthcheck": {
+                "Test": ["CMD", "test", "-f", "/tmp/has space"],
+            },
+        })
+        engine = UnsupportedOptionWarningEngine()
+
+        self.assertEqual(
+            [
+                "runlike: warning: unsupported Docker option-states detected: "
+                "--health-cmd",
+            ],
+            engine.warning_lines(
+                facts,
+                "stdin",
+                rendered_command=(
+                    "docker run --name=fixture_container --hostname=fixture "
+                    "--detach fixture_image")))
+
     def test_warning_engine_ignores_rendered_options_and_default_values(self):
         facts = minimal_inspect_facts({
             "CgroupnsMode": "private",
@@ -336,7 +356,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
                     "docker run --name=fixture_container --hostname=fixture "
                     "--detach fixture_image")))
 
-    def test_cli_writes_unsupported_option_warnings_to_stderr_only(self):
+    def test_cli_renders_supported_p1_options_without_warning(self):
         runner = CliRunner(mix_stderr=False)
         facts = minimal_inspect_facts({
             "Init": True,
@@ -345,10 +365,9 @@ class TestCompatibilityDefaults(unittest.TestCase):
         result = runner.invoke(cli, ["--stdin"], input=dumps(facts))
 
         self.assertEqual(0, result.exit_code)
-        self.assertEqual(
-            "runlike: warning: unsupported Docker option-states detected: --init\n",
-            result.stderr)
+        self.assertEqual("", result.stderr)
         self.assertTrue(result.stdout.startswith("docker run "))
+        self.assertIn("--init", result.stdout)
         self.assertNotIn("warning:", result.stdout)
 
     def test_default_bridge_network_is_not_rendered(self):
@@ -534,7 +553,7 @@ class TestCompatibilityDefaults(unittest.TestCase):
             output)
 
 
-@unittest.skip("Legacy live fixture suite replaced by Phase 5 focused probes.")
+@unittest.skip("Legacy live fixture suite replaced by focused probes.")
 class TestInspection(unittest.TestCase):
 
     @classmethod

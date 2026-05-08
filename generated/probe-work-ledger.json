@@ -1,7 +1,10 @@
 {
   "entries": [
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "add-host",
       "path_coverage": {
         "container_name": "detectable",
@@ -9,41 +12,45 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-add-host"
+        "option-add-host"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "annotation",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-annotation"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "attach",
       "path_coverage": {
         "container_name": "detectable",
@@ -51,38 +58,39 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-attach"
+        "option-attach"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "blkio-weight",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-blkio-weight"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -103,7 +111,10 @@
       "warning_expectation": true
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cap-add",
       "path_coverage": {
         "container_name": "detectable",
@@ -111,21 +122,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-cap-add"
+        "option-cap-add"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cap-drop",
       "path_coverage": {
         "container_name": "detectable",
@@ -133,58 +145,62 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-cap-drop"
+        "option-cap-drop"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cgroup-parent",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cgroup-parent"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cgroupns",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cgroupns"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -241,44 +257,50 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpu-period",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cpu-period"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpu-quota",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cpu-quota"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -317,47 +339,56 @@
       "warning_expectation": true
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpu-shares",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cpu-shares"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpus",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-cpus"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpuset-cpus",
       "path_coverage": {
         "container_name": "detectable",
@@ -365,21 +396,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-cpuset-cpus"
+        "option-cpuset-cpus"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "cpuset-mems",
       "path_coverage": {
         "container_name": "detectable",
@@ -387,21 +419,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-cpuset-mems"
+        "option-cpuset-mems"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "detach",
       "path_coverage": {
         "container_name": "detectable",
@@ -409,18 +442,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-detach"
+        "option-detach"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -441,7 +472,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "device",
       "path_coverage": {
         "container_name": "detectable",
@@ -449,18 +483,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-device"
+        "option-device"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -571,7 +603,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "dns",
       "path_coverage": {
         "container_name": "detectable",
@@ -579,81 +614,91 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-dns"
+        "option-dns"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "dns-option",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-dns-option"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "dns-search",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-dns-search"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "domainname",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-domainname"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "entrypoint",
       "path_coverage": {
         "container_name": "detectable",
@@ -661,21 +706,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-entrypoint"
+        "option-entrypoint"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "env",
       "path_coverage": {
         "container_name": "detectable",
@@ -683,18 +729,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-env"
+        "option-env"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -715,7 +759,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "expose",
       "path_coverage": {
         "container_name": "detectable",
@@ -723,18 +770,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-expose"
+        "option-expose"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -755,144 +800,165 @@
       "warning_expectation": true
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "group-add",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-group-add"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-cmd",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-cmd"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-interval",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-interval"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-retries",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-retries"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-start-interval",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-start-interval"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-start-period",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-start-period"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "health-timeout",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-health-timeout"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -913,7 +979,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "hostname",
       "path_coverage": {
         "container_name": "detectable",
@@ -921,21 +990,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-hostname"
+        "option-hostname"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "init",
       "path_coverage": {
         "container_name": "detectable",
@@ -943,21 +1013,22 @@
       },
       "priority": "P1",
       "probe_ids": [
-        "p1-init-warning"
+        "option-init"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "interactive",
       "path_coverage": {
         "container_name": "detectable",
@@ -965,18 +1036,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-interactive"
+        "option-interactive"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1015,7 +1084,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "ip",
       "path_coverage": {
         "container_name": "detectable",
@@ -1023,21 +1095,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-ip"
+        "option-ip"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "ip6",
       "path_coverage": {
         "container_name": "detectable",
@@ -1045,38 +1118,39 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-ip6"
+        "option-ip6"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "ipc",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-ipc"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1100,24 +1174,25 @@
       "comparison_results": {},
       "option_id": "kernel-memory",
       "path_coverage": {
-        "container_name": "detectable",
-        "stdin": "detectable"
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
       },
       "priority": "P1",
       "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
-      ],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
       "scope": {
-        "classification": "in_scope",
-        "reason": null
+        "classification": "blocked_by_runner",
+        "reason": "needs_cgroup_v1_kernel_memory_accounting"
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "blocked_by_runner",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "label",
       "path_coverage": {
         "container_name": "detectable",
@@ -1125,18 +1200,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-label"
+        "option-label"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1157,7 +1230,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "link",
       "path_coverage": {
         "container_name": "detectable",
@@ -1165,41 +1241,45 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-link"
+        "option-link"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "link-local-ip",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-link-local-ip"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "log-driver",
       "path_coverage": {
         "container_name": "detectable",
@@ -1207,21 +1287,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-log-driver"
+        "option-log-driver"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "log-opt",
       "path_coverage": {
         "container_name": "detectable",
@@ -1229,21 +1310,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-log-opt"
+        "option-log-opt"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "mac-address",
       "path_coverage": {
         "container_name": "detectable",
@@ -1251,21 +1333,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-mac-address"
+        "option-mac-address"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "memory",
       "path_coverage": {
         "container_name": "detectable",
@@ -1273,21 +1356,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-memory"
+        "option-memory"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "memory-reservation",
       "path_coverage": {
         "container_name": "detectable",
@@ -1295,61 +1379,63 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-memory-reservation"
+        "option-memory-reservation"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "memory-swap",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-memory-swap"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
       "option_id": "memory-swappiness",
       "path_coverage": {
-        "container_name": "detectable",
-        "stdin": "detectable"
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
       },
       "priority": "P1",
       "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
-      ],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
       "scope": {
-        "classification": "in_scope",
-        "reason": null
+        "classification": "blocked_by_runner",
+        "reason": "needs_cgroup_v1_memory_swappiness"
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "blocked_by_runner",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "mount",
       "path_coverage": {
         "container_name": "detectable",
@@ -1357,21 +1443,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-mount"
+        "option-mount"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "name",
       "path_coverage": {
         "container_name": "detectable",
@@ -1379,21 +1466,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-name"
+        "option-name"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "network",
       "path_coverage": {
         "container_name": "detectable",
@@ -1401,18 +1489,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-network"
+        "option-network"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1433,67 +1519,74 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "no-healthcheck",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-no-healthcheck"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
       "option_id": "oom-kill-disable",
       "path_coverage": {
-        "container_name": "detectable",
-        "stdin": "detectable"
+        "container_name": "runner_blocked",
+        "stdin": "runner_blocked"
       },
       "priority": "P1",
       "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
-      ],
+      "probe_status": "runner_blocked",
+      "remaining_work": [],
       "scope": {
-        "classification": "in_scope",
-        "reason": null
+        "classification": "blocked_by_runner",
+        "reason": "needs_kernel_oom_kill_disable_support"
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "blocked_by_runner",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "oom-score-adj",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-oom-score-adj"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "pid",
       "path_coverage": {
         "container_name": "detectable",
@@ -1501,38 +1594,39 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-pid"
+        "option-pid"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "pids-limit",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-pids-limit"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1553,7 +1647,10 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "privileged",
       "path_coverage": {
         "container_name": "detectable",
@@ -1561,21 +1658,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-privileged"
+        "option-privileged"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "publish",
       "path_coverage": {
         "container_name": "detectable",
@@ -1583,21 +1681,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-publish"
+        "option-publish"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "publish-all",
       "path_coverage": {
         "container_name": "detectable",
@@ -1605,18 +1704,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-publish-all"
+        "option-publish-all"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1655,27 +1752,33 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "read-only",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-read-only"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "restart",
       "path_coverage": {
         "container_name": "detectable",
@@ -1683,21 +1786,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-restart"
+        "option-restart"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "rm",
       "path_coverage": {
         "container_name": "detectable",
@@ -1705,21 +1809,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-rm"
+        "option-rm"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "runtime",
       "path_coverage": {
         "container_name": "detectable",
@@ -1727,41 +1832,45 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-runtime"
+        "option-runtime"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "security-opt",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-security-opt"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "shm-size",
       "path_coverage": {
         "container_name": "detectable",
@@ -1769,18 +1878,16 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-shm-size"
+        "option-shm-size"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1801,44 +1908,50 @@
       "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "stop-signal",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-stop-signal"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "stop-timeout",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-stop-timeout"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
       "comparison_results": {},
@@ -1859,47 +1972,56 @@
       "warning_expectation": true
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "sysctl",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-sysctl"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "tmpfs",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-tmpfs"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "tty",
       "path_coverage": {
         "container_name": "detectable",
@@ -1907,41 +2029,45 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-tty"
+        "option-tty"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "ulimit",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-ulimit"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "user",
       "path_coverage": {
         "container_name": "detectable",
@@ -1949,61 +2075,68 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-user"
+        "option-user"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "userns",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-userns"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "uts",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-uts"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "volume",
       "path_coverage": {
         "container_name": "detectable",
@@ -2011,41 +2144,45 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-volume"
+        "option-volume"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "volume-driver",
       "path_coverage": {
         "container_name": "detectable",
         "stdin": "detectable"
       },
       "priority": "P1",
-      "probe_ids": [],
-      "probe_status": "missing_probe",
-      "remaining_work": [
-        "Add focused probe definition."
+      "probe_ids": [
+        "option-volume-driver"
       ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "volumes-from",
       "path_coverage": {
         "container_name": "detectable",
@@ -2053,21 +2190,22 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-volumes-from"
+        "option-volumes-from"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     },
     {
-      "comparison_results": {},
+      "comparison_results": {
+        "container_name": "passed",
+        "stdin": "passed"
+      },
       "option_id": "workdir",
       "path_coverage": {
         "container_name": "detectable",
@@ -2075,27 +2213,25 @@
       },
       "priority": "P0",
       "probe_ids": [
-        "p0-workdir"
+        "option-workdir"
       ],
-      "probe_status": "defined_unrun",
-      "remaining_work": [
-        "Run focused probe definition."
-      ],
+      "probe_status": "passed",
+      "remaining_work": [],
       "scope": {
         "classification": "in_scope",
         "reason": null
       },
-      "support_status": "unsupported",
-      "warning_expectation": true
+      "support_status": "supported",
+      "warning_expectation": false
     }
   ],
   "schema_version": 1,
   "summary": {
-    "defined_unrun": 40,
+    "defined_unrun": 0,
     "failed": 0,
-    "missing_probe": 37,
+    "missing_probe": 0,
     "not_applicable": 16,
-    "passed": 0,
-    "runner_blocked": 10
+    "passed": 74,
+    "runner_blocked": 13
   }
 }

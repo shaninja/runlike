@@ -7,6 +7,7 @@ except ValueError:
 
 
 DEFAULT_FALSE_VALUES = set([None, "", False])
+NANO_CPUS_PER_CPU = 1000000000
 
 
 def _container_document(facts):
@@ -253,13 +254,31 @@ class NormalizedModelBuilder(object):
             return value in (None, "", "private")
         if option_id == "memory" or option_id == "memory-reservation":
             return value in (None, "", 0)
+        if option_id == "memory-swappiness":
+            return value in (None, "", -1)
         if option_id == "network":
             return value in (None, "", "default", "bridge")
+        if option_id == "pids-limit":
+            return value in (None, "", 0)
         if option_id == "restart":
             return not value or value == "no"
         if option_id == "shm-size":
             return value in (None, "", 0, 67108864)
         return _is_empty(value) or value == 0
+
+    def _format_duration_ns(self, value):
+        if value in (None, "", 0):
+            return None
+        return "%dns" % int(value)
+
+    def _resolve_annotation(self, entry):
+        annotations = []
+        for value in self._field_values(entry):
+            if not isinstance(value, dict):
+                continue
+            for key in sorted(value):
+                annotations.append("%s=%s" % (key, value[key]))
+        return sorted(set(annotations))
 
     def _resolve_name(self, entry):
         if self.model.no_name:
@@ -268,6 +287,11 @@ class NormalizedModelBuilder(object):
         if isinstance(name, str):
             return name.lstrip("/")
         return name
+
+    def _resolve_hostname(self, entry):
+        if self.model.get("HostConfig.UTSMode") == "host":
+            return None
+        return self._resolve_canonical_docker_flag(entry)
 
     def _resolve_attach(self, entry):
         stdin = self.model.get("Config.AttachStdin")
@@ -313,7 +337,29 @@ class NormalizedModelBuilder(object):
             return None
         if isinstance(test, list) and test and test[0] == "NONE":
             return None
+        if isinstance(test, list):
+            if test and test[0] == "CMD-SHELL":
+                return " ".join(str(part) for part in test[1:])
+            if test and test[0] == "CMD":
+                return None
+            return None
         return test
+
+    def _resolve_health_interval(self, entry):
+        return self._format_duration_ns(
+            self.model.get("Config.Healthcheck.Interval"))
+
+    def _resolve_health_start_interval(self, entry):
+        return self._format_duration_ns(
+            self.model.get("Config.Healthcheck.StartInterval"))
+
+    def _resolve_health_start_period(self, entry):
+        return self._format_duration_ns(
+            self.model.get("Config.Healthcheck.StartPeriod"))
+
+    def _resolve_health_timeout(self, entry):
+        return self._format_duration_ns(
+            self.model.get("Config.Healthcheck.Timeout"))
 
     def _resolve_no_healthcheck(self, entry):
         test = self.model.get("Config.Healthcheck.Test")
@@ -411,6 +457,17 @@ class NormalizedModelBuilder(object):
             return None
         return memory_swap
 
+    def _resolve_cpus(self, entry):
+        nano_cpus = self.model.get("HostConfig.NanoCpus")
+        if nano_cpus in (None, "", 0):
+            return None
+        nano_cpus = int(nano_cpus)
+        whole = nano_cpus // NANO_CPUS_PER_CPU
+        remainder = nano_cpus % NANO_CPUS_PER_CPU
+        if not remainder:
+            return str(whole)
+        return ("%d.%09d" % (whole, remainder)).rstrip("0")
+
     def _resolve_publish(self, entry):
         ports = self.model.get("NetworkSettings.Ports") or {}
         port_bindings = self.model.get("HostConfig.PortBindings") or {}
@@ -460,6 +517,34 @@ class NormalizedModelBuilder(object):
         for target in sorted(config_volumes):
             volumes.append(target)
         return _sorted_strings(volumes)
+
+    def _resolve_tmpfs(self, entry):
+        tmpfs = self.model.get("HostConfig.Tmpfs") or {}
+        if isinstance(tmpfs, list):
+            return _sorted_strings(tmpfs)
+        rendered = []
+        for target in sorted(tmpfs):
+            options = tmpfs[target]
+            if options:
+                rendered.append("%s:%s" % (target, options))
+            else:
+                rendered.append(target)
+        return rendered
+
+    def _resolve_ulimit(self, entry):
+        ulimits = self.model.get("HostConfig.Ulimits") or []
+        rendered = []
+        for ulimit in ulimits:
+            name = ulimit.get("Name")
+            if not name:
+                continue
+            soft = ulimit.get("Soft")
+            hard = ulimit.get("Hard")
+            if hard is None or hard == soft:
+                rendered.append("%s=%s" % (name, soft))
+            else:
+                rendered.append("%s=%s:%s" % (name, soft, hard))
+        return sorted(rendered)
 
     def _resolve_device(self, entry):
         devices = self.model.get("HostConfig.Devices") or []
