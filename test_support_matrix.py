@@ -357,15 +357,16 @@ def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
     assert markdown.startswith("# Runlike support matrix\n")
     assert (
         "Summary: 0 supported, 1 partial, 0 unsupported, "
-        "0 out of scope, 1 needs special runner."
+        "0 out of scope, 1 needs_special_runner."
     ) in markdown
     assert "| Option | Flag | Container name | Stdin | Scope | Reason | Notes |" in markdown
     assert "| Priority |" not in markdown
     assert "| env | `--env` | supported | unsupported | in_scope |  |  |" in markdown
     assert (
-        "| gpus | `--gpus` | needs special runner | needs special runner | "
-        "needs special runner | needs_gpu_runner |  |"
+        "| gpus | `--gpus` | needs_special_runner | needs_special_runner | "
+        "needs_special_runner | needs_gpu_runner |  |"
     ) in markdown
+    assert "needs special runner" not in markdown
     assert "blocked_by_runner" not in markdown
     assert "Generated from `generated/probe-results.json`" in markdown
 

@@ -4,7 +4,7 @@ Generated from `generated/probe-results.json`, `spec/option-dictionary/`, and `t
 
 Target: `linux-docker-25.0.5-api-1.44`.
 
-Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs special runner.
+Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs_special_runner.
 
 | Option | Flag | Container name | Stdin | Scope | Reason | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | annotation | `--annotation` | supported | supported | in_scope |  |  |
 | attach | `--attach` | supported | supported | in_scope |  |  |
 | blkio-weight | `--blkio-weight` | supported | supported | in_scope |  |  |
-| blkio-weight-device | `--blkio-weight-device` | needs special runner | needs special runner | needs special runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.<br>Future verification requires a runner with per-device block I/O weight support and a stable host block device path. |
+| blkio-weight-device | `--blkio-weight-device` | needs_special_runner | needs_special_runner | needs_special_runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.<br>Future verification requires a runner with per-device block I/O weight support and a stable host block device path. |
 | cap-add | `--cap-add` | supported | supported | in_scope |  |  |
 | cap-drop | `--cap-drop` | supported | supported | in_scope |  |  |
 | cgroup-parent | `--cgroup-parent` | supported | supported | in_scope |  |  |
@@ -22,8 +22,8 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | cpu-percent | `--cpu-percent` | out_of_scope | out_of_scope | out_of_scope | windows_only |  |
 | cpu-period | `--cpu-period` | supported | supported | in_scope |  |  |
 | cpu-quota | `--cpu-quota` | supported | supported | in_scope |  |  |
-| cpu-rt-period | `--cpu-rt-period` | needs special runner | needs special runner | needs special runner | needs_rt_runtime_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.<br>Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime. |
-| cpu-rt-runtime | `--cpu-rt-runtime` | needs special runner | needs special runner | needs special runner | needs_rt_runtime_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.<br>Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime. |
+| cpu-rt-period | `--cpu-rt-period` | needs_special_runner | needs_special_runner | needs_special_runner | needs_rt_runtime_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.<br>Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime. |
+| cpu-rt-runtime | `--cpu-rt-runtime` | needs_special_runner | needs_special_runner | needs_special_runner | needs_rt_runtime_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.<br>Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime. |
 | cpu-shares | `--cpu-shares` | supported | supported | in_scope |  |  |
 | cpus | `--cpus` | supported | supported | in_scope |  |  |
 | cpuset-cpus | `--cpuset-cpus` | supported | supported | in_scope |  |  |
@@ -32,10 +32,10 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | detach-keys | `--detach-keys` | out_of_scope | out_of_scope | out_of_scope | client_side_only |  |
 | device | `--device` | supported | supported | in_scope |  |  |
 | device-cgroup-rule | `--device-cgroup-rule` | supported | supported | in_scope |  | Supported on the standard pinned Docker 25 runner. The create/inspect probe stores HostConfig.DeviceCgroupRules and round-trips the same rule. |
-| device-read-bps | `--device-read-bps` | needs special runner | needs special runner | needs special runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-bps support, so HostConfig.BlkioDeviceReadBps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
-| device-read-iops | `--device-read-iops` | needs special runner | needs special runner | needs special runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-iops support, so HostConfig.BlkioDeviceReadIOps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
-| device-write-bps | `--device-write-bps` | needs special runner | needs special runner | needs special runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-bps support, so HostConfig.BlkioDeviceWriteBps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
-| device-write-iops | `--device-write-iops` | needs special runner | needs special runner | needs special runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-iops support, so HostConfig.BlkioDeviceWriteIOps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
+| device-read-bps | `--device-read-bps` | needs_special_runner | needs_special_runner | needs_special_runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-bps support, so HostConfig.BlkioDeviceReadBps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
+| device-read-iops | `--device-read-iops` | needs_special_runner | needs_special_runner | needs_special_runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-iops support, so HostConfig.BlkioDeviceReadIOps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
+| device-write-bps | `--device-write-bps` | needs_special_runner | needs_special_runner | needs_special_runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-bps support, so HostConfig.BlkioDeviceWriteBps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
+| device-write-iops | `--device-write-iops` | needs_special_runner | needs_special_runner | needs_special_runner | needs_special_host_device | Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-iops support, so HostConfig.BlkioDeviceWriteIOps is empty.<br>Future verification requires a runner with block I/O throttle support and a stable host block device path. |
 | disable-content-trust | `--disable-content-trust` | out_of_scope | out_of_scope | out_of_scope | client_side_only |  |
 | dns | `--dns` | supported | supported | in_scope |  |  |
 | dns-option | `--dns-option` | supported | supported | in_scope |  |  |
@@ -63,7 +63,7 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | ip6 | `--ip6` | supported | supported | in_scope |  |  |
 | ipc | `--ipc` | supported | supported | in_scope |  |  |
 | isolation | `--isolation` | out_of_scope | out_of_scope | out_of_scope | windows_only |  |
-| kernel-memory | `--kernel-memory` | needs special runner | needs special runner | needs special runner | needs_cgroup_v1_kernel_memory_accounting |  |
+| kernel-memory | `--kernel-memory` | needs_special_runner | needs_special_runner | needs_special_runner | needs_cgroup_v1_kernel_memory_accounting |  |
 | label | `--label` | supported | supported | in_scope |  |  |
 | label-file | `--label-file` | out_of_scope | out_of_scope | out_of_scope | non_observable_from_inspect |  |
 | link | `--link` | supported | supported | in_scope |  |  |
@@ -74,13 +74,13 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | memory | `--memory` | supported | supported | in_scope |  |  |
 | memory-reservation | `--memory-reservation` | supported | supported | in_scope |  |  |
 | memory-swap | `--memory-swap` | supported | supported | in_scope |  |  |
-| memory-swappiness | `--memory-swappiness` | needs special runner | needs special runner | needs special runner | needs_cgroup_v1_memory_swappiness |  |
+| memory-swappiness | `--memory-swappiness` | needs_special_runner | needs_special_runner | needs_special_runner | needs_cgroup_v1_memory_swappiness |  |
 | mount | `--mount` | supported | supported | in_scope |  |  |
 | name | `--name` | supported | supported | in_scope |  |  |
 | network | `--network` | supported | supported | in_scope |  |  |
 | network-alias | `--network-alias` | out_of_scope | out_of_scope | out_of_scope | docker_inspect_aliases_include_implicit_container_aliases |  |
 | no-healthcheck | `--no-healthcheck` | supported | supported | in_scope |  |  |
-| oom-kill-disable | `--oom-kill-disable` | needs special runner | needs special runner | needs special runner | needs_kernel_oom_kill_disable_support |  |
+| oom-kill-disable | `--oom-kill-disable` | needs_special_runner | needs_special_runner | needs_special_runner | needs_kernel_oom_kill_disable_support |  |
 | oom-score-adj | `--oom-score-adj` | supported | supported | in_scope |  |  |
 | pid | `--pid` | supported | supported | in_scope |  |  |
 | pids-limit | `--pids-limit` | supported | supported | in_scope |  |  |
@@ -99,7 +99,7 @@ Summary: 75 supported, 1 partial, 0 unsupported, 16 out of scope, 11 needs speci
 | sig-proxy | `--sig-proxy` | out_of_scope | out_of_scope | out_of_scope | client_side_only |  |
 | stop-signal | `--stop-signal` | supported | supported | in_scope |  |  |
 | stop-timeout | `--stop-timeout` | supported | supported | in_scope |  |  |
-| storage-opt | `--storage-opt` | needs special runner | needs special runner | needs special runner | needs_storage_driver_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation because --storage-opt size requires overlay over XFS with project quotas.<br>Future verification requires a storage-specific runner using a Docker storage configuration that supports per-container storage options. |
+| storage-opt | `--storage-opt` | needs_special_runner | needs_special_runner | needs_special_runner | needs_storage_driver_runner | Blocked on the standard pinned Docker 25 runner. Docker refuses container creation because --storage-opt size requires overlay over XFS with project quotas.<br>Future verification requires a storage-specific runner using a Docker storage configuration that supports per-container storage options. |
 | sysctl | `--sysctl` | supported | supported | in_scope |  |  |
 | tmpfs | `--tmpfs` | supported | supported | in_scope |  |  |
 | tty | `--tty` | supported | supported | in_scope |  |  |

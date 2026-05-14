@@ -23,7 +23,7 @@ SUPPORT_STATUSES = (
     "unsupported",
 )
 MARKDOWN_STATUS_LABELS = {
-    "blocked_by_runner": "needs special runner",
+    "blocked_by_runner": "needs_special_runner",
 }
 
 
@@ -365,7 +365,7 @@ def render_support_matrix_markdown(matrix):
     summary = _option_summary(matrix)
     lines.extend([
         "Summary: %s supported, %s partial, %s unsupported, "
-        "%s out of scope, %s needs special runner." % (
+        "%s out of scope, %s needs_special_runner." % (
             summary["supported"],
             summary["partial"],
             summary["unsupported"],
