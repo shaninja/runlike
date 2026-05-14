@@ -67,6 +67,69 @@ def minimal_inspect_facts(host_config=None, config=None):
 
 class TestCompatibilityDefaults(unittest.TestCase):
 
+    def test_cli_help_preserves_release_flags(self):
+        runner = CliRunner()
+
+        result = runner.invoke(cli, ["--help"])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--no-name", result.output)
+        self.assertIn("--use-volume-id", result.output)
+        self.assertIn("-p, --pretty", result.output)
+        self.assertIn("-s, --stdin", result.output)
+        self.assertIn("-l, --no-labels", result.output)
+
+    def test_no_name_omits_name_without_warning(self):
+        runner = CliRunner(mix_stderr=False)
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--no-name"],
+            input=dumps(minimal_inspect_facts()))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual("", result.stderr)
+        self.assertNotIn("--name", result.stdout)
+
+    def test_no_labels_omits_labels_without_warning(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(config={
+            "Labels": {
+                "com.example.explicit": "1",
+            },
+        })
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--no-labels"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual("", result.stderr)
+        self.assertNotIn("--label", result.stdout)
+
+    def test_use_volume_id_preserves_anonymous_volume_name(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(config={
+            "Volumes": {
+                "/data": {},
+            },
+        })
+        facts[0]["Mounts"] = [{
+            "Destination": "/data",
+            "Name": "runlike-volume-id",
+            "RW": True,
+            "Type": "volume",
+        }]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--volume=runlike-volume-id:/data", result.stdout)
+
     def test_warning_engine_reports_detected_unsupported_options_in_dictionary_order(self):
         facts = minimal_inspect_facts({
             "CgroupnsMode": "host",

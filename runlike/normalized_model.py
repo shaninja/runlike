@@ -80,10 +80,14 @@ class NormalizedContainerModel(object):
             facts,
             image_facts=None,
             no_name=False,
+            use_volume_id=False,
+            no_labels=False,
             dictionary_entries=None):
         self.facts = _container_document(facts)
         self.image_facts = _image_document(image_facts)
         self.no_name = no_name
+        self.use_volume_id = use_volume_id
+        self.no_labels = no_labels
         self.dictionary_entries = (
             dictionary_entries
             if dictionary_entries is not None
@@ -129,11 +133,15 @@ def build_normalized_model(
         facts,
         image_facts=None,
         no_name=False,
+        use_volume_id=False,
+        no_labels=False,
         dictionary_entries=None):
     model = NormalizedContainerModel(
         facts,
         image_facts=image_facts,
         no_name=no_name,
+        use_volume_id=use_volume_id,
+        no_labels=no_labels,
         dictionary_entries=dictionary_entries)
     NormalizedModelBuilder(model).build()
     return model
@@ -423,6 +431,8 @@ class NormalizedModelBuilder(object):
         return None
 
     def _resolve_label(self, entry):
+        if self.model.no_labels:
+            return None
         labels = self.model.get("Config.Labels") or {}
         image_labels = self.model.image_values("Config.Labels")
         image_labels = _first_value(image_labels) or {}
@@ -558,6 +568,11 @@ class NormalizedModelBuilder(object):
         return _sorted_strings(values)
 
     def _resolve_volume(self, entry):
+        if self.model.use_volume_id:
+            volumes = self._resolve_volume_from_mounts()
+            if volumes:
+                return volumes
+
         volumes = []
         for value in self.model.values("HostConfig.Binds"):
             if isinstance(value, list):
@@ -566,6 +581,28 @@ class NormalizedModelBuilder(object):
         for target in sorted(config_volumes):
             volumes.append(target)
         return _sorted_strings(volumes)
+
+    def _resolve_volume_from_mounts(self):
+        rendered = []
+        for mount in self.model.get("Mounts") or []:
+            mount_type = mount.get("Type")
+            target = mount.get("Destination") or mount.get("Target")
+            if not mount_type or not target:
+                continue
+
+            if mount_type == "volume":
+                name = mount.get("Name")
+                value = "%s:%s" % (name, target) if name else target
+            else:
+                source = mount.get("Source")
+                if not source:
+                    continue
+                value = "%s:%s" % (source, target)
+
+            if mount.get("RW") is False or mount.get("ReadOnly") is True:
+                value += ":ro"
+            rendered.append(value)
+        return _sorted_strings(rendered)
 
     def _resolve_tmpfs(self, entry):
         tmpfs = self.model.get("HostConfig.Tmpfs") or {}
