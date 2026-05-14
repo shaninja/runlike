@@ -36,6 +36,10 @@
     "classification": "blocked_by_runner",
     "reason": "needs_storage_driver_runner"
   },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation because --storage-opt size requires overlay over XFS with project quotas.",
+    "Future verification requires a storage-specific runner using a Docker storage configuration that supports per-container storage options."
+  ],
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }

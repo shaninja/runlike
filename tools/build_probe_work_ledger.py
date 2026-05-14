@@ -129,12 +129,18 @@ def _probe_status(scope_classification, probe_ids, results_by_probe_id):
     return "failed"
 
 
-def _support_status(scope_classification, probe_status, comparison_results):
+def _support_status(
+        scope_classification,
+        probe_status,
+        comparison_results,
+        support_level=None):
     if scope_classification == "out_of_scope":
         return "out_of_scope"
     if scope_classification == "blocked_by_runner":
         return "blocked_by_runner"
     if probe_status == "passed":
+        if support_level == "partial":
+            return "partial"
         return "supported"
     if (
             probe_status == "failed"
@@ -149,7 +155,9 @@ def _warning_expectation(dictionary_entry, support_status):
     return dictionary_entry["warning_behavior"]["warn_when_detected_unsupported"]
 
 
-def _remaining_work(probe_status, comparison_results):
+def _remaining_work(probe_status, comparison_results, support_status=None):
+    if support_status == "partial" and probe_status == "passed":
+        return ["See support reason for the known limitation."]
     if probe_status in ("not_applicable", "passed", "runner_blocked"):
         return []
     if probe_status == "missing_probe":
@@ -185,6 +193,7 @@ def build_probe_work_ledger(dictionary_entries, probes, probe_results=None):
         option_id = dictionary_entry["id"]
         scope = dictionary_entry["scope"]
         scope_classification = scope["classification"]
+        support_level = dictionary_entry.get("support_level")
         option_probes = probes_by_option_id.get(option_id, [])
         probe_ids = sorted(probe["id"] for probe in option_probes)
         comparison_results = _comparison_results(
@@ -198,21 +207,32 @@ def build_probe_work_ledger(dictionary_entries, probes, probe_results=None):
         support_status = _support_status(
             scope_classification,
             probe_status,
-            comparison_results)
-        ledger_entries.append({
+            comparison_results,
+            support_level=support_level)
+        ledger_entry = {
             "comparison_results": comparison_results,
             "option_id": option_id,
             "path_coverage": dictionary_entry["path_coverage"],
             "priority": dictionary_entry["priority"],
             "probe_ids": probe_ids,
             "probe_status": probe_status,
-            "remaining_work": _remaining_work(probe_status, comparison_results),
+            "remaining_work": _remaining_work(
+                probe_status,
+                comparison_results,
+                support_status=support_status),
             "scope": scope,
             "support_status": support_status,
             "warning_expectation": _warning_expectation(
                 dictionary_entry,
                 support_status),
-        })
+        }
+        if support_level is not None:
+            ledger_entry["support_level"] = support_level
+        if dictionary_entry.get("support_notes"):
+            ledger_entry["support_notes"] = dictionary_entry["support_notes"]
+        if dictionary_entry.get("support_reason"):
+            ledger_entry["support_reason"] = dictionary_entry["support_reason"]
+        ledger_entries.append(ledger_entry)
 
     return {
         "entries": ledger_entries,

@@ -49,6 +49,8 @@ RENDER_ORDER = [
     "link",
     "restart",
     "device",
+    "device-cgroup-rule",
+    "gpus",
     "mount",
     "tmpfs",
     "label",
@@ -142,8 +144,6 @@ class DictionaryRenderer(object):
         return tokens
 
     def _entry_is_renderable(self, entry):
-        if entry.get("priority") not in ("P0", "P1"):
-            return False
         if entry.get("scope", {}).get("classification") != "in_scope":
             return False
         return entry.get("render_profile", {}).get("command_family") in (

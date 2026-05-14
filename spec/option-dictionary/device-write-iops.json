@@ -36,6 +36,10 @@
     "classification": "blocked_by_runner",
     "reason": "needs_special_host_device"
   },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-iops support, so HostConfig.BlkioDeviceWriteIOps is empty.",
+    "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+  ],
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }

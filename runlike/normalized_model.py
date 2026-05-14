@@ -243,6 +243,31 @@ class NormalizedModelBuilder(object):
         ]
         return _sorted_strings(collected)
 
+    def _resolve_gpus(self, entry):
+        requests = []
+        for value in self._field_values(entry):
+            if isinstance(value, list):
+                requests.extend(
+                    request for request in value if isinstance(request, dict))
+            elif isinstance(value, dict):
+                requests.append(value)
+
+        if not requests:
+            return None
+
+        request = requests[0]
+        device_ids = request.get("DeviceIDs") or []
+        count = request.get("Count")
+        if device_ids:
+            return "device=%s" % ",".join(
+                str(device_id)
+                for device_id in device_ids)
+        if count == -1:
+            return "all"
+        if isinstance(count, int) and count > 0:
+            return count
+        return None
+
     def _scalar_is_default(self, option_id, value):
         if option_id == "hostname":
             return value in (None, "")

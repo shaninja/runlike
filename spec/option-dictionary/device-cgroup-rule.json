@@ -22,8 +22,8 @@
   ],
   "observability": "observable",
   "path_coverage": {
-    "container_name": "runner_blocked",
-    "stdin": "runner_blocked"
+    "container_name": "detectable",
+    "stdin": "detectable"
   },
   "priority": "P2",
   "render_profile": {
@@ -33,9 +33,12 @@
     "value_type": "list"
   },
   "scope": {
-    "classification": "blocked_by_runner",
-    "reason": "needs_special_host_device"
+    "classification": "in_scope",
+    "reason": null
   },
+  "support_notes": [
+    "Supported on the standard pinned Docker 25 runner. The create/inspect probe stores HostConfig.DeviceCgroupRules and round-trips the same rule."
+  ],
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }

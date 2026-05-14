@@ -138,7 +138,17 @@ def _collapse_path_statuses(statuses):
     return "failed"
 
 
-def _support_status(scope_classification, path_coverage, probe_status):
+def _apply_support_level(status, support_level):
+    if status == "supported" and support_level == "partial":
+        return "partial"
+    return status
+
+
+def _support_status(
+        scope_classification,
+        path_coverage,
+        probe_status,
+        support_level=None):
     if scope_classification == "out_of_scope":
         return "out_of_scope"
     if scope_classification == "blocked_by_runner":
@@ -148,7 +158,7 @@ def _support_status(scope_classification, path_coverage, probe_status):
     if path_coverage == "runner_blocked":
         return "blocked_by_runner"
     if probe_status == "passed":
-        return "supported"
+        return _apply_support_level("supported", support_level)
     if probe_status == "partial":
         return "partial"
     return "unsupported"
@@ -172,7 +182,12 @@ def _comparison_summary(path_coverage, probe_status):
     return probe_status
 
 
-def _remaining_work(status, probe_status):
+def _remaining_work(status, probe_status, support_level=None):
+    if (
+            status == "partial"
+            and support_level == "partial"
+            and probe_status == "passed"):
+        return ["See support notes for the known limitation."]
     if status in ("blocked_by_runner", "out_of_scope", "supported"):
         return []
     if probe_status == "missing_probe":
@@ -220,6 +235,7 @@ def build_support_matrix(
         option_id = dictionary_entry["id"]
         scope = dictionary_entry["scope"]
         scope_classification = scope["classification"]
+        support_level = dictionary_entry.get("support_level")
         option_probes = probes_by_option_id.get(option_id, [])
 
         for path_name in INPUT_PATHS:
@@ -237,9 +253,13 @@ def build_support_matrix(
             status = _support_status(
                 scope_classification,
                 path_coverage,
-                probe_status)
+                probe_status,
+                support_level=support_level)
+            reason = scope.get("reason")
+            if status == "partial" and dictionary_entry.get("support_reason"):
+                reason = dictionary_entry["support_reason"]
 
-            rows.append({
+            row = {
                 "aliases": dictionary_entry.get("aliases", []),
                 "canonical_output_form": dictionary_entry[
                     "canonical_output_form"],
@@ -252,13 +272,21 @@ def build_support_matrix(
                 "path_coverage": path_coverage,
                 "probe_ids": probe_ids,
                 "probe_status": probe_status,
-                "reason": scope.get("reason"),
-                "remaining_work": _remaining_work(status, probe_status),
+                "reason": reason,
+                "remaining_work": _remaining_work(
+                    status,
+                    probe_status,
+                    support_level=support_level),
                 "scope": scope_classification,
                 "status": status,
                 "warning_when_detected_unsupported": dictionary_entry[
                     "warning_behavior"]["warn_when_detected_unsupported"],
-            })
+            }
+            if support_level is not None:
+                row["support_level"] = support_level
+            if dictionary_entry.get("support_notes"):
+                row["support_notes"] = dictionary_entry["support_notes"]
+            rows.append(row)
 
     return {
         "entries": rows,
@@ -310,6 +338,14 @@ def _format_status(value):
     return MARKDOWN_STATUS_LABELS.get(value, value)
 
 
+def _format_notes(value):
+    if not value:
+        return ""
+    if isinstance(value, list):
+        return "<br>".join(str(item) for item in value)
+    return str(value)
+
+
 def render_support_matrix_markdown(matrix):
     lines = [
         "# Runlike support matrix",
@@ -336,8 +372,8 @@ def render_support_matrix_markdown(matrix):
             summary["out_of_scope"],
             summary["blocked_by_runner"]),
         "",
-        "| Option | Flag | Container name | Stdin | Scope | Reason |",
-        "| --- | --- | --- | --- | --- | --- |",
+        "| Option | Flag | Container name | Stdin | Scope | Reason | Notes |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ])
 
     for option_id, paths in sorted(_rows_by_option(matrix).items()):
@@ -346,13 +382,14 @@ def render_support_matrix_markdown(matrix):
             paths.get("container_name", {}).get("status", ""))
         stdin_status = _format_status(
             paths.get("stdin", {}).get("status", ""))
-        lines.append("| %s | `%s` | %s | %s | %s | %s |" % (
+        lines.append("| %s | `%s` | %s | %s | %s | %s | %s |" % (
             option_id,
             first_row["canonical_output_form"],
             container_status,
             stdin_status,
             _format_status(first_row["scope"]),
-            _format_cell(first_row.get("reason"))))
+            _format_cell(first_row.get("reason")),
+            _format_notes(first_row.get("support_notes"))))
 
     lines.append("")
     return "\n".join(lines)

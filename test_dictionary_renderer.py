@@ -272,6 +272,28 @@ def test_normalized_model_resolves_p1_values_from_inspect():
     assert model.value_for("ulimit") == ["nofile=1024:2048"]
 
 
+def test_dictionary_renderer_resolves_probeable_p2_values_from_inspect():
+    facts = minimal_inspect_facts(host_config={
+        "DeviceCgroupRules": ["c 1:3 rwm"],
+        "DeviceRequests": [{
+            "Capabilities": [["gpu"]],
+            "Count": -1,
+            "DeviceIDs": None,
+            "Driver": "",
+            "Options": {},
+        }],
+    })
+    model = build_normalized_model(facts)
+
+    command = DictionaryRenderer().render(model)
+    tokens = split(command)
+
+    assert model.value_for("device-cgroup-rule") == ["c 1:3 rwm"]
+    assert model.value_for("gpus") == "all"
+    assert "--device-cgroup-rule=c 1:3 rwm" in tokens
+    assert "--gpus=all" in tokens
+
+
 def test_dictionary_renderer_includes_supported_p1_options():
     facts = minimal_inspect_facts(
         host_config={

@@ -22,8 +22,8 @@
   ],
   "observability": "observable",
   "path_coverage": {
-    "container_name": "runner_blocked",
-    "stdin": "runner_blocked"
+    "container_name": "detectable",
+    "stdin": "detectable"
   },
   "priority": "P2",
   "render_profile": {
@@ -33,9 +33,16 @@
     "value_type": "gpu-request"
   },
   "scope": {
-    "classification": "blocked_by_runner",
-    "reason": "needs_gpu_runner"
+    "classification": "in_scope",
+    "reason": null
   },
+  "support_level": "partial",
+  "support_notes": [
+    "Create/inspect round-trip support is covered for --gpus=all on the standard pinned Docker 25 runner.",
+    "Starting a GPU container is not covered on the pinned runner because it has no GPU runtime or GPU hardware.",
+    "Runtime execution requires a GPU runner with GPU hardware and the Docker GPU runtime, such as NVIDIA Container Toolkit."
+  ],
+  "support_reason": "needs_gpu_runner_for_runtime_execution",
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }
