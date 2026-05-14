@@ -370,6 +370,40 @@ def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
     assert "Generated from `generated/probe-results.json`" in markdown
 
 
+def test_render_support_matrix_markdown_escapes_note_cells():
+    module = load_matrix_module()
+    matrix = module.build_support_matrix(
+        [
+            dictionary_entry(
+                "env",
+                support_notes=["Uses A|B notation"]),
+        ],
+        [{"id": "option-env", "option_id": "env"}],
+        {
+            "results": [
+                {
+                    "probe_id": "option-env",
+                    "paths": {
+                        "container_name": {
+                            "compare": {"passed": True},
+                            "passed": True,
+                            "status": "passed",
+                        },
+                        "stdin": {
+                            "compare": {"passed": True},
+                            "passed": True,
+                            "status": "passed",
+                        },
+                    },
+                },
+            ],
+        })
+
+    markdown = module.render_support_matrix_markdown(matrix)
+
+    assert "Uses A\\|B notation" in markdown
+
+
 def test_checked_in_support_matrix_is_current():
     module = load_matrix_module()
     expected = module.build_support_matrix(

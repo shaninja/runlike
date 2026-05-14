@@ -331,7 +331,7 @@ def _option_summary(matrix):
 def _format_cell(value):
     if value is None:
         return ""
-    return str(value)
+    return str(value).replace("|", r"\|")
 
 
 def _format_status(value):
@@ -342,8 +342,8 @@ def _format_notes(value):
     if not value:
         return ""
     if isinstance(value, list):
-        return "<br>".join(str(item) for item in value)
-    return str(value)
+        return "<br>".join(_format_cell(item) for item in value)
+    return _format_cell(value)
 
 
 def render_support_matrix_markdown(matrix):

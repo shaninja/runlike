@@ -30,6 +30,7 @@
     "command_family": "both",
     "flag": "--device-cgroup-rule",
     "profile": "canonical-docker-flag",
+    "renderable": true,
     "value_type": "list"
   },
   "scope": {

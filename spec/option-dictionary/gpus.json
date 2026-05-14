@@ -30,6 +30,7 @@
     "command_family": "both",
     "flag": "--gpus",
     "profile": "canonical-docker-flag",
+    "renderable": true,
     "value_type": "gpu-request"
   },
   "scope": {

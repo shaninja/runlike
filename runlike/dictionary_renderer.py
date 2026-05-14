@@ -146,6 +146,10 @@ class DictionaryRenderer(object):
     def _entry_is_renderable(self, entry):
         if entry.get("scope", {}).get("classification") != "in_scope":
             return False
+        if (
+                entry.get("priority") not in ("P0", "P1")
+                and entry.get("render_profile", {}).get("renderable") is not True):
+            return False
         return entry.get("render_profile", {}).get("command_family") in (
             "both",
             "run",
