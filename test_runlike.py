@@ -130,6 +130,156 @@ class TestCompatibilityDefaults(unittest.TestCase):
         self.assertEqual(0, result.exit_code)
         self.assertIn("--volume=runlike-volume-id:/data", result.stdout)
 
+    def test_use_volume_id_preserves_bind_mount_options(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(
+            host_config={
+                "Binds": ["/host/config:/container/config:Z"],
+            },
+            config={
+                "Volumes": {
+                    "/data": {},
+                },
+            })
+        facts[0]["Mounts"] = [
+            {
+                "Destination": "/data",
+                "Name": "runlike-volume-id",
+                "RW": True,
+                "Type": "volume",
+            },
+            {
+                "Destination": "/container/config",
+                "Mode": "Z",
+                "RW": True,
+                "Source": "/host/config",
+                "Type": "bind",
+            },
+        ]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--volume=/host/config:/container/config:Z", result.stdout)
+        self.assertIn("--volume=runlike-volume-id:/data", result.stdout)
+
+    def test_use_volume_id_does_not_duplicate_mount_options_as_volumes(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(host_config={
+            "Mounts": [{
+                "ReadOnly": True,
+                "Source": "/tmp",
+                "Target": "/runlike-mount",
+                "Type": "bind",
+            }],
+        })
+        facts[0]["Mounts"] = [{
+            "Destination": "/runlike-mount",
+            "Mode": "ro",
+            "RW": False,
+            "Source": "/tmp",
+            "Type": "bind",
+        }]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn(
+            "--mount type=bind,source=/tmp,target=/runlike-mount,readonly",
+            result.stdout)
+        self.assertNotIn("--volume=/tmp:/runlike-mount", result.stdout)
+
+    def test_use_volume_id_preserves_top_level_mounts_without_mount_config(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts()
+        facts[0]["Mounts"] = [{
+            "Destination": "/runlike-mount",
+            "Mode": "ro",
+            "RW": False,
+            "Source": "/tmp",
+            "Type": "bind",
+        }]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--volume=/tmp:/runlike-mount:ro", result.stdout)
+
+    def test_use_volume_id_preserves_read_only_volume_modes(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(config={
+            "Volumes": {
+                "/data": {},
+            },
+        })
+        facts[0]["Mounts"] = [{
+            "Destination": "/data",
+            "Mode": "z",
+            "Name": "runlike-volume-id",
+            "RW": False,
+            "Type": "volume",
+        }]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--volume=runlike-volume-id:/data:z,ro", result.stdout)
+
+    def test_use_volume_id_suppresses_default_rw_mount_mode(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts()
+        facts[0]["Mounts"] = [{
+            "Destination": "/runlike-mount",
+            "Mode": "rw",
+            "RW": True,
+            "Source": "/tmp",
+            "Type": "bind",
+        }]
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("--volume=/tmp:/runlike-mount", result.stdout)
+        self.assertNotIn("--volume=/tmp:/runlike-mount:rw", result.stdout)
+
+    def test_use_volume_id_deduplicates_bind_targets_without_mode_allowlist(self):
+        runner = CliRunner(mix_stderr=False)
+        facts = minimal_inspect_facts(
+            host_config={
+                "Binds": ["/host/config:/container/config:future-mode"],
+            },
+            config={
+                "Volumes": {
+                    "/container/config": {},
+                },
+            })
+
+        result = runner.invoke(
+            cli,
+            ["--stdin", "--use-volume-id"],
+            input=dumps(facts))
+
+        self.assertEqual(0, result.exit_code)
+        self.assertEqual(1, result.stdout.count("--volume="))
+        self.assertIn(
+            "--volume=/host/config:/container/config:future-mode",
+            result.stdout)
+
     def test_warning_engine_reports_detected_unsupported_options_in_dictionary_order(self):
         facts = minimal_inspect_facts({
             "CgroupnsMode": "host",
