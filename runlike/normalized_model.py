@@ -80,10 +80,14 @@ class NormalizedContainerModel(object):
             facts,
             image_facts=None,
             no_name=False,
+            use_volume_id=False,
+            no_labels=False,
             dictionary_entries=None):
         self.facts = _container_document(facts)
         self.image_facts = _image_document(image_facts)
         self.no_name = no_name
+        self.use_volume_id = use_volume_id
+        self.no_labels = no_labels
         self.dictionary_entries = (
             dictionary_entries
             if dictionary_entries is not None
@@ -129,11 +133,15 @@ def build_normalized_model(
         facts,
         image_facts=None,
         no_name=False,
+        use_volume_id=False,
+        no_labels=False,
         dictionary_entries=None):
     model = NormalizedContainerModel(
         facts,
         image_facts=image_facts,
         no_name=no_name,
+        use_volume_id=use_volume_id,
+        no_labels=no_labels,
         dictionary_entries=dictionary_entries)
     NormalizedModelBuilder(model).build()
     return model
@@ -423,6 +431,8 @@ class NormalizedModelBuilder(object):
         return None
 
     def _resolve_label(self, entry):
+        if self.model.no_labels:
+            return None
         labels = self.model.get("Config.Labels") or {}
         image_labels = self.model.image_values("Config.Labels")
         image_labels = _first_value(image_labels) or {}
@@ -559,13 +569,115 @@ class NormalizedModelBuilder(object):
 
     def _resolve_volume(self, entry):
         volumes = []
+        covered_targets = set()
         for value in self.model.values("HostConfig.Binds"):
             if isinstance(value, list):
                 volumes.extend(value)
+                if self.model.use_volume_id:
+                    for bind in value:
+                        target = self._volume_target_from_bind(bind)
+                        if target:
+                            covered_targets.add(target)
+
+        volumes_by_target = {}
+        if self.model.use_volume_id:
+            covered_targets.update(self._rendered_mount_targets())
+            volumes_by_target = self._volumes_by_target()
+            for target in sorted(volumes_by_target):
+                if target in covered_targets:
+                    continue
+                volumes.append(volumes_by_target[target])
+                covered_targets.add(target)
+
         config_volumes = self.model.get("Config.Volumes") or {}
         for target in sorted(config_volumes):
-            volumes.append(target)
+            if target in covered_targets:
+                continue
+            volume = volumes_by_target.get(target)
+            if volume:
+                volumes.append(volume)
+            else:
+                volumes.append(target)
+            covered_targets.add(target)
         return _sorted_strings(volumes)
+
+    def _volume_target_from_bind(self, bind):
+        if not isinstance(bind, str):
+            return None
+        parts = bind.rsplit(":", 2)
+        if len(parts) == 1:
+            return parts[0]
+        if len(parts) == 2:
+            return parts[1]
+        # Docker -v values are source:target[:options]. Treat any third
+        # field as options so new Docker option spellings do not affect
+        # target deduplication. A third field that looks like a target keeps
+        # Windows-style source paths without options from being misparsed.
+        if parts[2].startswith(("/", "\\")):
+            return parts[2]
+        return parts[1]
+
+    def _volume_mounts(self):
+        mounts = []
+        mount_config_targets = self._rendered_mount_targets()
+        for mount in self.model.get("Mounts") or []:
+            if not isinstance(mount, dict):
+                continue
+            target = mount.get("Destination") or mount.get("Target")
+            if target in mount_config_targets:
+                continue
+            mounts.append(mount)
+        return mounts
+
+    def _rendered_mount_targets(self):
+        targets = set()
+        for mount in self.model.get("HostConfig.Mounts") or []:
+            if not isinstance(mount, dict):
+                continue
+            if not mount.get("Type"):
+                continue
+            target = mount.get("Target")
+            if target:
+                targets.add(target)
+        return targets
+
+    def _volume_from_mount(self, mount):
+        if mount.get("Type") == "volume":
+            source = mount.get("Name") or mount.get("Source")
+        else:
+            source = mount.get("Source")
+        target = mount.get("Destination") or mount.get("Target")
+        if not target:
+            return None
+        if source:
+            rendered = "%s:%s" % (source, target)
+        elif mount.get("Type") == "volume":
+            rendered = target
+        else:
+            return None
+
+        mode = mount.get("Mode")
+        read_only = mount.get("ReadOnly") or mount.get("RW") is False
+        if mode:
+            modes = [item for item in mode.split(",") if item and item != "rw"]
+            if read_only:
+                if "ro" not in modes:
+                    modes.append("ro")
+            if modes:
+                return "%s:%s" % (rendered, ",".join(modes))
+            return rendered
+        if read_only:
+            return "%s:ro" % rendered
+        return rendered
+
+    def _volumes_by_target(self):
+        volumes = {}
+        for mount in self._volume_mounts():
+            rendered = self._volume_from_mount(mount)
+            target = mount.get("Destination") or mount.get("Target")
+            if rendered and target:
+                volumes[target] = rendered
+        return volumes
 
     def _resolve_tmpfs(self, entry):
         tmpfs = self.model.get("HostConfig.Tmpfs") or {}

@@ -191,7 +191,9 @@ class UnsupportedOptionWarningEngine(object):
             facts,
             input_path,
             image_facts=None,
-            rendered_command=None):
+            rendered_command=None,
+            ignored_option_ids=None):
+        ignored_option_ids = ignored_option_ids or set()
         rendered_ids = rendered_option_ids(
             rendered_command,
             self.dictionary_entries)
@@ -200,6 +202,8 @@ class UnsupportedOptionWarningEngine(object):
             image_facts=image_facts)
         detected = []
         for entry in self.dictionary_entries:
+            if entry["id"] in ignored_option_ids:
+                continue
             if not self._should_warn_for_entry(entry, input_path, rendered_ids):
                 continue
             if entry["id"] in detected_option_ids:
@@ -213,12 +217,14 @@ class UnsupportedOptionWarningEngine(object):
             facts,
             input_path,
             image_facts=None,
-            rendered_command=None):
+            rendered_command=None,
+            ignored_option_ids=None):
         options = self.detected_unsupported_options(
             facts,
             input_path,
             image_facts=image_facts,
-            rendered_command=rendered_command)
+            rendered_command=rendered_command,
+            ignored_option_ids=ignored_option_ids)
         if not options:
             return []
         flags = [
@@ -236,13 +242,15 @@ class UnsupportedOptionWarningEngine(object):
             input_path,
             stream=None,
             image_facts=None,
-            rendered_command=None):
+            rendered_command=None,
+            ignored_option_ids=None):
         stream = stream or sys.stderr
         for line in self.warning_lines(
                 facts,
                 input_path,
                 image_facts=image_facts,
-                rendered_command=rendered_command):
+                rendered_command=rendered_command,
+                ignored_option_ids=ignored_option_ids):
             stream.write(line + "\n")
 
     def _should_warn_for_entry(self, entry, input_path, rendered_ids):

@@ -23,9 +23,17 @@ def die(message):
 
 class Inspector(object):
 
-    def __init__(self, container=None, no_name=None, pretty=None):
+    def __init__(
+            self,
+            container=None,
+            no_name=None,
+            pretty=None,
+            use_volume_id=None,
+            no_labels=None):
         self.container = container
         self.no_name = no_name
+        self.use_volume_id = use_volume_id
+        self.no_labels = no_labels
         self.output = ""
         self.pretty = pretty
         self.facts = None
@@ -289,5 +297,7 @@ class Inspector(object):
         model = build_normalized_model(
             self.facts,
             image_facts=self.image_facts,
-            no_name=self.no_name)
+            no_name=self.no_name,
+            use_volume_id=self.use_volume_id,
+            no_labels=self.no_labels)
         return DictionaryRenderer().render(model, pretty=self.pretty)
