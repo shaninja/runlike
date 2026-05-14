@@ -16,7 +16,12 @@ def load_ledger_module():
     return module
 
 
-def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
+def dictionary_entry(
+        entry_id,
+        priority="P0",
+        scope="in_scope",
+        support_level=None,
+        support_reason=None):
     path_coverage = {
         "container_name": "detectable",
         "stdin": "detectable",
@@ -35,7 +40,7 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
         }
         reason = "needs_special_runner"
 
-    return {
+    entry = {
         "id": entry_id,
         "path_coverage": path_coverage,
         "priority": priority,
@@ -47,6 +52,11 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
             "warn_when_detected_unsupported": scope != "out_of_scope",
         },
     }
+    if support_level is not None:
+        entry["support_level"] = support_level
+    if support_reason is not None:
+        entry["support_reason"] = support_reason
+    return entry
 
 
 def test_probe_work_ledger_records_status_comparison_and_remaining_work():
@@ -214,6 +224,48 @@ def test_probe_work_ledger_records_status_comparison_and_remaining_work():
             "support_status": "supported",
             "warning_expectation": False,
         },
+    ]
+
+
+def test_probe_work_ledger_can_mark_passing_probe_as_known_partial():
+    module = load_ledger_module()
+    entries = [
+        dictionary_entry(
+            "gpus",
+            priority="P2",
+            support_level="partial",
+            support_reason="needs_gpu_runner_for_runtime_execution"),
+    ]
+    probes = [{"id": "option-gpus", "option_id": "gpus"}]
+    probe_results = {
+        "results": [
+            {
+                "probe_id": "option-gpus",
+                "passed": True,
+                "paths": {
+                    "container_name": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                    "stdin": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                },
+            },
+        ],
+    }
+
+    ledger = module.build_probe_work_ledger(entries, probes, probe_results)
+    entry = ledger["entries"][0]
+
+    assert entry["probe_status"] == "passed"
+    assert entry["support_status"] == "partial"
+    assert entry["support_reason"] == "needs_gpu_runner_for_runtime_execution"
+    assert entry["remaining_work"] == [
+        "See support reason for the known limitation."
     ]
 
 

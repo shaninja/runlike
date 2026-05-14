@@ -180,6 +180,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.",
+        "Future verification requires a runner with per-device block I/O weight support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -198,6 +202,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.",
+        "Future verification requires a runner with per-device block I/O weight support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -564,6 +572,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+        "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -582,6 +594,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+        "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -600,6 +616,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+        "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -618,6 +638,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+        "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -909,37 +933,47 @@
     {
       "aliases": [],
       "canonical_output_form": "--device-cgroup-rule",
-      "comparison_status": "runner_blocked",
+      "comparison_status": "passed",
       "manifest_flags": [
         "--device-cgroup-rule"
       ],
       "option_id": "device-cgroup-rule",
       "path": "container_name",
-      "path_coverage": "runner_blocked",
-      "probe_ids": [],
-      "probe_status": "runner_blocked",
-      "reason": "needs_special_host_device",
+      "path_coverage": "detectable",
+      "probe_ids": [
+        "option-device-cgroup-rule"
+      ],
+      "probe_status": "passed",
+      "reason": null,
       "remaining_work": [],
-      "scope": "blocked_by_runner",
-      "status": "blocked_by_runner",
+      "scope": "in_scope",
+      "status": "supported",
+      "support_notes": [
+        "Supported on the standard pinned Docker 25 runner. The create/inspect probe stores HostConfig.DeviceCgroupRules and round-trips the same rule."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
       "aliases": [],
       "canonical_output_form": "--device-cgroup-rule",
-      "comparison_status": "runner_blocked",
+      "comparison_status": "passed",
       "manifest_flags": [
         "--device-cgroup-rule"
       ],
       "option_id": "device-cgroup-rule",
       "path": "stdin",
-      "path_coverage": "runner_blocked",
-      "probe_ids": [],
-      "probe_status": "runner_blocked",
-      "reason": "needs_special_host_device",
+      "path_coverage": "detectable",
+      "probe_ids": [
+        "option-device-cgroup-rule"
+      ],
+      "probe_status": "passed",
+      "reason": null,
       "remaining_work": [],
-      "scope": "blocked_by_runner",
-      "status": "blocked_by_runner",
+      "scope": "in_scope",
+      "status": "supported",
+      "support_notes": [
+        "Supported on the standard pinned Docker 25 runner. The create/inspect probe stores HostConfig.DeviceCgroupRules and round-trips the same rule."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -958,6 +992,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-bps support, so HostConfig.BlkioDeviceReadBps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -976,6 +1014,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-bps support, so HostConfig.BlkioDeviceReadBps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -994,6 +1036,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-iops support, so HostConfig.BlkioDeviceReadIOps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1012,6 +1058,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-iops support, so HostConfig.BlkioDeviceReadIOps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1030,6 +1080,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-bps support, so HostConfig.BlkioDeviceWriteBps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1048,6 +1102,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-bps support, so HostConfig.BlkioDeviceWriteBps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1066,6 +1124,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-iops support, so HostConfig.BlkioDeviceWriteIOps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1084,6 +1146,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max write-iops support, so HostConfig.BlkioDeviceWriteIOps is empty.",
+        "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -1445,37 +1511,57 @@
     {
       "aliases": [],
       "canonical_output_form": "--gpus",
-      "comparison_status": "runner_blocked",
+      "comparison_status": "passed",
       "manifest_flags": [
         "--gpus"
       ],
       "option_id": "gpus",
       "path": "container_name",
-      "path_coverage": "runner_blocked",
-      "probe_ids": [],
-      "probe_status": "runner_blocked",
-      "reason": "needs_gpu_runner",
-      "remaining_work": [],
-      "scope": "blocked_by_runner",
-      "status": "blocked_by_runner",
+      "path_coverage": "detectable",
+      "probe_ids": [
+        "option-gpus"
+      ],
+      "probe_status": "passed",
+      "reason": "needs_gpu_runner_for_runtime_execution",
+      "remaining_work": [
+        "See support notes for the known limitation."
+      ],
+      "scope": "in_scope",
+      "status": "partial",
+      "support_level": "partial",
+      "support_notes": [
+        "Create/inspect round-trip support is covered for --gpus=all on the standard pinned Docker 25 runner.",
+        "Starting a GPU container is not covered on the pinned runner because it has no GPU runtime or GPU hardware.",
+        "Runtime execution requires a GPU runner with GPU hardware and the Docker GPU runtime, such as NVIDIA Container Toolkit."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
       "aliases": [],
       "canonical_output_form": "--gpus",
-      "comparison_status": "runner_blocked",
+      "comparison_status": "passed",
       "manifest_flags": [
         "--gpus"
       ],
       "option_id": "gpus",
       "path": "stdin",
-      "path_coverage": "runner_blocked",
-      "probe_ids": [],
-      "probe_status": "runner_blocked",
-      "reason": "needs_gpu_runner",
-      "remaining_work": [],
-      "scope": "blocked_by_runner",
-      "status": "blocked_by_runner",
+      "path_coverage": "detectable",
+      "probe_ids": [
+        "option-gpus"
+      ],
+      "probe_status": "passed",
+      "reason": "needs_gpu_runner_for_runtime_execution",
+      "remaining_work": [
+        "See support notes for the known limitation."
+      ],
+      "scope": "in_scope",
+      "status": "partial",
+      "support_level": "partial",
+      "support_notes": [
+        "Create/inspect round-trip support is covered for --gpus=all on the standard pinned Docker 25 runner.",
+        "Starting a GPU container is not covered on the pinned runner because it has no GPU runtime or GPU hardware.",
+        "Runtime execution requires a GPU runner with GPU hardware and the Docker GPU runtime, such as NVIDIA Container Toolkit."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -3590,6 +3676,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation because --storage-opt size requires overlay over XFS with project quotas.",
+        "Future verification requires a storage-specific runner using a Docker storage configuration that supports per-container storage options."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -3608,6 +3698,10 @@
       "remaining_work": [],
       "scope": "blocked_by_runner",
       "status": "blocked_by_runner",
+      "support_notes": [
+        "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation because --storage-opt size requires overlay over XFS with project quotas.",
+        "Future verification requires a storage-specific runner using a Docker storage configuration that supports per-container storage options."
+      ],
       "warning_when_detected_unsupported": true
     },
     {
@@ -4074,39 +4168,39 @@
   ],
   "probe_results_summary": {
     "failed": 0,
-    "passed": 74,
-    "total": 74
+    "passed": 76,
+    "total": 76
   },
   "schema_version": 1,
   "summary": {
     "by_option_status": {
-      "blocked_by_runner": 13,
+      "blocked_by_runner": 11,
       "out_of_scope": 16,
-      "partial": 0,
-      "supported": 74,
+      "partial": 1,
+      "supported": 75,
       "unsupported": 0
     },
     "by_path": {
       "container_name": {
-        "blocked_by_runner": 13,
+        "blocked_by_runner": 11,
         "out_of_scope": 16,
-        "partial": 0,
-        "supported": 74,
+        "partial": 1,
+        "supported": 75,
         "unsupported": 0
       },
       "stdin": {
-        "blocked_by_runner": 13,
+        "blocked_by_runner": 11,
         "out_of_scope": 16,
-        "partial": 0,
-        "supported": 74,
+        "partial": 1,
+        "supported": 75,
         "unsupported": 0
       }
     },
     "by_status": {
-      "blocked_by_runner": 26,
+      "blocked_by_runner": 22,
       "out_of_scope": 32,
-      "partial": 0,
-      "supported": 148,
+      "partial": 2,
+      "supported": 150,
       "unsupported": 0
     },
     "total_rows": 206

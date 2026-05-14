@@ -199,12 +199,24 @@ def test_checked_in_option_dictionary_records_key_classifications():
 
     gpus = entries["gpus"]
     assert gpus["scope"] == {
-        "classification": "blocked_by_runner",
-        "reason": "needs_gpu_runner",
+        "classification": "in_scope",
+        "reason": None,
     }
     assert gpus["path_coverage"] == {
-        "container_name": "runner_blocked",
-        "stdin": "runner_blocked",
+        "container_name": "detectable",
+        "stdin": "detectable",
+    }
+    assert gpus["support_level"] == "partial"
+    assert gpus["support_reason"] == "needs_gpu_runner_for_runtime_execution"
+
+    device_cgroup_rule = entries["device-cgroup-rule"]
+    assert device_cgroup_rule["scope"] == {
+        "classification": "in_scope",
+        "reason": None,
+    }
+    assert device_cgroup_rule["path_coverage"] == {
+        "container_name": "detectable",
+        "stdin": "detectable",
     }
 
 

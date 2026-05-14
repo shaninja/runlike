@@ -3,6 +3,7 @@ from shlex import split
 
 from click.testing import CliRunner
 
+import runlike.dictionary_renderer as dictionary_renderer
 from runlike.dictionary_renderer import DictionaryRenderer
 from runlike.normalized_model import build_normalized_model
 from runlike.runlike import cli
@@ -270,6 +271,121 @@ def test_normalized_model_resolves_p1_values_from_inspect():
     assert model.value_for("read-only") is True
     assert model.value_for("tmpfs") == ["/run:rw,size=64k"]
     assert model.value_for("ulimit") == ["nofile=1024:2048"]
+
+
+def test_dictionary_renderer_resolves_probeable_p2_values_from_inspect():
+    facts = minimal_inspect_facts(host_config={
+        "DeviceCgroupRules": ["c 1:3 rwm"],
+        "DeviceRequests": [{
+            "Capabilities": [["gpu"]],
+            "Count": -1,
+            "DeviceIDs": None,
+            "Driver": "",
+            "Options": {},
+        }],
+    })
+    model = build_normalized_model(facts)
+
+    command = DictionaryRenderer().render(model)
+    tokens = split(command)
+
+    assert model.value_for("device-cgroup-rule") == ["c 1:3 rwm"]
+    assert model.value_for("gpus") == "all"
+    assert "--device-cgroup-rule=c 1:3 rwm" in tokens
+    assert "--gpus=all" in tokens
+
+
+def test_dictionary_renderer_does_not_render_p2_without_explicit_opt_in(monkeypatch):
+    monkeypatch.setattr(dictionary_renderer, "RENDER_ORDER", ["future-p2"])
+    entries = [{
+        "canonical_output_form": "--future-p2",
+        "id": "future-p2",
+        "render_profile": {
+            "command_family": "both",
+            "flag": "--future-p2",
+            "profile": "canonical-docker-flag",
+            "value_type": "string",
+        },
+        "scope": {
+            "classification": "in_scope",
+            "reason": None,
+        },
+        "priority": "P2",
+    }]
+
+    class Model(object):
+        image = "busybox"
+        command = []
+
+        def value_for(self, option_id):
+            return "enabled"
+
+    command = dictionary_renderer.DictionaryRenderer(entries).render(Model())
+
+    assert "--future-p2=enabled" not in split(command)
+
+
+def test_gpu_resolver_ignores_non_gpu_device_requests():
+    facts = minimal_inspect_facts(host_config={
+        "DeviceRequests": [{
+            "Capabilities": [["fpga"]],
+            "Count": -1,
+            "DeviceIDs": None,
+            "Driver": "",
+            "Options": {},
+        }],
+    })
+
+    model = build_normalized_model(facts)
+    command = DictionaryRenderer().render(model)
+
+    assert model.value_for("gpus") is None
+    assert "--gpus=all" not in split(command)
+
+
+def test_gpu_resolver_declines_constrained_requests_instead_of_broadening():
+    facts = minimal_inspect_facts(host_config={
+        "DeviceRequests": [{
+            "Capabilities": [["gpu", "compute", "utility"]],
+            "Count": -1,
+            "DeviceIDs": None,
+            "Driver": "",
+            "Options": {},
+        }],
+    })
+
+    model = build_normalized_model(facts)
+    command = DictionaryRenderer().render(model)
+
+    assert model.value_for("gpus") is None
+    assert "--gpus=all" not in split(command)
+
+
+def test_gpu_resolver_declines_additional_device_requests():
+    facts = minimal_inspect_facts(host_config={
+        "DeviceRequests": [
+            {
+                "Capabilities": [["gpu"]],
+                "Count": -1,
+                "DeviceIDs": None,
+                "Driver": "",
+                "Options": {},
+            },
+            {
+                "Capabilities": [["fpga"]],
+                "Count": -1,
+                "DeviceIDs": None,
+                "Driver": "",
+                "Options": {},
+            },
+        ],
+    })
+
+    model = build_normalized_model(facts)
+    command = DictionaryRenderer().render(model)
+
+    assert model.value_for("gpus") is None
+    assert "--gpus=all" not in split(command)
 
 
 def test_dictionary_renderer_includes_supported_p1_options():

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--gpus",
+    "all"
+  ],
+  "id": "option-gpus",
+  "image": "busybox",
+  "option_id": "gpus"
+}

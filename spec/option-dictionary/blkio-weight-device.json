@@ -36,6 +36,10 @@
     "classification": "blocked_by_runner",
     "reason": "needs_special_host_device"
   },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.",
+    "Future verification requires a runner with per-device block I/O weight support and a stable host block device path."
+  ],
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }

@@ -36,6 +36,10 @@
     "classification": "blocked_by_runner",
     "reason": "needs_rt_runtime_runner"
   },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+    "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+  ],
   "warning_behavior": {
     "warn_when_detected_unsupported": true
   }

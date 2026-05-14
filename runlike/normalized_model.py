@@ -243,6 +243,55 @@ class NormalizedModelBuilder(object):
         ]
         return _sorted_strings(collected)
 
+    def _resolve_gpus(self, entry):
+        requests = []
+        for value in self._field_values(entry):
+            if isinstance(value, list):
+                requests.extend(
+                    request for request in value if isinstance(request, dict))
+            elif isinstance(value, dict):
+                requests.append(value)
+
+        if len(requests) != 1:
+            return None
+
+        request = requests[0]
+        if not self._is_plain_gpu_device_request(request):
+            return None
+
+        device_ids = request.get("DeviceIDs") or []
+        count = request.get("Count")
+        if device_ids:
+            return "device=%s" % ",".join(
+                str(device_id)
+                for device_id in device_ids)
+        if count == -1:
+            return "all"
+        if isinstance(count, int) and not isinstance(count, bool) and count > 0:
+            return count
+        return None
+
+    def _is_plain_gpu_device_request(self, request):
+        if request.get("Driver"):
+            return False
+        if request.get("Options"):
+            return False
+        return self._has_only_gpu_capability(request.get("Capabilities"))
+
+    def _has_only_gpu_capability(self, capabilities):
+        if not isinstance(capabilities, list):
+            return False
+        has_gpu = False
+        for capability_set in capabilities:
+            if not isinstance(capability_set, list):
+                return False
+            normalized = set(str(capability) for capability in capability_set)
+            if normalized == set(["gpu"]):
+                has_gpu = True
+            elif normalized:
+                return False
+        return has_gpu
+
     def _scalar_is_default(self, option_id, value):
         if option_id == "hostname":
             return value in (None, "")

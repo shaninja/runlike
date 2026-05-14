@@ -16,7 +16,13 @@ def load_matrix_module():
     return module
 
 
-def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
+def dictionary_entry(
+        entry_id,
+        priority="P0",
+        scope="in_scope",
+        support_level=None,
+        support_notes=None,
+        support_reason=None):
     path_coverage = {
         "container_name": "detectable",
         "stdin": "detectable",
@@ -37,7 +43,7 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
         }
         reason = "needs_gpu_runner"
 
-    return {
+    entry = {
         "aliases": [],
         "canonical_output_form": "--%s" % entry_id,
         "id": entry_id,
@@ -52,6 +58,13 @@ def dictionary_entry(entry_id, priority="P0", scope="in_scope"):
             "warn_when_detected_unsupported": warning,
         },
     }
+    if support_level is not None:
+        entry["support_level"] = support_level
+    if support_notes is not None:
+        entry["support_notes"] = support_notes
+    if support_reason is not None:
+        entry["support_reason"] = support_reason
+    return entry
 
 
 def test_support_matrix_records_one_status_row_per_option_path():
@@ -259,6 +272,58 @@ def test_support_matrix_uses_only_probes_declared_for_each_path():
     assert rows["stdin"]["status"] == "supported"
 
 
+def test_support_matrix_can_mark_probe_passing_option_as_known_partial():
+    module = load_matrix_module()
+    entries = [
+        dictionary_entry(
+            "gpus",
+            priority="P2",
+            support_level="partial",
+            support_reason="needs_gpu_runner_for_runtime_execution",
+            support_notes=[
+                "Create/inspect round-trip is covered on the pinned runner.",
+                "Starting a GPU container requires a GPU runner.",
+            ]),
+    ]
+    probes = [{"id": "option-gpus", "option_id": "gpus"}]
+    probe_results = {
+        "results": [
+            {
+                "probe_id": "option-gpus",
+                "paths": {
+                    "container_name": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                    "stdin": {
+                        "compare": {"passed": True},
+                        "passed": True,
+                        "status": "passed",
+                    },
+                },
+                "passed": True,
+            },
+        ],
+    }
+
+    matrix = module.build_support_matrix(entries, probes, probe_results)
+    rows = dict((row["path"], row) for row in matrix["entries"])
+
+    assert rows["container_name"]["status"] == "partial"
+    assert rows["container_name"]["probe_status"] == "passed"
+    assert rows["container_name"]["reason"] == (
+        "needs_gpu_runner_for_runtime_execution")
+    assert rows["container_name"]["support_notes"] == [
+        "Create/inspect round-trip is covered on the pinned runner.",
+        "Starting a GPU container requires a GPU runner.",
+    ]
+    assert rows["container_name"]["remaining_work"] == [
+        "See support notes for the known limitation."
+    ]
+    assert rows["stdin"]["status"] == "partial"
+
+
 def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
     module = load_matrix_module()
     matrix = module.build_support_matrix(
@@ -294,15 +359,49 @@ def test_render_support_matrix_markdown_uses_matrix_rows_not_manual_tables():
         "Summary: 0 supported, 1 partial, 0 unsupported, "
         "0 out of scope, 1 needs special runner."
     ) in markdown
-    assert "| Option | Flag | Container name | Stdin | Scope | Reason |" in markdown
+    assert "| Option | Flag | Container name | Stdin | Scope | Reason | Notes |" in markdown
     assert "| Priority |" not in markdown
-    assert "| env | `--env` | supported | unsupported | in_scope |  |" in markdown
+    assert "| env | `--env` | supported | unsupported | in_scope |  |  |" in markdown
     assert (
         "| gpus | `--gpus` | needs special runner | needs special runner | "
-        "needs special runner | needs_gpu_runner |"
+        "needs special runner | needs_gpu_runner |  |"
     ) in markdown
     assert "blocked_by_runner" not in markdown
     assert "Generated from `generated/probe-results.json`" in markdown
+
+
+def test_render_support_matrix_markdown_escapes_note_cells():
+    module = load_matrix_module()
+    matrix = module.build_support_matrix(
+        [
+            dictionary_entry(
+                "env",
+                support_notes=["Uses A|B notation"]),
+        ],
+        [{"id": "option-env", "option_id": "env"}],
+        {
+            "results": [
+                {
+                    "probe_id": "option-env",
+                    "paths": {
+                        "container_name": {
+                            "compare": {"passed": True},
+                            "passed": True,
+                            "status": "passed",
+                        },
+                        "stdin": {
+                            "compare": {"passed": True},
+                            "passed": True,
+                            "status": "passed",
+                        },
+                    },
+                },
+            ],
+        })
+
+    markdown = module.render_support_matrix_markdown(matrix)
+
+    assert "Uses A\\|B notation" in markdown
 
 
 def test_checked_in_support_matrix_is_current():
