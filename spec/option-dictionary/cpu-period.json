@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpu-period",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpuPeriod"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpuPeriod"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpu-period",
+  "inspect_fields": [
+    "HostConfig.CpuPeriod"
+  ],
+  "manifest_flags": [
+    "--cpu-period"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpu-period",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

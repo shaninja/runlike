@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--restart",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.RestartPolicy"
+    ],
+    "profile": "restart-policy"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.RestartPolicy"
+    ],
+    "profile": "restart-policy"
+  },
+  "id": "restart",
+  "inspect_fields": [
+    "HostConfig.RestartPolicy"
+  ],
+  "manifest_flags": [
+    "--restart"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--restart",
+    "profile": "restart-policy",
+    "value_type": "restart-policy"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

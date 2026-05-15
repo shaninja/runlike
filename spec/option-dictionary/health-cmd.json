@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--health-cmd",
+  "compare_profile": {
+    "fields": [
+      "Config.Healthcheck.Test"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Healthcheck.Test"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "health-cmd",
+  "inspect_fields": [
+    "Config.Healthcheck.Test"
+  ],
+  "manifest_flags": [
+    "--health-cmd"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--health-cmd",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

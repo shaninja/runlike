@@ -1,0 +1,46 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--device-cgroup-rule",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.DeviceCgroupRules"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.DeviceCgroupRules"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "device-cgroup-rule",
+  "inspect_fields": [
+    "HostConfig.DeviceCgroupRules"
+  ],
+  "manifest_flags": [
+    "--device-cgroup-rule"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--device-cgroup-rule",
+    "profile": "canonical-docker-flag",
+    "renderable": true,
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "support_notes": [
+    "Supported on the standard pinned Docker 25 runner. The create/inspect probe stores HostConfig.DeviceCgroupRules and round-trips the same rule."
+  ],
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

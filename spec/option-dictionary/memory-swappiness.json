@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--memory-swappiness",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.MemorySwappiness"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.MemorySwappiness"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "memory-swappiness",
+  "inspect_fields": [
+    "HostConfig.MemorySwappiness"
+  ],
+  "manifest_flags": [
+    "--memory-swappiness"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--memory-swappiness",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_cgroup_v1_memory_swappiness"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}

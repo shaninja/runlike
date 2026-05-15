@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--health-start-interval",
+  "compare_profile": {
+    "fields": [
+      "Config.Healthcheck.StartInterval"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Healthcheck.StartInterval"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "health-start-interval",
+  "inspect_fields": [
+    "Config.Healthcheck.StartInterval"
+  ],
+  "manifest_flags": [
+    "--health-start-interval"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--health-start-interval",
+    "profile": "canonical-docker-flag",
+    "value_type": "duration"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

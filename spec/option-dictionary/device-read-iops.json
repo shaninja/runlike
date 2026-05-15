@@ -1,0 +1,46 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--device-read-iops",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceReadIOps"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.BlkioDeviceReadIOps"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "device-read-iops",
+  "inspect_fields": [
+    "HostConfig.BlkioDeviceReadIOps"
+  ],
+  "manifest_flags": [
+    "--device-read-iops"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--device-read-iops",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_special_host_device"
+  },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but the runner reports no io.max read-iops support, so HostConfig.BlkioDeviceReadIOps is empty.",
+    "Future verification requires a runner with block I/O throttle support and a stable host block device path."
+  ],
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

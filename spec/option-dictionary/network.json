@@ -1,0 +1,45 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--network",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.NetworkMode",
+      "NetworkSettings.Networks"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.NetworkMode",
+      "NetworkSettings.Networks"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "network",
+  "inspect_fields": [
+    "HostConfig.NetworkMode",
+    "NetworkSettings.Networks"
+  ],
+  "manifest_flags": [
+    "--network"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--network",
+    "profile": "canonical-docker-flag",
+    "value_type": "network"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

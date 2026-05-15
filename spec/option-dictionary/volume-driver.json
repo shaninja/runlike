@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--volume-driver",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.VolumeDriver"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.VolumeDriver"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "volume-driver",
+  "inspect_fields": [
+    "HostConfig.VolumeDriver"
+  ],
+  "manifest_flags": [
+    "--volume-driver"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--volume-driver",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

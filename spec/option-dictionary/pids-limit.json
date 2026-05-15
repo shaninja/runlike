@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--pids-limit",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.PidsLimit"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.PidsLimit"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "pids-limit",
+  "inspect_fields": [
+    "HostConfig.PidsLimit"
+  ],
+  "manifest_flags": [
+    "--pids-limit"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--pids-limit",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

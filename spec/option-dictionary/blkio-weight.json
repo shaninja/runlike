@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--blkio-weight",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.BlkioWeight"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.BlkioWeight"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "blkio-weight",
+  "inspect_fields": [
+    "HostConfig.BlkioWeight"
+  ],
+  "manifest_flags": [
+    "--blkio-weight"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--blkio-weight",
+    "profile": "canonical-docker-flag",
+    "value_type": "uint16"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

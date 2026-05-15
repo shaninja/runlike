@@ -1,0 +1,48 @@
+{
+  "aliases": [
+    "-d",
+    "--detach=true"
+  ],
+  "canonical_output_form": "--detach",
+  "compare_profile": {
+    "fields": [
+      "Config.AttachStdout",
+      "Config.AttachStderr"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.AttachStdout",
+      "Config.AttachStderr"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "detach",
+  "inspect_fields": [
+    "Config.AttachStdout",
+    "Config.AttachStderr"
+  ],
+  "manifest_flags": [
+    "--detach"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "run",
+    "flag": "--detach",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--group-add",
+    "1001"
+  ],
+  "id": "option-group-add",
+  "image": "busybox",
+  "option_id": "group-add"
+}

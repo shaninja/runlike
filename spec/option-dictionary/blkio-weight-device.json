@@ -1,0 +1,46 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--blkio-weight-device",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.BlkioWeightDevice"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.BlkioWeightDevice"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "blkio-weight-device",
+  "inspect_fields": [
+    "HostConfig.BlkioWeightDevice"
+  ],
+  "manifest_flags": [
+    "--blkio-weight-device"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--blkio-weight-device",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_special_host_device"
+  },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker accepts the flag but warns that per-device block I/O weight is unsupported and discards the setting, so HostConfig.BlkioWeightDevice is empty.",
+    "Future verification requires a runner with per-device block I/O weight support and a stable host block device path."
+  ],
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

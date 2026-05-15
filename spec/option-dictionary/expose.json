@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--expose",
+  "compare_profile": {
+    "fields": [
+      "Config.ExposedPorts"
+    ],
+    "profile": "image-default-aware"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.ExposedPorts"
+    ],
+    "profile": "image-default-aware"
+  },
+  "id": "expose",
+  "inspect_fields": [
+    "Config.ExposedPorts"
+  ],
+  "manifest_flags": [
+    "--expose"
+  ],
+  "observability": "partially_observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--expose",
+    "profile": "image-default-aware",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

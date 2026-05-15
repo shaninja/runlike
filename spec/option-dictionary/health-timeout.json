@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--health-timeout",
+  "compare_profile": {
+    "fields": [
+      "Config.Healthcheck.Timeout"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Healthcheck.Timeout"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "health-timeout",
+  "inspect_fields": [
+    "Config.Healthcheck.Timeout"
+  ],
+  "manifest_flags": [
+    "--health-timeout"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--health-timeout",
+    "profile": "canonical-docker-flag",
+    "value_type": "duration"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

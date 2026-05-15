@@ -1,0 +1,36 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cidfile",
+  "compare_profile": {
+    "fields": [],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [],
+    "profile": "inspect-fields"
+  },
+  "id": "cidfile",
+  "inspect_fields": [],
+  "manifest_flags": [
+    "--cidfile"
+  ],
+  "observability": "not_observable",
+  "path_coverage": {
+    "container_name": "client_side_only",
+    "stdin": "client_side_only"
+  },
+  "priority": "not_applicable",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cidfile",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "out_of_scope",
+    "reason": "client_side_only"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}

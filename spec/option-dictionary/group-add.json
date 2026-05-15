@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--group-add",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.GroupAdd"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.GroupAdd"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "group-add",
+  "inspect_fields": [
+    "HostConfig.GroupAdd"
+  ],
+  "manifest_flags": [
+    "--group-add"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--group-add",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--pid",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.PidMode"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.PidMode"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "pid",
+  "inspect_fields": [
+    "HostConfig.PidMode"
+  ],
+  "manifest_flags": [
+    "--pid"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--pid",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}
