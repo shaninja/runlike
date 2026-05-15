@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpuset-cpus",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpusetCpus"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpusetCpus"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpuset-cpus",
+  "inspect_fields": [
+    "HostConfig.CpusetCpus"
+  ],
+  "manifest_flags": [
+    "--cpuset-cpus"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpuset-cpus",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

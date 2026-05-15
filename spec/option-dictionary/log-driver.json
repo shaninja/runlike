@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--log-driver",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.LogConfig.Type"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.LogConfig.Type"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "log-driver",
+  "inspect_fields": [
+    "HostConfig.LogConfig.Type"
+  ],
+  "manifest_flags": [
+    "--log-driver"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--log-driver",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

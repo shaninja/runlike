@@ -1,0 +1,47 @@
+{
+  "aliases": [
+    "-i"
+  ],
+  "canonical_output_form": "--interactive",
+  "compare_profile": {
+    "fields": [
+      "Config.OpenStdin",
+      "Config.StdinOnce"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.OpenStdin",
+      "Config.StdinOnce"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "interactive",
+  "inspect_fields": [
+    "Config.OpenStdin",
+    "Config.StdinOnce"
+  ],
+  "manifest_flags": [
+    "--interactive"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--interactive",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

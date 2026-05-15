@@ -1,0 +1,38 @@
+{
+  "aliases": [
+    "-q"
+  ],
+  "canonical_output_form": "--quiet",
+  "compare_profile": {
+    "fields": [],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [],
+    "profile": "inspect-fields"
+  },
+  "id": "quiet",
+  "inspect_fields": [],
+  "manifest_flags": [
+    "--quiet"
+  ],
+  "observability": "not_observable",
+  "path_coverage": {
+    "container_name": "client_side_only",
+    "stdin": "client_side_only"
+  },
+  "priority": "not_applicable",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--quiet",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "out_of_scope",
+    "reason": "client_side_only"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}

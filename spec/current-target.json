@@ -1,0 +1,18 @@
+{
+  "id": "linux-docker-25.0.5-api-1.44",
+  "platform": "linux",
+  "docker": {
+    "engine_version": "25.0.5",
+    "cli_version": "25.0.5",
+    "api_version": "1.44"
+  },
+  "environment": {
+    "DOCKER_API_VERSION": "1.44"
+  },
+  "ci": {
+    "provider": "travis-ci",
+    "dist": "jammy",
+    "install_script": "tools/install_pinned_docker.sh",
+    "verification_script": "tools/verify_docker_target.py"
+  }
+}

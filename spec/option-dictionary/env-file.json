@@ -1,0 +1,36 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--env-file",
+  "compare_profile": {
+    "fields": [],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [],
+    "profile": "inspect-fields"
+  },
+  "id": "env-file",
+  "inspect_fields": [],
+  "manifest_flags": [
+    "--env-file"
+  ],
+  "observability": "not_observable",
+  "path_coverage": {
+    "container_name": "not_observable",
+    "stdin": "not_observable"
+  },
+  "priority": "not_applicable",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--env-file",
+    "profile": "canonical-docker-flag",
+    "value_type": "list"
+  },
+  "scope": {
+    "classification": "out_of_scope",
+    "reason": "non_observable_from_inspect"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}

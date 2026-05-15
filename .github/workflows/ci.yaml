@@ -1,16 +1,22 @@
 on: [push, pull_request]
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    env:
+      DOCKER_API_VERSION: "1.44"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.8'
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+      - run: ./tools/install_pinned_docker.sh
       - run: pip install poetry
       - run: poetry install
       - run: make test
+      - run: make check-generated
+      - run: make check-manifest-source
+      - run: make test-probes-options
       - name: Log into Dockerhub
         if: github.event_name == 'push'
         uses: docker/login-action@v3

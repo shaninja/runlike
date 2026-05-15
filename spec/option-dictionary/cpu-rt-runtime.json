@@ -1,0 +1,46 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpu-rt-runtime",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.CpuRealtimeRuntime"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.CpuRealtimeRuntime"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpu-rt-runtime",
+  "inspect_fields": [
+    "HostConfig.CpuRealtimeRuntime"
+  ],
+  "manifest_flags": [
+    "--cpu-rt-runtime"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "runner_blocked",
+    "stdin": "runner_blocked"
+  },
+  "priority": "P2",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpu-rt-runtime",
+    "profile": "canonical-docker-flag",
+    "value_type": "int"
+  },
+  "scope": {
+    "classification": "blocked_by_runner",
+    "reason": "needs_rt_runtime_runner"
+  },
+  "support_notes": [
+    "Blocked on the standard pinned Docker 25 runner. Docker refuses container creation with this flag because the kernel does not support Docker CPU real-time scheduling in this environment.",
+    "Future verification requires a runner with Linux real-time scheduler support enabled and Docker configured for CPU real-time runtime."
+  ],
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

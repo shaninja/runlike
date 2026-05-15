@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--no-healthcheck",
+  "compare_profile": {
+    "fields": [
+      "Config.Healthcheck.Test"
+    ],
+    "profile": "healthcheck-none-sentinel"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Healthcheck.Test"
+    ],
+    "profile": "healthcheck-none-sentinel"
+  },
+  "id": "no-healthcheck",
+  "inspect_fields": [
+    "Config.Healthcheck.Test"
+  ],
+  "manifest_flags": [
+    "--no-healthcheck"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--no-healthcheck",
+    "profile": "healthcheck-none-sentinel",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

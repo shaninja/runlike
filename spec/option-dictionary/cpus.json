@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--cpus",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.NanoCpus"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.NanoCpus"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "cpus",
+  "inspect_fields": [
+    "HostConfig.NanoCpus"
+  ],
+  "manifest_flags": [
+    "--cpus"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--cpus",
+    "profile": "canonical-docker-flag",
+    "value_type": "decimal"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--cpu-quota",
+    "50000"
+  ],
+  "id": "option-cpu-quota",
+  "image": "busybox",
+  "option_id": "cpu-quota"
+}

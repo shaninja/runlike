@@ -1,0 +1,48 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--mac-address",
+  "compare_profile": {
+    "fields": [
+      "Config.MacAddress",
+      "NetworkSettings.MacAddress",
+      "NetworkSettings.Networks.*.MacAddress"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.MacAddress",
+      "NetworkSettings.MacAddress",
+      "NetworkSettings.Networks.*.MacAddress"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "mac-address",
+  "inspect_fields": [
+    "Config.MacAddress",
+    "NetworkSettings.MacAddress",
+    "NetworkSettings.Networks.*.MacAddress"
+  ],
+  "manifest_flags": [
+    "--mac-address"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--mac-address",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

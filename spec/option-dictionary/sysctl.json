@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--sysctl",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.Sysctls"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.Sysctls"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "sysctl",
+  "inspect_fields": [
+    "HostConfig.Sysctls"
+  ],
+  "manifest_flags": [
+    "--sysctl"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--sysctl",
+    "profile": "canonical-docker-flag",
+    "value_type": "map"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

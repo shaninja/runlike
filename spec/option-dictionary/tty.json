@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "-t"
+  ],
+  "canonical_output_form": "--tty",
+  "compare_profile": {
+    "fields": [
+      "Config.Tty"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "Config.Tty"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "tty",
+  "inspect_fields": [
+    "Config.Tty"
+  ],
+  "manifest_flags": [
+    "--tty"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P0",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--tty",
+    "profile": "canonical-docker-flag",
+    "value_type": null
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

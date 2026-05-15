@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sh",
+    "-c",
+    "sleep 600"
+  ],
+  "docker_run_args": [
+    "--blkio-weight",
+    "300"
+  ],
+  "id": "option-blkio-weight",
+  "image": "busybox",
+  "option_id": "blkio-weight"
+}

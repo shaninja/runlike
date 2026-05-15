@@ -1,0 +1,42 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--uts",
+  "compare_profile": {
+    "fields": [
+      "HostConfig.UTSMode"
+    ],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [
+      "HostConfig.UTSMode"
+    ],
+    "profile": "inspect-fields"
+  },
+  "id": "uts",
+  "inspect_fields": [
+    "HostConfig.UTSMode"
+  ],
+  "manifest_flags": [
+    "--uts"
+  ],
+  "observability": "observable",
+  "path_coverage": {
+    "container_name": "detectable",
+    "stdin": "detectable"
+  },
+  "priority": "P1",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--uts",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "in_scope",
+    "reason": null
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": true
+  }
+}

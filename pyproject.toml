@@ -9,6 +9,7 @@ description = "Reverse-engineer docker run command line arguments based on runni
 authors = ["Assaf Lavie <a@assaf.io>"]
 readme = "README.md"
 license = "MIT"
+include = ["spec/option-dictionary/*.json"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",

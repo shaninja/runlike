@@ -1,0 +1,36 @@
+{
+  "aliases": [],
+  "canonical_output_form": "--isolation",
+  "compare_profile": {
+    "fields": [],
+    "profile": "inspect-projection"
+  },
+  "detection_profile": {
+    "fields": [],
+    "profile": "inspect-fields"
+  },
+  "id": "isolation",
+  "inspect_fields": [],
+  "manifest_flags": [
+    "--isolation"
+  ],
+  "observability": "not_observable",
+  "path_coverage": {
+    "container_name": "not_observable",
+    "stdin": "not_observable"
+  },
+  "priority": "not_applicable",
+  "render_profile": {
+    "command_family": "both",
+    "flag": "--isolation",
+    "profile": "canonical-docker-flag",
+    "value_type": "string"
+  },
+  "scope": {
+    "classification": "out_of_scope",
+    "reason": "windows_only"
+  },
+  "warning_behavior": {
+    "warn_when_detected_unsupported": false
+  }
+}
