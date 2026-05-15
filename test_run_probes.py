@@ -585,6 +585,40 @@ def test_probe_runner_reports_non_finite_timeout_env_without_traceback(
     assert "Traceback" not in captured.err
 
 
+def test_probe_runner_reports_negative_timeout_env_without_traceback(
+        monkeypatch,
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+    monkeypatch.setenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", "-1")
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path)])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "RUNLIKE_PROBE_COMMAND_TIMEOUT must be greater than or equal to 0" in captured.err
+    assert "Traceback" not in captured.err
+
+
+def test_probe_runner_reports_negative_timeout_arg_without_traceback(
+        capsys,
+        tmp_path):
+    run_probes = load_probe_module()
+    probe_path = tmp_path / "probe.json"
+    probe_path.write_text(json.dumps({}))
+
+    with pytest.raises(SystemExit) as exit_error:
+        run_probes.main([str(probe_path), "--command-timeout", "-1"])
+
+    captured = capsys.readouterr()
+    assert exit_error.value.code == 2
+    assert "--command-timeout must be greater than or equal to 0" in captured.err
+    assert "Traceback" not in captured.err
+
+
 def test_subprocess_command_runner_uses_default_timeout(monkeypatch):
     run_probes = load_probe_module()
     monkeypatch.delenv("RUNLIKE_PROBE_COMMAND_TIMEOUT", raising=False)

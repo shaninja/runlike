@@ -1,11 +1,8 @@
-try:
-    from pipes import quote
-except ImportError:
-    from shlex import quote
+from shlex import quote
 
 try:
     from .option_warnings import load_dictionary_entries
-except ValueError:
+except (ValueError, ImportError):
     from option_warnings import load_dictionary_entries
 
 

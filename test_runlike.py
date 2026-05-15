@@ -1,6 +1,6 @@
 import unittest
 import os
-import pipes
+from shlex import quote
 from subprocess import check_output
 from json import dumps
 from click.testing import CliRunner
@@ -813,7 +813,7 @@ class TestInspection(unittest.TestCase):
 
     def test_host_volumes(self):
         cur_dir = os.path.dirname(os.path.realpath(__file__))
-        self.expect_substr("--volume=%s:/workdir" % pipes.quote(cur_dir))
+        self.expect_substr("--volume=%s:/workdir" % quote(cur_dir))
 
     def test_no_host_volume(self):
         self.expect_substr('--volume=/random_volume')
@@ -905,7 +905,7 @@ class TestInspection(unittest.TestCase):
 
     def test_env(self):
         val = '''FOO=thing="quoted value with 'spaces' and 'single quotes'"'''
-        self.expect_substr("""--env=%s""" % pipes.quote(val))
+        self.expect_substr("""--env=%s""" % quote(val))
         self.expect_substr("--env=SET_WITHOUT_VALUE")
 
     def test_cap_add(self):

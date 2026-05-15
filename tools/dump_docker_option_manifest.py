@@ -76,8 +76,15 @@ def parse_docker_options(help_text):
             }
             continue
 
-        if current is not None:
+        if current is not None and line[:1].isspace():
             current["_help_parts"].append(line.strip())
+            continue
+
+        if current is not None:
+            options.append(current)
+            current = None
+        if line and not line[0].isspace():
+            in_options = False
 
     if current is not None:
         options.append(current)
@@ -295,7 +302,9 @@ def validate_manifest_source_ledger(
                 "Manifest option %s command_family mismatch: expected %s, got %s." % (
                     row["manifest_flag"],
                     row["expected_command_family"],
-                    ", ".join(row["actual_command_families"])))
+                    ", ".join(
+                        str(command_family)
+                        for command_family in row["actual_command_families"])))
         else:
             errors.append("Manifest option %s has unknown ledger status %s." % (
                 row["manifest_flag"], status))

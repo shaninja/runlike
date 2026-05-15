@@ -6,12 +6,12 @@ from subprocess import (
     CalledProcessError
 )
 from json import loads, dumps
-from pipes import quote
+from shlex import quote
 
 try:
     from .dictionary_renderer import DictionaryRenderer
     from .normalized_model import build_normalized_model
-except ValueError:
+except (ValueError, ImportError):
     from dictionary_renderer import DictionaryRenderer
     from normalized_model import build_normalized_model
 

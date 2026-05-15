@@ -190,6 +190,19 @@ def test_string_command_is_rendered_as_one_command_argument():
         "--detach busybox 'echo ok'")
 
 
+def test_image_inherited_list_items_are_filtered_per_value():
+    facts = minimal_inspect_facts(config={
+        "Env": ["BASE=1", "EXTRA=1"],
+    })
+    image_facts = minimal_inspect_facts(config={
+        "Env": ["BASE=1"],
+    })
+
+    model = build_normalized_model(facts, image_facts=image_facts)
+
+    assert model.value_for("env") == ["EXTRA=1"]
+
+
 def test_attach_streams_render_without_requiring_stdin():
     facts = minimal_inspect_facts(config={
         "AttachStderr": True,
@@ -440,6 +453,32 @@ def test_dictionary_renderer_includes_supported_p1_options():
     assert "--ulimit=nofile=1024:2048" in tokens
 
 
+def test_image_inherited_healthcheck_timing_is_not_rendered():
+    healthcheck = {
+        "Interval": 5000000000,
+        "Retries": 3,
+        "StartPeriod": 2000000000,
+        "Test": ["CMD-SHELL", "echo ok"],
+        "Timeout": 1000000000,
+    }
+    facts = minimal_inspect_facts(config={
+        "Healthcheck": healthcheck,
+    })
+    image_facts = minimal_inspect_facts(config={
+        "Healthcheck": healthcheck,
+    })
+
+    model = build_normalized_model(facts, image_facts=image_facts)
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert model.value_for("health-interval") is None
+    assert model.value_for("health-start-period") is None
+    assert model.value_for("health-timeout") is None
+    assert "--health-interval=5000000000ns" not in tokens
+    assert "--health-start-period=2000000000ns" not in tokens
+    assert "--health-timeout=1000000000ns" not in tokens
+
+
 def test_no_healthcheck_suppresses_other_health_flags():
     facts = minimal_inspect_facts(config={
         "Healthcheck": {
@@ -473,6 +512,19 @@ def test_exec_form_healthcheck_is_not_rendered_as_shell_form():
     assert "--health-cmd=test -f /tmp/has space" not in tokens
 
 
+def test_entrypoint_list_uses_only_executable_value():
+    facts = minimal_inspect_facts(config={
+        "Entrypoint": ["/entrypoint.sh", "--debug"],
+    })
+    model = build_normalized_model(facts)
+
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert model.value_for("entrypoint") == "/entrypoint.sh"
+    assert "--entrypoint=/entrypoint.sh" in tokens
+    assert "--entrypoint=/entrypoint.sh --debug" not in tokens
+
+
 def test_hostname_is_not_rendered_with_host_uts_mode():
     facts = minimal_inspect_facts(host_config={
         "UTSMode": "host",
@@ -483,3 +535,112 @@ def test_hostname_is_not_rendered_with_host_uts_mode():
 
     assert "--uts=host" in tokens
     assert "--hostname=fixture-host" not in tokens
+
+
+def test_image_inherited_exposed_ports_are_filtered_per_port():
+    facts = minimal_inspect_facts(config={
+        "ExposedPorts": {
+            "80/tcp": {},
+            "443/tcp": {},
+        },
+    })
+    image_facts = minimal_inspect_facts(config={
+        "ExposedPorts": {
+            "80/tcp": {},
+        },
+    })
+
+    model = build_normalized_model(facts, image_facts=image_facts)
+
+    assert model.value_for("expose") == ["443"]
+
+
+def test_published_ports_are_not_rendered_as_expose():
+    facts = minimal_inspect_facts(
+        host_config={
+            "PortBindings": {
+                "80/tcp": [{
+                    "HostIp": "",
+                    "HostPort": "8080",
+                }],
+            },
+        },
+        config={
+            "ExposedPorts": {
+                "80/tcp": {},
+            },
+        })
+
+    model = build_normalized_model(facts)
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert model.value_for("expose") is None
+    assert model.value_for("publish") == ["8080:80"]
+    assert "--expose=80" not in tokens
+    assert "--publish=8080:80" in tokens
+
+
+def test_ipv6_publish_bindings_use_docker_run_host_syntax():
+    facts = minimal_inspect_facts(host_config={
+        "PortBindings": {
+            "80/tcp": [
+                {
+                    "HostIp": "::",
+                    "HostPort": "8080",
+                },
+                {
+                    "HostIp": "fd00::1",
+                    "HostPort": "8081",
+                },
+            ],
+        },
+    })
+
+    model = build_normalized_model(facts)
+
+    assert model.value_for("publish") == [
+        "8080:80",
+        "[fd00::1]:8081:80",
+    ]
+
+
+def test_publish_merges_unique_network_and_host_config_bindings():
+    facts = minimal_inspect_facts(host_config={
+        "PortBindings": {
+            "80/tcp": [{
+                "HostIp": "127.0.0.1",
+                "HostPort": "8080",
+            }],
+        },
+    })
+    facts[0]["NetworkSettings"]["Ports"] = {
+        "80/tcp": [{
+            "HostIp": "127.0.0.2",
+            "HostPort": "8081",
+        }],
+    }
+
+    model = build_normalized_model(facts)
+
+    assert model.value_for("publish") == [
+        "127.0.0.1:8080:80",
+        "127.0.0.2:8081:80",
+    ]
+
+
+def test_named_volume_id_is_hidden_without_use_volume_id():
+    facts = minimal_inspect_facts(
+        host_config={
+            "Binds": ["runlike-volume-id:/data"],
+        },
+        config={
+            "Volumes": {
+                "/data": {},
+            },
+        })
+    model = build_normalized_model(facts)
+    tokens = split(DictionaryRenderer().render(model))
+
+    assert model.value_for("volume") == ["/data"]
+    assert "--volume=/data" in tokens
+    assert "runlike-volume-id" not in tokens

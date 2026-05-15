@@ -139,6 +139,11 @@ def _parse_timeout_seconds(timeout_seconds, source):
     if not math.isfinite(parsed):
         raise ProbeConfigurationError(
             "%s must be finite; got %r" % (source, timeout_seconds))
+    if parsed < 0:
+        raise ProbeConfigurationError(
+            "%s must be greater than or equal to 0; got %r" % (
+                source,
+                timeout_seconds))
     return parsed
 
 

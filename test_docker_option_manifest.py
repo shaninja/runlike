@@ -78,6 +78,19 @@ def test_parse_docker_help_extracts_options_and_multiline_help():
     ]
 
 
+def test_parse_docker_help_stops_before_trailing_sections():
+    module = load_manifest_module()
+    help_text = RUN_HELP + """
+Aliases:
+  docker container run, docker run
+"""
+
+    options = module.parse_docker_options(help_text)
+
+    assert options[-1]["canonical_flag"] == "--rm"
+    assert options[-1]["help"] == "Automatically remove the container when it exits"
+
+
 def test_build_manifest_deduplicates_flags_and_records_command_family():
     module = load_manifest_module()
     target = {
@@ -295,6 +308,24 @@ def test_validate_manifest_source_ledger_rejects_current_platform_extras():
 
     assert errors == [
         "Manifest option --cpu-count is not present in Docker help.",
+    ]
+
+
+def test_validate_manifest_source_ledger_reports_missing_command_family():
+    module = load_manifest_module()
+    ledger = [{
+        "actual_command_families": [None],
+        "expected_command_family": "run",
+        "manifest_flag": "--rm",
+        "manifest_row_count": 1,
+        "source_commands": ["run"],
+        "status": "command_family_mismatch",
+    }]
+
+    errors = module.validate_manifest_source_ledger(ledger)
+
+    assert errors == [
+        "Manifest option --rm command_family mismatch: expected run, got None.",
     ]
 
 

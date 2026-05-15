@@ -5,7 +5,7 @@ import click
 try:
     from .inspector import Inspector
     from .option_warnings import UnsupportedOptionWarningEngine
-except ValueError:
+except (ValueError, ImportError):
     from inspector import Inspector
     from option_warnings import UnsupportedOptionWarningEngine
 

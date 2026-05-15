@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 try:
     from .option_warnings import load_dictionary_entries
-except ValueError:
+except (ValueError, ImportError):
     from option_warnings import load_dictionary_entries
 
 
@@ -188,9 +188,9 @@ class NormalizedModelBuilder(object):
 
     def _resolve_canonical_docker_flag(self, entry):
         value_type = entry.get("render_profile", {}).get("value_type")
-        values = self._field_values(entry)
         if value_type in ("list", "map"):
-            return self._resolve_list_or_map_values(entry, values)
+            return self._resolve_list_or_map_entry(entry)
+        values = self._field_values(entry)
         if value_type is None:
             return self._resolve_boolean_value(entry, values)
         return self._resolve_scalar_value(entry, values)
@@ -203,6 +203,39 @@ class NormalizedModelBuilder(object):
                     continue
                 values.append(value)
         return values
+
+    def _resolve_list_or_map_entry(self, entry):
+        option_id = entry["id"]
+        collected = []
+        for path in entry.get("inspect_fields", []):
+            image_values = self._flatten_list_or_map_values(
+                self.model.image_values(path))
+            for value in self._flatten_list_or_map_values(
+                    self.model.values(path)):
+                if value in image_values:
+                    continue
+                if self._scalar_is_default(option_id, value):
+                    continue
+                collected.append(value)
+        return _sorted_strings(collected)
+
+    def _flatten_list_or_map_values(self, values):
+        collected = []
+        for value in values:
+            if _is_empty(value):
+                continue
+            if isinstance(value, dict):
+                for key in sorted(value):
+                    item = value[key]
+                    if item in ({}, None):
+                        collected.append(str(key))
+                    else:
+                        collected.append("%s=%s" % (key, item))
+            elif isinstance(value, list):
+                collected.extend(value)
+            else:
+                collected.append(value)
+        return collected
 
     def _resolve_boolean_value(self, entry, values):
         option_id = entry["id"]
@@ -229,24 +262,9 @@ class NormalizedModelBuilder(object):
 
     def _resolve_list_or_map_values(self, entry, values):
         option_id = entry["id"]
-        collected = []
-        for value in values:
-            if _is_empty(value):
-                continue
-            if isinstance(value, dict):
-                for key in sorted(value):
-                    item = value[key]
-                    if item in ({}, None):
-                        collected.append(str(key))
-                    else:
-                        collected.append("%s=%s" % (key, item))
-            elif isinstance(value, list):
-                collected.extend(value)
-            else:
-                collected.append(value)
         collected = [
             value
-            for value in collected
+            for value in self._flatten_list_or_map_values(values)
             if not self._scalar_is_default(option_id, value)
         ]
         return _sorted_strings(collected)
@@ -374,15 +392,28 @@ class NormalizedModelBuilder(object):
         if self.model.image_has_value("Config.Entrypoint", entrypoint):
             return None
         if isinstance(entrypoint, list):
-            return " ".join(str(part) for part in entrypoint)
+            if not entrypoint:
+                return None
+            return entrypoint[0]
         return entrypoint
 
     def _resolve_expose(self, entry):
         ports = self.model.get("Config.ExposedPorts") or {}
-        if self.model.image_has_value("Config.ExposedPorts", ports):
-            return None
+        image_ports = _first_value(
+            self.model.image_values("Config.ExposedPorts")) or {}
+        published_ports = set()
+        for source in (
+                self.model.get("NetworkSettings.Ports") or {},
+                self.model.get("HostConfig.PortBindings") or {}):
+            for container_port_and_protocol, bindings in source.items():
+                if bindings:
+                    published_ports.add(container_port_and_protocol)
         exposed = []
         for container_port_and_protocol in sorted(ports):
+            if container_port_and_protocol in image_ports:
+                continue
+            if container_port_and_protocol in published_ports:
+                continue
             exposed.append(self._format_container_port(container_port_and_protocol))
         return exposed
 
@@ -403,20 +434,26 @@ class NormalizedModelBuilder(object):
         return test
 
     def _resolve_health_interval(self, entry):
-        return self._format_duration_ns(
-            self.model.get("Config.Healthcheck.Interval"))
+        return self._resolve_health_duration(
+            "Config.Healthcheck.Interval")
 
     def _resolve_health_start_interval(self, entry):
-        return self._format_duration_ns(
-            self.model.get("Config.Healthcheck.StartInterval"))
+        return self._resolve_health_duration(
+            "Config.Healthcheck.StartInterval")
 
     def _resolve_health_start_period(self, entry):
-        return self._format_duration_ns(
-            self.model.get("Config.Healthcheck.StartPeriod"))
+        return self._resolve_health_duration(
+            "Config.Healthcheck.StartPeriod")
 
     def _resolve_health_timeout(self, entry):
-        return self._format_duration_ns(
-            self.model.get("Config.Healthcheck.Timeout"))
+        return self._resolve_health_duration(
+            "Config.Healthcheck.Timeout")
+
+    def _resolve_health_duration(self, path):
+        value = self.model.get(path)
+        if self.model.image_has_value(path, value):
+            return None
+        return self._format_duration_ns(value)
 
     def _resolve_no_healthcheck(self, entry):
         test = self.model.get("Config.Healthcheck.Test")
@@ -531,15 +568,18 @@ class NormalizedModelBuilder(object):
         ports = self.model.get("NetworkSettings.Ports") or {}
         port_bindings = self.model.get("HostConfig.PortBindings") or {}
         merged_ports = {}
-        merged_ports.update(ports)
-        merged_ports.update(port_bindings)
+        for source in (ports, port_bindings):
+            for container_port_and_protocol, bindings in source.items():
+                if not bindings:
+                    continue
+                merged_ports.setdefault(container_port_and_protocol, [])
+                for binding in bindings:
+                    if binding not in merged_ports[container_port_and_protocol]:
+                        merged_ports[container_port_and_protocol].append(binding)
 
         published = []
         for container_port_and_protocol in sorted(merged_ports):
-            bindings = merged_ports[container_port_and_protocol]
-            if not bindings:
-                continue
-            for binding in bindings:
+            for binding in merged_ports[container_port_and_protocol]:
                 published.append(
                     self._format_published_port(
                         container_port_and_protocol,
@@ -569,59 +609,101 @@ class NormalizedModelBuilder(object):
 
     def _resolve_volume(self, entry):
         volumes = []
-        covered_targets = set()
-        for value in self.model.values("HostConfig.Binds"):
-            if isinstance(value, list):
-                volumes.extend(value)
-                if self.model.use_volume_id:
-                    for bind in value:
-                        target = self._volume_target_from_bind(bind)
-                        if target:
-                            covered_targets.add(target)
-
-        volumes_by_target = {}
-        if self.model.use_volume_id:
-            covered_targets.update(self._rendered_mount_targets())
-            volumes_by_target = self._volumes_by_target()
-            for target in sorted(volumes_by_target):
-                if target in covered_targets:
-                    continue
-                volumes.append(volumes_by_target[target])
-                covered_targets.add(target)
-
-        config_volumes = self.model.get("Config.Volumes") or {}
-        for target in sorted(config_volumes):
-            if target in covered_targets:
+        covered_targets = set(self._rendered_mount_targets())
+        for mount in self._volume_mounts():
+            target = mount.get("Destination") or mount.get("Target")
+            if not target or target in covered_targets:
                 continue
-            volume = volumes_by_target.get(target)
+            volume = self._volume_from_mount(mount)
             if volume:
                 volumes.append(volume)
-            else:
-                volumes.append(target)
+                covered_targets.add(target)
+
+        for value in self.model.values("HostConfig.Binds"):
+            if not isinstance(value, list):
+                continue
+            for bind in value:
+                target = self._volume_target_from_bind(bind)
+                if target and target in covered_targets:
+                    continue
+                volume = self._volume_from_bind(bind)
+                if volume:
+                    volumes.append(volume)
+                    if target:
+                        covered_targets.add(target)
+
+        for target in self._explicit_volume_targets():
+            if target in covered_targets:
+                continue
+            volumes.append(target)
             covered_targets.add(target)
         return _sorted_strings(volumes)
 
     def _volume_target_from_bind(self, bind):
+        parsed = self._parse_volume_bind(bind)
+        if parsed is None:
+            return None
+        return parsed[1]
+
+    def _volume_from_bind(self, bind):
+        parsed = self._parse_volume_bind(bind)
+        if parsed is None:
+            return None
+        source, target, mode = parsed
+        if source and self._bind_source_is_named_volume(source):
+            if not self.model.use_volume_id:
+                source = None
+        if source:
+            rendered = "%s:%s" % (source, target)
+        else:
+            rendered = target
+        if mode:
+            return "%s:%s" % (rendered, mode)
+        return rendered
+
+    def _parse_volume_bind(self, bind):
         if not isinstance(bind, str):
             return None
         parts = bind.rsplit(":", 2)
         if len(parts) == 1:
-            return parts[0]
+            return (None, parts[0], None)
         if len(parts) == 2:
-            return parts[1]
+            return (parts[0], parts[1], None)
         # Docker -v values are source:target[:options]. Treat any third
         # field as options so new Docker option spellings do not affect
         # target deduplication. A third field that looks like a target keeps
         # Windows-style source paths without options from being misparsed.
         if parts[2].startswith(("/", "\\")):
-            return parts[2]
-        return parts[1]
+            return (parts[0] + ":" + parts[1], parts[2], None)
+        return (parts[0], parts[1], parts[2])
+
+    def _bind_source_is_named_volume(self, source):
+        if not source:
+            return False
+        if source.startswith(("/", "./", "../", "~", "\\")):
+            return False
+        if len(source) >= 3 and source[1] == ":" and source[2] in ("/", "\\"):
+            return False
+        return True
+
+    def _explicit_volume_targets(self):
+        volumes = self.model.get("Config.Volumes") or {}
+        image_volumes = _first_value(
+            self.model.image_values("Config.Volumes")) or {}
+        targets = []
+        for target in sorted(volumes):
+            if target in image_volumes:
+                continue
+            targets.append(target)
+        return targets
 
     def _volume_mounts(self):
         mounts = []
         mount_config_targets = self._rendered_mount_targets()
         for mount in self.model.get("Mounts") or []:
             if not isinstance(mount, dict):
+                continue
+            if mount.get("Type") != "volume" and not self.model.use_volume_id:
                 continue
             target = mount.get("Destination") or mount.get("Target")
             if target in mount_config_targets:
@@ -642,16 +724,21 @@ class NormalizedModelBuilder(object):
         return targets
 
     def _volume_from_mount(self, mount):
-        if mount.get("Type") == "volume":
-            source = mount.get("Name") or mount.get("Source")
-        else:
-            source = mount.get("Source")
         target = mount.get("Destination") or mount.get("Target")
         if not target:
             return None
+
+        mount_type = mount.get("Type")
+        source = mount.get("Source")
+        if mount_type == "volume":
+            if self.model.use_volume_id:
+                source = mount.get("Name") or source
+            else:
+                source = None
+
         if source:
             rendered = "%s:%s" % (source, target)
-        elif mount.get("Type") == "volume":
+        elif mount_type == "volume":
             rendered = target
         else:
             return None
@@ -732,7 +819,9 @@ class NormalizedModelBuilder(object):
         host_port = binding.get("HostPort", "")
 
         prefix = ""
-        if host_ip not in ("", "0.0.0.0"):
+        if host_ip not in ("", "0.0.0.0", "::"):
+            if ":" in host_ip and not host_ip.startswith("["):
+                host_ip = "[%s]" % host_ip
             prefix += host_ip + ":"
         if host_port not in ("", "0"):
             prefix += host_port + ":"

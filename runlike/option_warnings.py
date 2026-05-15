@@ -270,7 +270,7 @@ class UnsupportedOptionWarningEngine(object):
                 build_normalized_model,
                 normalized_model_can_resolve_entry,
             )
-        except ValueError:
+        except (ValueError, ImportError):
             from normalized_model import (
                 build_normalized_model,
                 normalized_model_can_resolve_entry,
