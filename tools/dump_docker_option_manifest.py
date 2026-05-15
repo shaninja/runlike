@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -10,6 +11,13 @@ from collections import defaultdict
 
 DEFAULT_TARGET_PATH = "spec/current-target.json"
 DEFAULT_OUTPUT_PATH = "spec/docker-option-manifest.json"
+DEFAULT_DICTIONARY_PATH = "spec/option-dictionary"
+
+PLATFORM_ONLY_REASONS = {
+    "linux_only": ("linux",),
+    "macos_only": ("darwin", "macos"),
+    "windows_only": ("windows",),
+}
 
 OPTION_RE = re.compile(
     r"^\s{2,}(?:(-[A-Za-z]),\s+)?"
@@ -22,6 +30,16 @@ OPTION_RE = re.compile(
 def load_target(path):
     with open(path) as target_file:
         return json.load(target_file)
+
+
+def load_dictionary_entries(path):
+    entries = []
+    for filename in sorted(os.listdir(path)):
+        if not filename.endswith(".json"):
+            continue
+        with open(os.path.join(path, filename)) as dictionary_file:
+            entries.append(json.load(dictionary_file))
+    return entries
 
 
 def _compact_help(parts):
@@ -217,8 +235,46 @@ def write_manifest_source_ledger(path, ledger):
         ledger_file.write("\n")
 
 
-def validate_manifest_source_ledger(ledger):
+def _entries_by_manifest_flag(dictionary_entries):
+    grouped = defaultdict(list)
+    for entry in dictionary_entries or []:
+        for flag in entry.get("manifest_flags") or []:
+            grouped[flag].append(entry)
+    return grouped
+
+
+def _target_platform(target):
+    if not isinstance(target, dict):
+        return None
+    return target.get("platform")
+
+
+def _is_other_platform_only_extra(row, target, entries_by_flag):
+    platform = _target_platform(target)
+    if not isinstance(platform, str) or not platform:
+        return False
+
+    target_platform = platform.lower()
+    entries = entries_by_flag.get(row["manifest_flag"], [])
+    if not entries:
+        return False
+
+    for entry in entries:
+        scope = entry.get("scope") or {}
+        if scope.get("classification") != "out_of_scope":
+            return False
+        scoped_platforms = PLATFORM_ONLY_REASONS.get(scope.get("reason"))
+        if not scoped_platforms or target_platform in scoped_platforms:
+            return False
+    return True
+
+
+def validate_manifest_source_ledger(
+        ledger,
+        target=None,
+        dictionary_entries=None):
     errors = []
+    entries_by_flag = _entries_by_manifest_flag(dictionary_entries)
     for row in ledger:
         status = row["status"]
         if status == "covered":
@@ -230,6 +286,8 @@ def validate_manifest_source_ledger(ledger):
             errors.append("Docker help option %s has %d manifest entries." % (
                 row["manifest_flag"], row["manifest_row_count"]))
         elif status == "extra":
+            if _is_other_platform_only_extra(row, target, entries_by_flag):
+                continue
             errors.append("Manifest option %s is not present in Docker help." % (
                 row["manifest_flag"],))
         elif status == "command_family_mismatch":
@@ -305,6 +363,10 @@ def main(argv=None):
         default=DEFAULT_OUTPUT_PATH,
         help="Path for the generated Docker option manifest.")
     parser.add_argument(
+        "--dictionary",
+        default=DEFAULT_DICTIONARY_PATH,
+        help="Path to the runlike option dictionary directory.")
+    parser.add_argument(
         "--check",
         action="store_true",
         help="Validate the existing manifest against live Docker help instead of writing it.")
@@ -320,10 +382,14 @@ def main(argv=None):
 
     if args.check:
         manifest = load_manifest(args.output)
+        dictionary_entries = load_dictionary_entries(args.dictionary)
         ledger = build_manifest_source_ledger(manifest, run_help, create_help)
         if args.coverage_ledger:
             write_manifest_source_ledger(args.coverage_ledger, ledger)
-        errors = validate_manifest_source_ledger(ledger)
+        errors = validate_manifest_source_ledger(
+            ledger,
+            target=target,
+            dictionary_entries=dictionary_entries)
         if errors:
             for error in errors:
                 print(error, file=sys.stderr)

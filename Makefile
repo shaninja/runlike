@@ -45,6 +45,10 @@ refresh-support-artifacts: verify-docker-target
 check-generated:
 	poetry run python tools/check_generated_files.py
 
+.PHONY: check-manifest-source
+check-manifest-source: verify-docker-target
+	poetry run python tools/dump_docker_option_manifest.py --check
+
 .PHONY: verify-docker-target
 verify-docker-target:
 	poetry run python tools/verify_docker_target.py

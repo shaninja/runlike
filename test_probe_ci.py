@@ -39,6 +39,21 @@ def test_travis_runs_phase8_generated_file_checks():
     assert "make check-generated" in travis
 
 
+def test_makefile_exposes_manifest_source_check_target():
+    makefile = (ROOT / "Makefile").read_text()
+    recipe = makefile_target_recipe(makefile, "check-manifest-source")
+
+    assert ".PHONY: check-manifest-source" in makefile
+    assert "check-manifest-source: verify-docker-target" in makefile
+    assert "tools/dump_docker_option_manifest.py --check" in recipe
+
+
+def test_travis_runs_manifest_source_check():
+    travis = (ROOT / ".travis.yml").read_text()
+
+    assert "make check-manifest-source" in travis
+
+
 def test_makefile_exposes_phase8_refresh_support_artifacts_target():
     makefile = (ROOT / "Makefile").read_text()
     generate_probe_results = makefile_target_recipe(

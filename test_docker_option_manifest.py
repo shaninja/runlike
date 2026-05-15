@@ -240,6 +240,64 @@ def test_build_manifest_source_ledger_accepts_generated_manifest():
     }
 
 
+def test_validate_manifest_source_ledger_tolerates_other_platform_only_extras():
+    module = load_manifest_module()
+    ledger = [{
+        "actual_command_families": ["both"],
+        "expected_command_family": None,
+        "manifest_flag": "--cpu-count",
+        "manifest_row_count": 1,
+        "source_commands": [],
+        "status": "extra",
+    }]
+    target = {"platform": "linux"}
+    dictionary_entries = [{
+        "id": "cpu-count",
+        "manifest_flags": ["--cpu-count"],
+        "scope": {
+            "classification": "out_of_scope",
+            "reason": "windows_only",
+        },
+    }]
+
+    errors = module.validate_manifest_source_ledger(
+        ledger,
+        target=target,
+        dictionary_entries=dictionary_entries)
+
+    assert errors == []
+
+
+def test_validate_manifest_source_ledger_rejects_current_platform_extras():
+    module = load_manifest_module()
+    ledger = [{
+        "actual_command_families": ["both"],
+        "expected_command_family": None,
+        "manifest_flag": "--cpu-count",
+        "manifest_row_count": 1,
+        "source_commands": [],
+        "status": "extra",
+    }]
+    target = {"platform": "windows"}
+    dictionary_entries = [{
+        "id": "cpu-count",
+        "manifest_flags": ["--cpu-count"],
+        "scope": {
+            "classification": "out_of_scope",
+            "reason": "windows_only",
+        },
+    }]
+
+    errors = module.validate_manifest_source_ledger(
+        ledger,
+        target=target,
+        dictionary_entries=dictionary_entries)
+
+    assert errors == [
+        "Manifest option --cpu-count is not present in Docker help.",
+    ]
+
+
 def test_checked_in_manifest_matches_current_target_metadata():
     manifest_path = ROOT / "spec" / "docker-option-manifest.json"
     target_path = ROOT / "spec" / "current-target.json"
