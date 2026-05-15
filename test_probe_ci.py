@@ -35,6 +35,13 @@ def test_github_actions_installs_pinned_docker_target():
     assert "./tools/install_pinned_docker.sh" in workflow
 
 
+def test_github_actions_uses_node24_action_versions():
+    workflow = (ROOT / ".github" / "workflows" / "ci.yaml").read_text()
+
+    assert "actions/checkout@v6" in workflow
+    assert "actions/setup-python@v6" in workflow
+
+
 def test_github_actions_runs_option_probe_target():
     workflow = (ROOT / ".github" / "workflows" / "ci.yaml").read_text()
 
@@ -60,6 +67,19 @@ def test_github_actions_runs_manifest_source_check():
     workflow = (ROOT / ".github" / "workflows" / "ci.yaml").read_text()
 
     assert "make check-manifest-source" in workflow
+
+
+def test_github_actions_build_job_does_not_require_dockerhub_credentials():
+    workflow = (ROOT / ".github" / "workflows" / "ci.yaml").read_text()
+
+    assert "docker/login-action" not in workflow
+    assert "DOCKERHUB_TOKEN" not in workflow
+
+
+def test_github_actions_does_not_run_legacy_fixture_dump_on_failure():
+    workflow = (ROOT / ".github" / "workflows" / "ci.yaml").read_text()
+
+    assert "inspect_fixtures.sh" not in workflow
 
 
 def test_makefile_exposes_phase8_refresh_support_artifacts_target():
