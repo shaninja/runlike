@@ -14,9 +14,9 @@ DEFAULT_OUTPUT_PATH = "spec/docker-option-manifest.json"
 DEFAULT_DICTIONARY_PATH = "spec/option-dictionary"
 
 PLATFORM_ONLY_REASONS = {
-    "linux_only": "linux",
-    "macos_only": "macos",
-    "windows_only": "windows",
+    "linux_only": ("linux",),
+    "macos_only": ("darwin", "macos"),
+    "windows_only": ("windows",),
 }
 
 OPTION_RE = re.compile(
@@ -251,17 +251,22 @@ def _target_platform(target):
 
 def _is_other_platform_only_extra(row, target, entries_by_flag):
     platform = _target_platform(target)
-    if not platform:
+    if not isinstance(platform, str) or not platform:
         return False
 
-    for entry in entries_by_flag.get(row["manifest_flag"], []):
+    target_platform = platform.lower()
+    entries = entries_by_flag.get(row["manifest_flag"], [])
+    if not entries:
+        return False
+
+    for entry in entries:
         scope = entry.get("scope") or {}
         if scope.get("classification") != "out_of_scope":
-            continue
-        scoped_platform = PLATFORM_ONLY_REASONS.get(scope.get("reason"))
-        if scoped_platform and scoped_platform != platform:
-            return True
-    return False
+            return False
+        scoped_platforms = PLATFORM_ONLY_REASONS.get(scope.get("reason"))
+        if not scoped_platforms or target_platform in scoped_platforms:
+            return False
+    return True
 
 
 def validate_manifest_source_ledger(
